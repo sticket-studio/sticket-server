@@ -7,20 +7,22 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class User {
+public class Sticker {
     @Id
     private Long idx;
-    private String id;
-    private String pw;
-    private String name;
-    private String email;
-    private String snsType;
-    private String token;
-    private int stick;
+    private User author;
+    private Category category;
+    private String imgUrl;
+    private LocalDateTime createdTime;
+    private int price;
+    private String description;
+    private int likeCnt;
+    private int purchaseCnt;
 }

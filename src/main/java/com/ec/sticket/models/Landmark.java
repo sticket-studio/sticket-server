@@ -13,14 +13,8 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Getter
 @Setter
-public class User {
+public class Landmark {
     @Id
     private Long idx;
-    private String id;
-    private String pw;
     private String name;
-    private String email;
-    private String snsType;
-    private String token;
-    private int stick;
 }

@@ -13,14 +13,10 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Getter
 @Setter
-public class User {
+public class Quest {
     @Id
     private Long idx;
-    private String id;
-    private String pw;
-    private String name;
-    private String email;
-    private String snsType;
-    private String token;
-    private int stick;
+    private String subject;
+    private String description;
+    private int rewardStick;
 }
