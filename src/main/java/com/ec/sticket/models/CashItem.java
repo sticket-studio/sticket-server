@@ -14,8 +14,10 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class CashItem {
+
     @Id
     private Long idx;
+
     private int stick;
     private int cash;
 }

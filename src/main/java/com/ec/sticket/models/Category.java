@@ -14,7 +14,9 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class Category {
+
     @Id
     private Long idx;
+
     private String name;
 }

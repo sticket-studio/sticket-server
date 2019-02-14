@@ -14,8 +14,10 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class User {
+
     @Id
     private Long idx;
+
     private String id;
     private String pw;
     private String name;

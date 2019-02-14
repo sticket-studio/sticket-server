@@ -14,8 +14,10 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class Quest {
+
     @Id
     private Long idx;
+
     private String subject;
     private String description;
     private int rewardStick;

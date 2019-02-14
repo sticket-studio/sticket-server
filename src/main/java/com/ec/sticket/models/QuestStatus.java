@@ -14,7 +14,9 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class QuestStatus {
+
     @Id
     private int idx;
+
     private String status;
 }
