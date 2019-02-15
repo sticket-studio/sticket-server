@@ -20,14 +20,14 @@ public class Hashtag {
     private Long idx;
 
     @ManyToMany
-    @JoinTable(name = "sticker_has_hashtag",
+    @JoinTable(name = "sticker_hashtag",
             joinColumns = @JoinColumn(name = "hashtag_idx"),
             inverseJoinColumns = @JoinColumn(name = "sticker_idx")
     )
     private List<Sticker> stickers = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "asset_has_hashtag",
+    @JoinTable(name = "asset_hashtag",
             joinColumns = @JoinColumn(name = "hashtag_idx",
                     referencedColumnName = "idx"),
             inverseJoinColumns = @JoinColumn(name = "asset_idx",

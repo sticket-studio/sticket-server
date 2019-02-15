@@ -31,16 +31,16 @@ public class Sticker {
     private Category category;
 
     @OneToMany(mappedBy = "sticker")
-    private List<UserStickerPurchase> userStickerPurchases= new ArrayList<>();
+    private List<UserStickerPurchase> userStickerPurchases = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "sticker_has_assets",
+    @JoinTable(name = "sticker_asset",
             joinColumns = @JoinColumn(name = "sticker_idx",
                     referencedColumnName = "idx"),
             inverseJoinColumns = @JoinColumn(name = "asset_idx",
                     referencedColumnName = "idx")
     )
-    private List<Asset> assets= new ArrayList<>();
+    private List<Asset> assets = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "sticker_hashtag",
@@ -49,7 +49,7 @@ public class Sticker {
             inverseJoinColumns = @JoinColumn(name = "hashtag_idx",
                     referencedColumnName = "idx")
     )
-    private List<Hashtag> hashtag= new ArrayList<>();
+    private List<Hashtag> hashtag = new ArrayList<>();
 
     private String imgUrl;
     private LocalDateTime createdTime;

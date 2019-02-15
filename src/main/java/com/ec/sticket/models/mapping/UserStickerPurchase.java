@@ -20,11 +20,13 @@ import java.time.LocalDateTime;
 public class UserStickerPurchase {
 
     @ManyToOne
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name = "user_idx"
+            , referencedColumnName = "idx")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "sticker_idx")
+    @JoinColumn(name = "sticker_idx"
+            , referencedColumnName = "idx")
     private Sticker sticker;
 
     private int price;
