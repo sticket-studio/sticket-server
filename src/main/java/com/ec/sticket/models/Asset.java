@@ -1,5 +1,7 @@
 package com.ec.sticket.models;
 
+import com.ec.sticket.models.mapping.UserAssetPurchase;
+import com.ec.sticket.models.mapping.UserStickerPurchase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,21 +30,31 @@ public class Asset {
     @JoinColumn(name = "category_idx")
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "landmark_idx")
+    private Landmark landmark;
+
+    @OneToMany(mappedBy = "asset")
+    private List<UserAssetPurchase> userAssetPurchases = new ArrayList<>();
+
     @ManyToMany
-    @JoinTable(name = "sticker_has_assets",
-            joinColumns = @JoinColumn(name = "asset_idx"),
-            inverseJoinColumns = @JoinColumn(name = "sticker_idx")
+    @JoinTable(name = "sticker_asset",
+            joinColumns = @JoinColumn(name = "asset_idx",
+                    referencedColumnName = "idx"),
+            inverseJoinColumns = @JoinColumn(name = "sticker_idx",
+                    referencedColumnName = "idx")
     )
-    private List<Sticker> stickers;
+    private List<Sticker> stickers = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "asset_hashtag",
-            joinColumns = @JoinColumn(name = "asset_idx"),
-            inverseJoinColumns = @JoinColumn(name = "hashtag_idx")
+            joinColumns = @JoinColumn(name = "asset_idx",
+                    referencedColumnName = "idx"),
+            inverseJoinColumns = @JoinColumn(name = "hashtag_idx",
+                    referencedColumnName = "idx")
     )
     private List<Hashtag> hashtag = new ArrayList<>();
 
-    private Landmark landmark;
     private String imgUrl;
     private LocalDateTime createdTime;
     private int price;

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,8 +18,15 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class UserStickerPurchase {
+
+    @ManyToOne
+    @JoinColumn(name = "user_idx")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "sticker_idx")
     private Sticker sticker;
+
     private int price;
     private LocalDateTime purchaseTime;
 }

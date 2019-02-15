@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 @NoArgsConstructor
@@ -16,7 +18,19 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 public class UserQuest {
+
+    @ManyToOne
+    @JoinColumn(name = "user_idx"
+            , referencedColumnName = "idx")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "quest_idx"
+            , referencedColumnName = "idx")
     private Quest quest;
+
+    @ManyToOne
+    @JoinColumn(name = "quest_status_idx"
+            , referencedColumnName = "idx")
     private QuestStatus questStatus;
 }

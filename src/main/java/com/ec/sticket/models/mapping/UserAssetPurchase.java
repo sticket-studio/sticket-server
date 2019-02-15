@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,8 +19,15 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class UserAssetPurchase {
+
+    @ManyToOne
+    @JoinColumn(name = "user_idx")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "asset_idx")
     private Asset asset;
+
     private int price;
     private LocalDateTime purchaseTime;
 }

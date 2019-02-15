@@ -1,5 +1,6 @@
 package com.ec.sticket.models;
 
+import com.ec.sticket.models.mapping.UserStickerPurchase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,29 +19,37 @@ import java.util.List;
 public class Sticker {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idx;
 
     @ManyToOne
-    @JoinColumn(name = "author")
+    @JoinColumn(name = "author_idx")
     private User author;
 
     @ManyToOne
-    @JoinColumn(name = "category")
+    @JoinColumn(name = "category_idx")
     private Category category;
+
+    @OneToMany(mappedBy = "sticker")
+    private List<UserStickerPurchase> userStickerPurchases= new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "sticker_has_assets",
-            joinColumns = @JoinColumn(name = "sticker_idx"),
-            inverseJoinColumns = @JoinColumn(name = "asset_idx")
+            joinColumns = @JoinColumn(name = "sticker_idx",
+                    referencedColumnName = "idx"),
+            inverseJoinColumns = @JoinColumn(name = "asset_idx",
+                    referencedColumnName = "idx")
     )
-    private List<Asset> assets;
+    private List<Asset> assets= new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "sticker_hashtag",
-            joinColumns = @JoinColumn(name = "sticker_idx"),
-            inverseJoinColumns = @JoinColumn(name = "hashtag_idx")
+            joinColumns = @JoinColumn(name = "sticker_idx",
+                    referencedColumnName = "idx"),
+            inverseJoinColumns = @JoinColumn(name = "hashtag_idx",
+                    referencedColumnName = "idx")
     )
-    private List<Hashtag> hashtag;
+    private List<Hashtag> hashtag= new ArrayList<>();
 
     private String imgUrl;
     private LocalDateTime createdTime;

@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 public class Hashtag {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idx;
 
     @ManyToMany
@@ -27,8 +28,10 @@ public class Hashtag {
 
     @ManyToMany
     @JoinTable(name = "asset_has_hashtag",
-            joinColumns = @JoinColumn(name = "hashtag_idx"),
-            inverseJoinColumns = @JoinColumn(name = "asset_idx")
+            joinColumns = @JoinColumn(name = "hashtag_idx",
+                    referencedColumnName = "idx"),
+            inverseJoinColumns = @JoinColumn(name = "asset_idx",
+                    referencedColumnName = "idx")
     )
     private List<Asset> assets = new ArrayList<>();
 
