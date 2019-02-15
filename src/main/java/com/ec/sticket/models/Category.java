@@ -18,7 +18,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idx;
+    private Integer idx;
 
     @OneToMany(mappedBy = "category_idx")
     private List<Sticker> stickers = new ArrayList<>();

@@ -22,7 +22,7 @@ War파일을 packaging 후 배포하여도 에러가 나면서 정상적으로 �
 - `xxxApplication` class에 `SpringBootServletInitializer`를 상속시켜주었더니 해결
 
 ```java
-public class SticketApplication extends SpringBootServletInitializer {
+public class SticketApplication {
 //...
 }
 ```

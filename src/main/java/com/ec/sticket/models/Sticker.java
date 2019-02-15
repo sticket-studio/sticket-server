@@ -20,7 +20,7 @@ public class Sticker {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idx;
+    private Integer idx;
 
     @ManyToOne
     @JoinColumn(name = "author_idx")

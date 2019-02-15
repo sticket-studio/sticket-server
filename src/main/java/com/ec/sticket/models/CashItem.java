@@ -19,7 +19,7 @@ public class CashItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idx;
+    private Integer idx;
 
     @OneToMany(mappedBy = "cashItem")
     private List<UserCashPurchase> userCashPurchaseList = new ArrayList<>();

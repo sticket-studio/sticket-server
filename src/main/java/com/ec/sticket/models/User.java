@@ -22,7 +22,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idx;
+    private Integer idx;
 
     @OneToMany(mappedBy = "user")
     private List<UserCashPurchase> userCashPurchases= new ArrayList<>();

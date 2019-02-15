@@ -20,7 +20,7 @@ import java.util.List;
 public class Asset {
 
     @Id
-    private Long idx;
+    private Integer idx;
 
     @ManyToOne
     @JoinColumn(name = "author_idx")

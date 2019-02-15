@@ -18,7 +18,7 @@ public class Landmark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idx;
+    private Integer idx;
 
     @OneToMany(mappedBy = "landmark")
     private List<Asset> assets= new ArrayList<>();

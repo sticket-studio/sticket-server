@@ -19,7 +19,7 @@ public class Quest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idx;
+    private Integer idx;
 
     @OneToMany(mappedBy = "quest")
     private List<UserQuest> userQuests= new ArrayList<>();

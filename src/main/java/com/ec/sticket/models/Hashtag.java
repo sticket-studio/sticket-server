@@ -17,7 +17,7 @@ import java.util.List;
 public class Hashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idx;
+    private Integer idx;
 
     @ManyToMany
     @JoinTable(name = "sticker_hashtag",
