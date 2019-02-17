@@ -49,7 +49,7 @@ public class Sticker {
             inverseJoinColumns = @JoinColumn(name = "hashtag_idx",
                     referencedColumnName = "idx")
     )
-    private List<Hashtag> hashtag = new ArrayList<>();
+    private List<Hashtag> hashtags = new ArrayList<>();
 
     private String imgUrl;
     private LocalDateTime createdTime;

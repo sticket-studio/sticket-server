@@ -1,7 +1,6 @@
 package com.ec.sticket.models;
 
 import com.ec.sticket.models.mapping.UserAssetPurchase;
-import com.ec.sticket.models.mapping.UserStickerPurchase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,7 +52,7 @@ public class Asset {
             inverseJoinColumns = @JoinColumn(name = "hashtag_idx",
                     referencedColumnName = "idx")
     )
-    private List<Hashtag> hashtag = new ArrayList<>();
+    private List<Hashtag> hashtags = new ArrayList<>();
 
     private String imgUrl;
     private LocalDateTime createdTime;
