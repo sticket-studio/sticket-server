@@ -14,7 +14,7 @@
 
 ## 에러 해결 일지
 
-### 2019-02-10 배포 시 에러
+### 2019-02-10, 배포 시 에러
 
 War파일을 packaging 후 배포하여도 에러가 나면서 정상적으로 실행되지 않던 현상
 
@@ -34,3 +34,99 @@ public class SticketApplication extends SpringBootServletInitializer {
 //...
 }
 ```
+
+### 2019-02-19, JPA ID 설정 에러
+
+`user_sticker_purchase`, `user_asset_purchase`, `user_quest`와 같은 매핑테이블들은
+각각 다른 테이블들의 idx를 외래키로 참조하고, 그 두 개를 묶어 기본키로 사용한다.
+- (user_idx, sticker_idx)
+- (user_idx, asset_idx)
+- (user_idx, quest_idx)
+ 
+1. 여기서 문제는 JPA Entity에서는 @Id 값이 없으면 에러가 난다.
+```
+org.hibernate.AnnotationException: No identifier specified for entity: com.ec.sticket.models.mapping.UserAssetPurchase
+```
+
+```java
+public class UserAssetPurchase {
+
+    @ManyToOne
+    @JoinColumn(name = "user_idx")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "asset_idx")
+    private Asset asset;
+    //...
+}
+```
+
+2. 그래서 찾아보니 각 참조하는 키마다 `@Id`를 붙여줘야한다.
+```java
+public class UserAssetPurchase {
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "user_idx")
+    private User user;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "asset_idx")
+    private Asset asset;
+    //...
+}
+
+```
+
+하지만 이번엔 다음과 같이 매핑 에러가 난다.
+```
+org.hibernate.MappingException: Composite-id class must implement Serializable: com.ec.sticket.models.mapping.UserAssetPurchase
+```
+
+3. 더 찾아보니 이런 multi-pk의 경우엔 id를 묶어주는 class가 따로 있어야한다고 한다.
+    - implements Serializable를 해야한다.
+    - 필드로는 @Id를 붙여준 class들을 갖는다.
+        - 이렇게 해도 실제 DB엔 int값으로 외부키를 가지게 되니 안심하자.
+```java
+public class UserAssetPurchaseKey implements Serializable {
+    private User user;
+    private Asset asset;
+}
+```
+
+```java
+@IdClass(value= UserStickerPurchaseKey.class)
+public class UserAssetPurchase {
+
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "user_idx")
+    private User user;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "asset_idx")
+    private Asset asset;
+    //...
+}
+```
+
+4. 해결!
+
+### H2 console 접속
+
+1. 스프링 실행 후 브라우저 주소창에 다음 url 입력 
+[http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+
+2. 스프링 부트에서 기본설정된 h2 console 정보를 입력
+
+- Driver class: org.h2.Driver
+- JDBC URL: jdbc:h2:mem:testdb
+- User Name : sa
+- Password : 
+    - (패스워드 공백)
+
+3. 접속!

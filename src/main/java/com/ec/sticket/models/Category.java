@@ -20,10 +20,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idx;
 
-    @OneToMany(mappedBy = "category_idx")
+    @OneToMany(mappedBy = "category")
     private List<Sticker> stickers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "category_idx")
+    @OneToMany(mappedBy = "category")
     private List<Asset> assets = new ArrayList<>();
 
 
