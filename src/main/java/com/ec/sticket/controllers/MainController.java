@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainController {
 
     @GetMapping("/user")
-    private User getUser(){
+    public User getUser(){
         return new User();
     }
 
