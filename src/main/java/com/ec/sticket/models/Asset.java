@@ -26,10 +26,6 @@ public class Asset {
     private User author;
 
     @ManyToOne
-    @JoinColumn(name = "category_idx")
-    private Category category;
-
-    @ManyToOne
     @JoinColumn(name = "landmark_idx")
     private Landmark landmark;
 
@@ -46,13 +42,13 @@ public class Asset {
     private List<Sticker> stickers = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "asset_hashtag",
+    @JoinTable(name = "asset_theme",
             joinColumns = @JoinColumn(name = "asset_idx",
                     referencedColumnName = "idx"),
-            inverseJoinColumns = @JoinColumn(name = "hashtag_idx",
+            inverseJoinColumns = @JoinColumn(name = "theme_idx",
                     referencedColumnName = "idx")
     )
-    private List<Hashtag> hashtags = new ArrayList<>();
+    private List<Theme> themes = new ArrayList<>();
 
     private String imgUrl;
     private LocalDateTime createdTime;

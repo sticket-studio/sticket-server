@@ -1,9 +1,6 @@
 package com.ec.sticket.models;
 
-import com.ec.sticket.models.mapping.UserAssetPurchase;
-import com.ec.sticket.models.mapping.UserCashPurchase;
-import com.ec.sticket.models.mapping.UserQuest;
-import com.ec.sticket.models.mapping.UserStickerPurchase;
+import com.ec.sticket.models.mapping.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,10 +25,13 @@ public class User {
     private List<UserCashPurchase> userCashPurchases= new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    private List<UserAssetPurchase> userAssetPurchases= new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
     private List<UserStickerPurchase> userStickerPurchases= new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<UserAssetPurchase> userAssetPurchases= new ArrayList<>();
+    private List<UserMotionticonPurchase> userMotionticonPurchases= new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<UserQuest> quests= new ArrayList<>();

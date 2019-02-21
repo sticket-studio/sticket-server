@@ -1,13 +1,11 @@
 package com.ec.sticket.models;
 
-import com.ec.sticket.models.mapping.UserStickerPurchase;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,22 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Sticker {
-
+public class Theme {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idx;
 
-    @ManyToOne
-    @JoinColumn(name = "author_idx")
-    private User author;
-
-    @OneToMany(mappedBy = "sticker")
-    private List<UserStickerPurchase> userStickerPurchases = new ArrayList<>();
-
     @ManyToMany
-    @JoinTable(name = "sticker_asset",
-            joinColumns = @JoinColumn(name = "sticker_idx",
+    @JoinTable(name = "asset_theme",
+            joinColumns = @JoinColumn(name = "theme_idx",
                     referencedColumnName = "idx"),
             inverseJoinColumns = @JoinColumn(name = "asset_idx",
                     referencedColumnName = "idx")
@@ -40,17 +30,22 @@ public class Sticker {
 
     @ManyToMany
     @JoinTable(name = "sticker_theme",
-            joinColumns = @JoinColumn(name = "sticker_idx",
+            joinColumns = @JoinColumn(name = "theme_idx",
                     referencedColumnName = "idx"),
-            inverseJoinColumns = @JoinColumn(name = "theme_idx",
+            inverseJoinColumns = @JoinColumn(name = "sticker_idx",
                     referencedColumnName = "idx")
     )
-    private List<Theme> themes = new ArrayList<>();
+    private List<Sticker> stickers = new ArrayList<>();
 
-    private String imgUrl;
-    private LocalDateTime createdTime;
-    private int price;
-    private String description;
-    private int likeCnt;
-    private int purchaseCnt;
+    @ManyToMany
+    @JoinTable(name = "motionticon_theme",
+            joinColumns = @JoinColumn(name = "theme_idx",
+                    referencedColumnName = "idx"),
+            inverseJoinColumns = @JoinColumn(name = "motionticon_idx",
+                    referencedColumnName = "idx")
+    )
+    private List<Motionticon> motionticons = new ArrayList<>();
+
+    private String name;
+    private int cnt;
 }
