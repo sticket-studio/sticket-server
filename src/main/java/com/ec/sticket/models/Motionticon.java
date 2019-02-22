@@ -1,12 +1,21 @@
 package com.ec.sticket.models;
 
 import com.ec.sticket.models.mapping.UserMotionticonPurchase;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Motionticon {
     public enum Motion {
         MOTION_OPEN_MOUTH, MOTION_CLOSE_EYE
@@ -32,6 +41,7 @@ public class Motionticon {
     )
     private List<Sticker> stickers = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
     private Motion motion;
 
     @ManyToMany

@@ -2,7 +2,7 @@ package com.ec.sticket.models.mapping;
 
 import com.ec.sticket.models.Motionticon;
 import com.ec.sticket.models.User;
-import com.ec.sticket.models.mapping.compositekey.UserStickerPurchaseKey;
+import com.ec.sticket.models.mapping.compositekey.UserMotionticonPurchaseKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@IdClass(value= UserStickerPurchaseKey.class)
+@IdClass(value= UserMotionticonPurchaseKey.class)
 public class UserMotionticonPurchase {
 
     @Id
