@@ -48,6 +48,15 @@ public class User {
             /*, orphanRemoval = false*/ )
     private List<Asset> sellingAssets= new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_title",
+            joinColumns = @JoinColumn(name = "user_idx",
+                    referencedColumnName = "idx"),
+            inverseJoinColumns = @JoinColumn(name = "title_idx",
+                    referencedColumnName = "idx")
+    )
+    List<Title> titles = new ArrayList<>();
+
     private String id;
     private String pw;
     private String name;
@@ -55,4 +64,8 @@ public class User {
     private String snsType;
     private String token;
     private int stick;
+
+    private static enum Rating{
+        NORMAL, VIP, ADMINISTRATOR
+    }
 }
