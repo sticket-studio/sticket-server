@@ -1,6 +1,7 @@
 package com.ec.sticket.models;
 
 import com.ec.sticket.models.mapping.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,18 +23,23 @@ public class User {
     private Integer idx;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserCashPurchase> userCashPurchases= new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserAssetPurchase> userAssetPurchases= new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserStickerPurchase> userStickerPurchases= new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserMotionticonPurchase> userMotionticonPurchases= new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserQuest> quests= new ArrayList<>();
 
     @OneToMany(mappedBy = "author"
@@ -42,10 +48,12 @@ public class User {
             // 근데 사실 유저는 삭제되지 않을 예정.
             // 탈퇴했을 시엔 개인정보만 지우고, '탈퇴한유저'라는 값을 넣을 예정임
             /*, orphanRemoval = false*/ )
+    @JsonIgnore
     private List<Sticker> sellingStickers= new ArrayList<>();
 
     @OneToMany(mappedBy = "author"
             /*, orphanRemoval = false*/ )
+    @JsonIgnore
     private List<Asset> sellingAssets= new ArrayList<>();
 
     @ManyToMany
@@ -55,6 +63,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "title_idx",
                     referencedColumnName = "idx")
     )
+    @JsonIgnore
     List<Title> titles = new ArrayList<>();
 
     private String id;
@@ -64,8 +73,4 @@ public class User {
     private String snsType;
     private String token;
     private int stick;
-
-    private static enum Rating{
-        NORMAL, VIP, ADMINISTRATOR
-    }
 }
