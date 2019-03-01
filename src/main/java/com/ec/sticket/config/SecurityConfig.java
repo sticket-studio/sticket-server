@@ -29,8 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http
-                //HTTP Basic authentication
+        http    //HTTP Basic authentication
                 .httpBasic()
                 .and()
                 .authorizeRequests()
