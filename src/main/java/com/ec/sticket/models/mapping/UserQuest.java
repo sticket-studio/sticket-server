@@ -4,35 +4,37 @@ import com.ec.sticket.models.Quest;
 import com.ec.sticket.models.QuestStatus;
 import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.compositekey.UserQuestKey;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
 @IdClass(value= UserQuestKey.class)
 public class UserQuest {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "user_idx"
-            , referencedColumnName = "idx")
+    @JoinColumn(name = "user_id"
+            , referencedColumnName = "id")
     private User user;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "quest_idx"
-            , referencedColumnName = "idx")
+    @JoinColumn(name = "quest_id"
+            , referencedColumnName = "id")
     private Quest quest;
 
     @ManyToOne
-    @JoinColumn(name = "quest_status_idx"
-            , referencedColumnName = "idx")
+    @JoinColumn(name = "quest_status_id"
+            , referencedColumnName = "id")
     private QuestStatus questStatus;
+
+    public UserQuest(User user, Quest quest, QuestStatus questStatus) {
+        this.user = user;
+        this.quest = quest;
+        this.questStatus = questStatus;
+    }
 }

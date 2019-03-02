@@ -19,9 +19,9 @@ public class UserTest {
     public void getId(){
         Integer idValue = 4;
 
-        user.setIdx(idValue);
+        user.setId(idValue);
 
-        assertEquals(idValue,user.getIdx());
+        assertEquals(idValue,user.getId());
     }
 
     @After

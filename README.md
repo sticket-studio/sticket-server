@@ -38,10 +38,10 @@ public class SticketApplication extends SpringBootServletInitializer {
 ### 2019-02-19, JPA ID 설정 에러
 
 `user_sticker_purchase`, `user_asset_purchase`, `user_quest`와 같은 매핑테이블들은
-각각 다른 테이블들의 idx를 외래키로 참조하고, 그 두 개를 묶어 기본키로 사용한다.
-- (user_idx, sticker_idx)
-- (user_idx, asset_idx)
-- (user_idx, quest_idx)
+각각 다른 테이블들의 id를 외래키로 참조하고, 그 두 개를 묶어 기본키로 사용한다.
+- (user_id, sticker_id)
+- (user_id, asset_id)
+- (user_id, quest_id)
  
 1. 여기서 문제는 JPA Entity에서는 @Id 값이 없으면 에러가 난다.
 ```
@@ -52,11 +52,11 @@ org.hibernate.AnnotationException: No identifier specified for entity: com.ec.st
 public class UserAssetPurchase {
 
     @ManyToOne
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "asset_idx")
+    @JoinColumn(name = "asset_id")
     private Asset asset;
     //...
 }
@@ -68,12 +68,12 @@ public class UserAssetPurchase {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "asset_idx")
+    @JoinColumn(name = "asset_id")
     private Asset asset;
     //...
 }
@@ -103,12 +103,12 @@ public class UserAssetPurchase {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "asset_idx")
+    @JoinColumn(name = "asset_id")
     private Asset asset;
     //...
 }

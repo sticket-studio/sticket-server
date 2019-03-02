@@ -1,4 +1,4 @@
-package com.ec.sticket.controllers;
+package com.ec.sticket.controllers.common;
 
 import com.ec.sticket.models.User;
 import org.springframework.web.bind.annotation.PostMapping;

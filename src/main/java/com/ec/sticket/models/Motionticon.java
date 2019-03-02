@@ -1,10 +1,8 @@
 package com.ec.sticket.models;
 
 import com.ec.sticket.models.mapping.UserMotionticonPurchase;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,9 +11,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
 public class Motionticon {
     public enum Motion {
         MOTION_OPEN_MOUTH, MOTION_CLOSE_EYE
@@ -23,10 +19,10 @@ public class Motionticon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idx;
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "author_idx")
+    @JoinColumn(name = "author_id")
     private User author;
 
     @OneToMany(mappedBy = "motionticon")
@@ -34,10 +30,10 @@ public class Motionticon {
 
     @ManyToMany
     @JoinTable(name = "motionticon_sticker",
-            joinColumns = @JoinColumn(name = "motionticon_idx",
-                    referencedColumnName = "idx"),
-            inverseJoinColumns = @JoinColumn(name = "sticker_idx",
-                    referencedColumnName = "idx")
+            joinColumns = @JoinColumn(name = "motionticon_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "sticker_id",
+                    referencedColumnName = "id")
     )
     private List<Sticker> stickers = new ArrayList<>();
 
@@ -46,10 +42,10 @@ public class Motionticon {
 
     @ManyToMany
     @JoinTable(name = "motionticon_theme",
-            joinColumns = @JoinColumn(name = "motionticon_idx",
-                    referencedColumnName = "idx"),
-            inverseJoinColumns = @JoinColumn(name = "theme_idx",
-                    referencedColumnName = "idx")
+            joinColumns = @JoinColumn(name = "motionticon_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "theme_id",
+                    referencedColumnName = "id")
     )
     private List<Theme> themes = new ArrayList<>();
 
@@ -59,4 +55,18 @@ public class Motionticon {
     private String description;
     private int likeCnt;
     private int purchaseCnt;
+
+    public Motionticon(User author, List<Sticker> stickers, Motion motion, List<Theme> themes, String imgUrl
+            , LocalDateTime createdTime, int price, String description, int likeCnt, int purchaseCnt) {
+        this.author = author;
+        this.stickers = stickers;
+        this.motion = motion;
+        this.themes = themes;
+        this.imgUrl = imgUrl;
+        this.createdTime = createdTime;
+        this.price = price;
+        this.description = description;
+        this.likeCnt = likeCnt;
+        this.purchaseCnt = purchaseCnt;
+    }
 }
