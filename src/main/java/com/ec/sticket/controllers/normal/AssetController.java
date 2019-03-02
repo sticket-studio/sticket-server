@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/normal/assets")
+@RequestMapping("/api/normal/asset")
 public class AssetController {
 
     private final AssetService assetService;
@@ -19,13 +19,33 @@ public class AssetController {
         this.assetService = assetService;
     }
 
-    @GetMapping("/{assetid}")
-    public Asset getAssetByid(@PathVariable("assetid") int assetid) {
-        return assetService.getAssetByid(assetid);
+    @GetMapping("/{assetId}")
+    public Asset getAssetById(@PathVariable("assetId") int assetid) {
+        return assetService.getAssetById(assetid);
     }
 
-    @GetMapping("buyer/{buyerid}")
-    public List<Asset> getAssetsByBuyerid(@PathVariable("buyerid") int buyerId) {
+    @GetMapping("author/{authorId}")
+    public List<Asset> getAssetsByAuthorId(@PathVariable("authorId") int authorId) {
+        return assetService.getAssetsByAuthorId(authorId);
+    }
+
+    @GetMapping("buyer/{buyerId}")
+    public List<Asset> getAssetsByBuyerId(@PathVariable("buyerId") int buyerId) {
         return assetService.getAssetsByBuyerId(buyerId);
+    }
+
+    @GetMapping("sticker/{stickerId}")
+    public List<Asset> getAssetsByStickerId(@PathVariable("stickerId") int stickerId) {
+        return assetService.getAssetsByStickerId(stickerId);
+    }
+
+    @GetMapping("landmark/{landmarkId}")
+    public List<Asset> getAssetsByLandmarkId(@PathVariable("landmarkId") int landmarkId) {
+        return assetService.getAssetsByLandmarkId(landmarkId);
+    }
+
+    @GetMapping("theme/{themeId}")
+    public List<Asset> getAssetsByThemeId(@PathVariable("themeId") int themeId) {
+        return assetService.getAssetsByThemeId(themeId);
     }
 }

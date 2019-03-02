@@ -19,7 +19,7 @@ public class UserTest {
     public void getId(){
         Integer idValue = 4;
 
-        user.setId(idValue);
+//        user.setId(idValue);
 
         assertEquals(idValue,user.getId());
     }
