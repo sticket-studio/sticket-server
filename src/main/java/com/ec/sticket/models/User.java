@@ -2,10 +2,8 @@ package com.ec.sticket.models;
 
 import com.ec.sticket.models.mapping.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,14 +11,12 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idx;
+    private Integer id;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -58,19 +54,28 @@ public class User {
 
     @ManyToMany
     @JoinTable(name = "user_title",
-            joinColumns = @JoinColumn(name = "user_idx",
-                    referencedColumnName = "idx"),
-            inverseJoinColumns = @JoinColumn(name = "title_idx",
-                    referencedColumnName = "idx")
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "title_id",
+                    referencedColumnName = "id")
     )
     @JsonIgnore
     List<Title> titles = new ArrayList<>();
 
-    private String id;
+//    private String id;
     private String pw;
     private String name;
     private String email;
     private String snsType;
     private String token;
     private int stick;
+
+    public User(String pw, String name, String email, String snsType, String token, int stick) {
+        this.pw = pw;
+        this.name = name;
+        this.email = email;
+        this.snsType = snsType;
+        this.token = token;
+        this.stick = stick;
+    }
 }

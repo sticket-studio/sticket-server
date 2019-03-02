@@ -10,16 +10,17 @@ import java.util.List;
 
 @Repository
 public interface AssetRepository extends JpaRepository<Asset, Integer> {
-    List<Asset> findAllByAuthorIdx(int authorIdx);
 
-    @Query("SELECT a FROM asset a INNER JOIN user_asset_purchase uap ON a.idx = uap.asset_idx WHERE uap.user_idx = :buyerIdx")
-    List<Asset> findAllByBuyerIdx(@Param("buyerIdx") int buyerIdx);
+    List<Asset> findAllByAuthorId(int authorId);
 
-    @Query("SELECT a FROM asset a INNER JOIN sticker_asset sa ON a.idx = sa.asset_idx WHERE sa.sticker_idx = :stickerIdx")
-    List<Asset> findAllByStickerIdx(@Param("stickerIdx") int stickerIdx);
+    @Query(value = "SELECT a FROM asset a INNER JOIN user_asset_purchase uap ON a.id = uap.asset_id WHERE uap.user_id = ?1")
+    List<Asset> getAllByBuyerId(@Param("buyerId") int buyerId);
 
-    List<Asset> findAllByLandmarkIdx(int LandmarkIdx);
+    @Query(value = "SELECT a FROM asset a INNER JOIN sticker_asset sa ON a.id = sa.asset_id WHERE sa.sticker_id = ?1")
+    List<Asset> getAllByStickerId(@Param("stickerId") int stickerId);
 
-    @Query("SELECT a FROM asset a INNER JOIN asset_theme at ON a.idx = at.asset_idx WHERE at.theme_idx = :themeIdx")
-    List<Asset> findAllByThemeIdx(@Param("themeIdx") int themeIdx);
+    List<Asset> findAllByLandmarkId(int LandmarkId);
+
+    @Query(value = "SELECT a FROM asset a INNER JOIN asset_theme at ON a.id = at.asset_id WHERE at.theme_id = ?1")
+    List<Asset> getAllByThemeId(@Param("themeId") int themeId);
 }

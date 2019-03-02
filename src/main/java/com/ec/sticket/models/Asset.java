@@ -1,10 +1,8 @@
 package com.ec.sticket.models;
 
 import com.ec.sticket.models.mapping.UserAssetPurchase;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,20 +11,19 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
 public class Asset {
 
     @Id
-    private Integer idx;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "author_idx")
+    @JoinColumn(name = "author_id")
     private User author;
 
     @ManyToOne
-    @JoinColumn(name = "landmark_idx")
+    @JoinColumn(name = "landmark_id")
     private Landmark landmark;
 
     @OneToMany(mappedBy = "asset")
@@ -34,19 +31,19 @@ public class Asset {
 
     @ManyToMany
     @JoinTable(name = "sticker_asset",
-            joinColumns = @JoinColumn(name = "asset_idx",
-                    referencedColumnName = "idx"),
-            inverseJoinColumns = @JoinColumn(name = "sticker_idx",
-                    referencedColumnName = "idx")
+            joinColumns = @JoinColumn(name = "asset_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "sticker_id",
+                    referencedColumnName = "id")
     )
     private List<Sticker> stickers = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "asset_theme",
-            joinColumns = @JoinColumn(name = "asset_idx",
-                    referencedColumnName = "idx"),
-            inverseJoinColumns = @JoinColumn(name = "theme_idx",
-                    referencedColumnName = "idx")
+            joinColumns = @JoinColumn(name = "asset_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "theme_id",
+                    referencedColumnName = "id")
     )
     private List<Theme> themes = new ArrayList<>();
 
@@ -56,4 +53,17 @@ public class Asset {
     private String description;
     private int likeCnt;
     private int purchaseCnt;
+
+    public Asset(User author, Landmark landmark, List<Theme> themes, String imgUrl, LocalDateTime createdTime
+            , int price, String description, int likeCnt, int purchaseCnt) {
+        this.author = author;
+        this.landmark = landmark;
+        this.themes = themes;
+        this.imgUrl = imgUrl;
+        this.createdTime = createdTime;
+        this.price = price;
+        this.description = description;
+        this.likeCnt = likeCnt;
+        this.purchaseCnt = purchaseCnt;
+    }
 }

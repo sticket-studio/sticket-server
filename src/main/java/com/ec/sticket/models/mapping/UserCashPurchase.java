@@ -1,34 +1,35 @@
 package com.ec.sticket.models.mapping;
 
-import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.CashItem;
 import com.ec.sticket.models.User;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
 public class UserCashPurchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idx;
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_idx")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "cash_idx")
+    @JoinColumn(name = "cash_id")
     private CashItem cashItem;
 
     private LocalDateTime purchaseTime;
+
+    public UserCashPurchase(User user, CashItem cashItem, LocalDateTime purchaseTime) {
+        this.user = user;
+        this.cashItem = cashItem;
+        this.purchaseTime = purchaseTime;
+    }
 }
