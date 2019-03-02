@@ -21,21 +21,21 @@ public class AssetService {
         assetRepository.save(asset);
     }
 
-    public Asset getAssetByid(int themeid) {
-        Optional<Asset> assetOptional = assetRepository.findById(themeid);
+    public Asset getAssetById(int assetId) {
+        Optional<Asset> assetOptional = assetRepository.findById(assetId);
         return assetOptional.orElseGet(Asset::new);
     }
 
-    public List<Asset> getAssetsByAuthorid(int authorId) {
+    public List<Asset> getAssetsByAuthorId(int authorId) {
         return assetRepository.findAllByAuthorId(authorId);
     }
 
     public List<Asset> getAssetsByBuyerId(int buyerId) {
-        return assetRepository.getAllByBuyerId(buyerId);
+        return assetRepository.findAllByBuyerId(buyerId);
     }
 
     public List<Asset> getAssetsByStickerId(int stickerId) {
-        return assetRepository.getAllByStickerId(stickerId);
+        return assetRepository.findAllByStickerId(stickerId);
     }
 
     public List<Asset> getAssetsByLandmarkId(int landmarkId) {
@@ -43,6 +43,6 @@ public class AssetService {
     }
 
     public List<Asset> getAssetsByThemeId(int themeId) {
-        return assetRepository.getAllByThemeId(themeId);
+        return assetRepository.findAllByThemeId(themeId);
     }
 }

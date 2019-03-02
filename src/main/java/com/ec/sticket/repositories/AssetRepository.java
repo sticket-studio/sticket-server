@@ -13,14 +13,14 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
 
     List<Asset> findAllByAuthorId(int authorId);
 
-    @Query(value = "SELECT a FROM asset a INNER JOIN user_asset_purchase uap ON a.id = uap.asset_id WHERE uap.user_id = ?1")
-    List<Asset> getAllByBuyerId(@Param("buyerId") int buyerId);
+    @Query(value = "SELECT a FROM Asset a INNER JOIN a.userAssetPurchases uap WHERE uap.user.id = :buyerId")
+    List<Asset> findAllByBuyerId(@Param("buyerId") int buyerId);
 
-    @Query(value = "SELECT a FROM asset a INNER JOIN sticker_asset sa ON a.id = sa.asset_id WHERE sa.sticker_id = ?1")
-    List<Asset> getAllByStickerId(@Param("stickerId") int stickerId);
+    @Query(value = "SELECT a FROM Asset a INNER JOIN a.stickers s WHERE s.id = :stickerId")
+    List<Asset> findAllByStickerId(@Param("stickerId") int stickerId);
 
     List<Asset> findAllByLandmarkId(int LandmarkId);
 
-    @Query(value = "SELECT a FROM asset a INNER JOIN asset_theme at ON a.id = at.asset_id WHERE at.theme_id = ?1")
-    List<Asset> getAllByThemeId(@Param("themeId") int themeId);
+    @Query(value = "SELECT a FROM Asset a INNER JOIN a.themes t WHERE t.id = :themeId")
+    List<Asset> findAllByThemeId(@Param("themeId") int themeId);
 }
