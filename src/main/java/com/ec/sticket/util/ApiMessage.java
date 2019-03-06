@@ -13,6 +13,18 @@ public class ApiMessage {
         this.message = status.getMessage();
     }
 
+    public static ApiMessage getSuccessMessage(){
+        return new ApiMessage(Status.SUCCESS);
+    }
+
+    public static ApiMessage getFailMessage(){
+        return new ApiMessage(Status.FAIL);
+    }
+
+    public static ApiMessage getUnauthorizationMessage(){
+        return new ApiMessage(Status.UNAUTHORIZATION);
+    }
+
     @Getter
     public enum Status{
         SUCCESS(200, "Success"), UNAUTHORIZATION(403, "You don't have authorization")
