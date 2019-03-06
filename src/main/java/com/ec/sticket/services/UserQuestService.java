@@ -1,7 +1,10 @@
 package com.ec.sticket.services;
 
+import com.ec.sticket.models.Quest;
+import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.UserQuest;
 import com.ec.sticket.repositories.UserQuestRepository;
+import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,5 +30,14 @@ public class UserQuestService {
 
     public List<UserQuest> findAllByQuestId(int questId) {
         return userQuestRepository.findAllByQuestId(questId);
+    }
+
+    public ApiMessage save(User user, Quest quest) {
+        if (user != null && quest != null) {
+            userQuestRepository.save(new UserQuest(user, quest));
+            return new ApiMessage(ApiMessage.Status.SUCCESS);
+        } else {
+            return new ApiMessage(ApiMessage.Status.FAIL);
+        }
     }
 }
