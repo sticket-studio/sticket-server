@@ -1,6 +1,6 @@
 package com.ec.sticket.models;
 
-import com.ec.sticket.models.mapping.UserCashPurchase;
+import com.ec.sticket.models.mapping.UserCashItemPurchase;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,13 +18,15 @@ public class CashItem {
     private Integer id;
 
     @OneToMany(mappedBy = "cashItem")
-    private List<UserCashPurchase> userCashPurchaseList = new ArrayList<>();
+    private List<UserCashItemPurchase> userCashItemPurchaseList = new ArrayList<>();
 
     private int stick;
     private int cash;
+    private String imgUrl;
 
-    public CashItem(int stick, int cash) {
+    public CashItem(int stick, int cash, String imgUrl) {
         this.stick = stick;
         this.cash = cash;
+        this.imgUrl = imgUrl;
     }
 }

@@ -36,5 +36,12 @@ public class UserQuest {
         this.user = user;
         this.quest = quest;
         this.questStatus = questStatus;
+
+        user.getUserQuests().add(this);
+        quest.getUserQuests().add(this);
+    }
+
+    public void setQuestStatus(QuestStatus questStatus) {
+        this.questStatus = questStatus;
     }
 }
