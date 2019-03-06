@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
-public class UserCashPurchase {
+public class UserCashItemPurchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +27,7 @@ public class UserCashPurchase {
 
     private LocalDateTime purchaseTime;
 
-    public UserCashPurchase(User user, CashItem cashItem, LocalDateTime purchaseTime) {
+    public UserCashItemPurchase(User user, CashItem cashItem, LocalDateTime purchaseTime) {
         this.user = user;
         this.cashItem = cashItem;
         this.purchaseTime = purchaseTime;

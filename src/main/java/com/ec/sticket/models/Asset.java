@@ -66,4 +66,7 @@ public class Asset {
         this.likeCnt = likeCnt;
         this.purchaseCnt = purchaseCnt;
     }
+
+
+
 }
