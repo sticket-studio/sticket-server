@@ -26,23 +26,23 @@ public class AssetService {
         return assetOptional.orElseGet(Asset::new);
     }
 
-    public List<Asset> getAssetsByAuthorId(int authorId) {
+    public List<Asset> findAssetsByAuthorId(int authorId) {
         return assetRepository.findAllByAuthorId(authorId);
     }
 
-    public List<Asset> getAssetsByBuyerId(int buyerId) {
+    public List<Asset> findAssetsByBuyerId(int buyerId) {
         return assetRepository.findAllByBuyerId(buyerId);
     }
 
-    public List<Asset> getAssetsByStickerId(int stickerId) {
+    public List<Asset> findAssetsByStickerId(int stickerId) {
         return assetRepository.findAllByStickerId(stickerId);
     }
 
-    public List<Asset> getAssetsByLandmarkId(int landmarkId) {
-        return assetRepository.findAllByLandmarkId(landmarkId);
+    public List<Asset> findAssetsByLandmark(Asset.Landmark landmark) {
+        return assetRepository.findAllByLandmark(landmark);
     }
 
-    public List<Asset> getAssetsByThemeId(int themeId) {
+    public List<Asset> findAssetsByThemeId(int themeId) {
         return assetRepository.findAllByThemeId(themeId);
     }
 }

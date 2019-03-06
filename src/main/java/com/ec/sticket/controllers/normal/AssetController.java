@@ -26,26 +26,26 @@ public class AssetController {
 
     @GetMapping("author/{authorId}")
     public List<Asset> getAssetsByAuthorId(@PathVariable("authorId") int authorId) {
-        return assetService.getAssetsByAuthorId(authorId);
+        return assetService.findAssetsByAuthorId(authorId);
     }
 
     @GetMapping("buyer/{buyerId}")
     public List<Asset> getAssetsByBuyerId(@PathVariable("buyerId") int buyerId) {
-        return assetService.getAssetsByBuyerId(buyerId);
+        return assetService.findAssetsByBuyerId(buyerId);
     }
 
     @GetMapping("sticker/{stickerId}")
     public List<Asset> getAssetsByStickerId(@PathVariable("stickerId") int stickerId) {
-        return assetService.getAssetsByStickerId(stickerId);
+        return assetService.findAssetsByStickerId(stickerId);
     }
 
-    @GetMapping("landmark/{landmarkId}")
-    public List<Asset> getAssetsByLandmarkId(@PathVariable("landmarkId") int landmarkId) {
-        return assetService.getAssetsByLandmarkId(landmarkId);
+    @GetMapping("landmark/{landmark}")
+    public List<Asset> getAssetsByLandmarkId(@PathVariable("landmark") Asset.Landmark landmark) {
+        return assetService.findAssetsByLandmark(landmark);
     }
 
     @GetMapping("theme/{themeId}")
     public List<Asset> getAssetsByThemeId(@PathVariable("themeId") int themeId) {
-        return assetService.getAssetsByThemeId(themeId);
+        return assetService.findAssetsByThemeId(themeId);
     }
 }

@@ -22,10 +22,6 @@ public class Asset {
     @JoinColumn(name = "author_id")
     private User author;
 
-    @ManyToOne
-    @JoinColumn(name = "landmark_id")
-    private Landmark landmark;
-
     @OneToMany(mappedBy = "asset")
     private List<UserAssetPurchase> userAssetPurchases = new ArrayList<>();
 
@@ -53,6 +49,8 @@ public class Asset {
     private String description;
     private int likeCnt;
     private int purchaseCnt;
+    @Enumerated(value = EnumType.STRING)
+    private Landmark landmark;
 
     public Asset(User author, Landmark landmark, List<Theme> themes, String imgUrl, LocalDateTime createdTime
             , int price, String description, int likeCnt, int purchaseCnt) {
@@ -67,6 +65,7 @@ public class Asset {
         this.purchaseCnt = purchaseCnt;
     }
 
-
-
+    public enum Landmark{
+        EYE_LEFT, EYE_RIGHT, NOSE, MOUTH_LEFT, MOUTH_RIGHT, MOUTH_BOTTOM, CHEEK_LEFT, CHEEK_RIGHT
+    }
 }
