@@ -67,20 +67,18 @@ public class User {
     @JsonIgnore
     List<Title> titles = new ArrayList<>();
 
-    private String id2;
+    private String email;
     private String pw;
     private String name;
-    private String email;
     private String snsType;
     private String token;
     private String imgUrl;
     private int stick;
 
-    public User(String id2, String pw, String name, String email, String snsType, String token, int stick) {
-        this.id2 = id2;
+    public User(String email, String pw, String name, String snsType, String token, int stick) {
+        this.email = email;
         this.pw = pw;
         this.name = name;
-        this.email = email;
         this.snsType = snsType;
         this.token = token;
         this.stick = stick;

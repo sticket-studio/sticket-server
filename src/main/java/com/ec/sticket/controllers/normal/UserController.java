@@ -1,7 +1,9 @@
 package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.models.CashItem;
+import com.ec.sticket.models.Quest;
 import com.ec.sticket.models.User;
+import com.ec.sticket.models.mapping.UserQuest;
 import com.ec.sticket.services.CashItemService;
 import com.ec.sticket.services.QuestService;
 import com.ec.sticket.services.UserService;
@@ -42,4 +44,20 @@ public class UserController {
     public List<CashItem> findAllCashItems() {
         return cashItemService.findAll();
     }
+
+    @GetMapping("/quest")
+    public List<Quest> findAllQuests() {
+        return questService.findAll();
+    }
+
+    @GetMapping("/quest/{questId}")
+    public Quest findQuest(@PathVariable("questId") int questId) {
+        return questService.findById(questId);
+    }
+
+    @GetMapping("/quest/user/{uestId}")
+    public List<UserQuest> findQuestByUserId(@PathVariable("uestId") int uestId) {
+        return userService.findUserById(uestId).getUserQuests();
+    }
+
 }
