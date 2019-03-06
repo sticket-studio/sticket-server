@@ -1,9 +1,9 @@
-package com.ec.sticket.services;
+package com.ec.sticket.services.mapping;
 
 import com.ec.sticket.models.Quest;
 import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.UserQuest;
-import com.ec.sticket.repositories.UserQuestRepository;
+import com.ec.sticket.repositories.mapping.UserQuestRepository;
 import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
 

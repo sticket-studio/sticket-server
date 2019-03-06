@@ -1,4 +1,4 @@
-package com.ec.sticket.repositories;
+package com.ec.sticket.repositories.mapping;
 
 import com.ec.sticket.models.mapping.UserQuest;
 import org.springframework.data.jpa.repository.JpaRepository;

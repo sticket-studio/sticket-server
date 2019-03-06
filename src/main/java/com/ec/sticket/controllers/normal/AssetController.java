@@ -24,27 +24,27 @@ public class AssetController {
         return assetService.getAssetById(assetid);
     }
 
-    @GetMapping("author/{authorId}")
+    @GetMapping("/author/{authorId}")
     public List<Asset> getAssetsByAuthorId(@PathVariable("authorId") int authorId) {
         return assetService.findAssetsByAuthorId(authorId);
     }
 
-    @GetMapping("buyer/{buyerId}")
+    @GetMapping("/buyer/{buyerId}")
     public List<Asset> getAssetsByBuyerId(@PathVariable("buyerId") int buyerId) {
         return assetService.findAssetsByBuyerId(buyerId);
     }
 
-    @GetMapping("sticker/{stickerId}")
+    @GetMapping("/sticker/{stickerId}")
     public List<Asset> getAssetsByStickerId(@PathVariable("stickerId") int stickerId) {
         return assetService.findAssetsByStickerId(stickerId);
     }
 
-    @GetMapping("landmark/{landmark}")
+    @GetMapping("/landmark/{landmark}")
     public List<Asset> getAssetsByLandmarkId(@PathVariable("landmark") Asset.Landmark landmark) {
         return assetService.findAssetsByLandmark(landmark);
     }
 
-    @GetMapping("theme/{themeId}")
+    @GetMapping("/theme/{themeId}")
     public List<Asset> getAssetsByThemeId(@PathVariable("themeId") int themeId) {
         return assetService.findAssetsByThemeId(themeId);
     }

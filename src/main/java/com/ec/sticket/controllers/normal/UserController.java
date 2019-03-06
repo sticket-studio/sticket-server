@@ -2,12 +2,14 @@ package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.models.CashItem;
 import com.ec.sticket.models.Quest;
+import com.ec.sticket.models.Theme;
 import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.UserQuest;
 import com.ec.sticket.services.CashItemService;
 import com.ec.sticket.services.QuestService;
-import com.ec.sticket.services.UserQuestService;
+import com.ec.sticket.services.ThemeService;
 import com.ec.sticket.services.UserService;
+import com.ec.sticket.services.mapping.UserQuestService;
 import com.ec.sticket.util.ApiMessage;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +22,14 @@ public class UserController {
     private final CashItemService cashItemService;
     private final QuestService questService;
     private final UserQuestService userQuestService;
+    private final ThemeService themeService;
 
-    public UserController(UserService userService, CashItemService cashItemService, QuestService questService, UserQuestService userQuestService) {
+    public UserController(UserService userService, CashItemService cashItemService, QuestService questService, UserQuestService userQuestService, ThemeService themeService) {
         this.userService = userService;
         this.cashItemService = cashItemService;
         this.questService = questService;
         this.userQuestService = userQuestService;
+        this.themeService = themeService;
     }
 
     @GetMapping("/{userId}")
@@ -71,5 +75,10 @@ public class UserController {
         Quest quest = questService.findById(questId);
 
         return userQuestService.save(user,quest);
+    }
+
+    @GetMapping("/theme")
+    public List<Theme> findAllThemes() {
+        return themeService.findAll();
     }
 }

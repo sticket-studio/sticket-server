@@ -24,27 +24,27 @@ public class StickerController {
         return stickerService.getStickerById(stickerId);
     }
 
-    @GetMapping("author/{authorId}")
+    @GetMapping("/author/{authorId}")
     public List<Sticker> getStickersByAuthorId(@PathVariable("authorId") int authorId) {
         return stickerService.getStickersByAuthorId(authorId);
     }
 
-    @GetMapping("buyer/{buyerId}")
+    @GetMapping("/buyer/{buyerId}")
     public List<Sticker> getStickersByBuyerId(@PathVariable("buyerId") int buyerId) {
         return stickerService.getStickersByBuyerId(buyerId);
     }
 
-    @GetMapping("asset/{assetId}")
+    @GetMapping("/asset/{assetId}")
     public List<Sticker> getStickersByAssetId(@PathVariable("assetId") int stickerId) {
         return stickerService.getStickersByAssetId(stickerId);
     }
 
-    @GetMapping("motionticon/{motionticonId}")
+    @GetMapping("/motionticon/{motionticonId}")
     public List<Sticker> getStickersByMotionticonId(@PathVariable("motionticonId") int motionticonId) {
         return stickerService.getStickersByMotionticonId(motionticonId);
     }
 
-    @GetMapping("theme/{themeId}")
+    @GetMapping("/theme/{themeId}")
     public List<Sticker> getStickersByThemeId(@PathVariable("themeId") int themeId) {
         return stickerService.getStickersByThemeId(themeId);
     }
