@@ -3,6 +3,7 @@ package com.ec.sticket.controllers.normal;
 import com.ec.sticket.models.CashItem;
 import com.ec.sticket.models.User;
 import com.ec.sticket.services.CashItemService;
+import com.ec.sticket.services.QuestService;
 import com.ec.sticket.services.UserService;
 import com.ec.sticket.util.ApiMessage;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,12 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final CashItemService cashItemService;
+    private final QuestService questService;
 
-    public UserController(UserService userService, CashItemService cashItemService) {
+    public UserController(UserService userService, CashItemService cashItemService, QuestService questService) {
         this.userService = userService;
         this.cashItemService = cashItemService;
+        this.questService = questService;
     }
 
     @GetMapping("/{userId}")
@@ -35,7 +38,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/cashitems")
+    @GetMapping("/cashitem")
     public List<CashItem> findAllCashItems() {
         return cashItemService.findAll();
     }
