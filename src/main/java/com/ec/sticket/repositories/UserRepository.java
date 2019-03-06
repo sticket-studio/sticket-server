@@ -12,8 +12,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findById(int userId);
 
-    User findByStickerId(int stickerId);
-
     @Query(value = "SELECT u FROM User u INNER JOIN u.sellingAssets a WHERE a.id = :assetId")
     List<User> findAllBySellingAssetId(@Param("assetId") int assetId);
 
@@ -32,6 +30,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u FROM User u INNER JOIN u.userMotionticonPurchases m WHERE m.id = :motionticonId")
     List<User> findAllByPurchasedMotionticonId(@Param("motionticonId") int motionticonId);
 
-    @Query(value = "SELECT u FROM User u INNER JOIN u.userCashPurchases c WHERE c.id = :cashItemId")
-    List<User> findAllByPurchasedCashItemId(@Param("motionticonId") int cashItemId);
+    @Query(value = "SELECT u FROM User u INNER JOIN u.userCashItemPurchases c WHERE c.id = :cashItemId")
+    List<User> findAllByPurchasedCashItemId(@Param("cashItemId") int cashItemId);
 }
