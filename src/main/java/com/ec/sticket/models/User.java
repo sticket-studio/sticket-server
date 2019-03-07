@@ -4,6 +4,7 @@ import com.ec.sticket.models.mapping.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Getter @Setter
 public class User {
 
     @Id
@@ -75,13 +76,14 @@ public class User {
     private String imgUrl;
     private int stick;
 
-    public User(String email, String pw, String name, String snsType, String token, int stick) {
+    public User(String email, String pw, String name, String snsType, String token, String imgUrl) {
         this.email = email;
         this.pw = pw;
         this.name = name;
         this.snsType = snsType;
         this.token = token;
-        this.stick = stick;
+        this.imgUrl = imgUrl;
+        this.stick = 0;
     }
 
     public void addSellingAsset(Asset asset) {
@@ -122,5 +124,12 @@ public class User {
         } else {
             sellingMotionticons.add(motionticon);
         }
+    }
+
+    public void update(User modified){
+        this.email = modified.getEmail();
+        this.pw = modified.getPw();
+        this.name = modified.getName();
+        this.imgUrl = modified.getImgUrl();
     }
 }

@@ -2,6 +2,7 @@ package com.ec.sticket.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Getter @Setter
 public class Theme {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,8 +46,8 @@ public class Theme {
     private String name;
     private int cnt;
 
-    public Theme(String name, int cnt) {
+    public Theme(String name) {
         this.name = name;
-        this.cnt = cnt;
+        this.cnt = 0;
     }
 }

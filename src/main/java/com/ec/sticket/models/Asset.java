@@ -3,6 +3,7 @@ package com.ec.sticket.models;
 import com.ec.sticket.models.mapping.UserAssetPurchase;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 public class Asset {
 
     @Id
@@ -43,6 +45,7 @@ public class Asset {
     )
     private List<Theme> themes = new ArrayList<>();
 
+    private String name;
     private String imgUrl;
     private LocalDateTime createdTime;
     private int price;
@@ -52,20 +55,30 @@ public class Asset {
     @Enumerated(value = EnumType.STRING)
     private Landmark landmark;
 
-    public Asset(User author, Landmark landmark, List<Theme> themes, String imgUrl, LocalDateTime createdTime
-            , int price, String description, int likeCnt, int purchaseCnt) {
+    public Asset(User author, Landmark landmark, List<Theme> themes, String name, String imgUrl, int price
+            , String description) {
         this.author = author;
         this.landmark = landmark;
         this.themes = themes;
+        this.name = name;
         this.imgUrl = imgUrl;
-        this.createdTime = createdTime;
+        this.createdTime = LocalDateTime.now();
         this.price = price;
         this.description = description;
-        this.likeCnt = likeCnt;
-        this.purchaseCnt = purchaseCnt;
+        this.likeCnt = 0;
+        this.purchaseCnt = 0;
     }
 
-    public enum Landmark{
+    public void setAuthor(User author) {
+        if (this.author == null) {
+            author.getSellingAssets().add(this);
+            this.author = author;
+        } else {
+            throw new RuntimeException("Cannot modify author");
+        }
+    }
+
+    public enum Landmark {
         EYE_LEFT, EYE_RIGHT, NOSE, MOUTH_LEFT, MOUTH_RIGHT, MOUTH_BOTTOM, CHEEK_LEFT, CHEEK_RIGHT
     }
 }

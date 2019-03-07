@@ -5,13 +5,14 @@ import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.compositekey.UserMotionticonPurchaseKey;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Getter @Setter
 @IdClass(value= UserMotionticonPurchaseKey.class)
 public class UserMotionticonPurchase {
 

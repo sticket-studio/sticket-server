@@ -2,10 +2,8 @@ package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.services.AssetService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ec.sticket.util.ApiMessage;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,9 +17,29 @@ public class AssetController {
         this.assetService = assetService;
     }
 
+    @GetMapping("")
+    public List<Asset> findAllAssets(){
+        return assetService.findAll();
+    }
+
     @GetMapping("/{assetId}")
-    public Asset getAssetById(@PathVariable("assetId") int assetid) {
-        return assetService.getAssetById(assetid);
+    public Asset findAssetById(@PathVariable("assetId") int assetId){
+        return assetService.findById(assetId);
+    }
+
+    @PostMapping("")
+    public ApiMessage saveAsset(@RequestBody Asset asset){
+        return assetService.save(asset);
+    }
+
+    @PutMapping("")
+    public ApiMessage updateAsset(@RequestBody Asset asset){
+        return assetService.update(asset);
+    }
+
+    @DeleteMapping("/{assetId}")
+    public ApiMessage deleteAsset(@PathVariable("assetId") int assetId){
+        return assetService.delete(assetId);
     }
 
     @GetMapping("/author/{authorId}")
@@ -45,7 +63,7 @@ public class AssetController {
     }
 
     @GetMapping("/theme/{themeId}")
-    public List<Asset> getAssetsByThemeId(@PathVariable("themeId") int themeId) {
+    public List<Asset> getAssetsByAssetId(@PathVariable("themeId") int themeId) {
         return assetService.findAssetsByThemeId(themeId);
     }
 }
