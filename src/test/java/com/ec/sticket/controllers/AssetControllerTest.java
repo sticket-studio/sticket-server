@@ -44,13 +44,12 @@ public class AssetControllerTest {
 //            log.info("user is null");
 //        }
 // 다음과 같이 given - when - verify 형식으로 짜자
-//        //given
-//        RecipeCommand command = new RecipeCommand();
-//        command.setId(1L);
-//
+        //given
+//        verify(assetController.findAllAssets().size());
+
 //        when(recipeService.findCommandById(anyLong())).thenReturn(command);
-//
-//        //when
+
+        //when
 //        mockMvc.perform(get("/recipe/1/image"))
 //                .andExpect(status().isOk())
 //                .andExpect(model().attributeExists("recipe"));

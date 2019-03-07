@@ -1,7 +1,9 @@
 package com.ec.sticket.services;
 
 import com.ec.sticket.models.Asset;
+import com.ec.sticket.models.User;
 import com.ec.sticket.repositories.AssetRepository;
+import com.ec.sticket.repositories.UserRepository;
 import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.util.Optional;
 @Service
 public class AssetService {
 
+    private final UserRepository userRepository;
     private final AssetRepository assetRepository;
 
-    public AssetService(AssetRepository assetRepository) {
+    public AssetService(UserRepository userRepository, AssetRepository assetRepository) {
+        this.userRepository = userRepository;
         this.assetRepository = assetRepository;
     }
 
@@ -26,9 +30,14 @@ public class AssetService {
         return asset.orElseGet(Asset::new);
     }
 
-    public ApiMessage save(Asset asset) {
-        if (asset != null && asset.getAuthor() != null) {
+    public ApiMessage save(int authorId, Asset asset) {
+        Optional<User> authorOptional = userRepository.findById(authorId);
+
+        if (asset != null && authorOptional.isPresent()) {
+            asset.setAuthor(authorOptional.get());
+
             assetRepository.save(asset);
+
             return ApiMessage.getSuccessMessage();
         } else {
             return ApiMessage.getFailMessage();
@@ -45,6 +54,7 @@ public class AssetService {
             asset.setImgUrl(modified.getImgUrl());
             asset.setThemes(modified.getThemes());
             asset.setPrice(modified.getPrice());
+            asset.setLandmark(modified.getLandmark());
 
             assetRepository.save(asset);
             return ApiMessage.getSuccessMessage();

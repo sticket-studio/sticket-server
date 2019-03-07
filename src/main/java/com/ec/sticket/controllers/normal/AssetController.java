@@ -27,9 +27,9 @@ public class AssetController {
         return assetService.findById(assetId);
     }
 
-    @PostMapping("")
-    public ApiMessage saveAsset(@RequestBody Asset asset){
-        return assetService.save(asset);
+    @PostMapping("/{authorId}")
+    public ApiMessage saveAsset(@PathVariable("authorId") int authorId, @RequestBody Asset asset){
+        return assetService.save(authorId, asset);
     }
 
     @PutMapping("")

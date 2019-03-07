@@ -3,10 +3,8 @@ package com.ec.sticket.controllers.normal;
 import com.ec.sticket.models.CashItem;
 import com.ec.sticket.services.CashItemService;
 import com.ec.sticket.services.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ec.sticket.util.ApiMessage;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,8 +29,18 @@ public class CashItemController {
         return cashItemService.findById(cashItemId);
     }
 
-//    @GetMapping("/{cashItemId}/user")
-//    public CashItem findAllPurchasedUsersById(@PathVariable("cashItemId") int cashItemId){
-//        return cashItemService.findById(cashItemId).getUserCashItemPurchaseList();
-//    }
+    @PostMapping("")
+    public ApiMessage saveCashItem(@RequestBody CashItem cashItem){
+        return cashItemService.save(cashItem);
+    }
+
+    @PutMapping("")
+    public ApiMessage updateCashItem(@RequestBody CashItem cashItem){
+        return cashItemService.update(cashItem);
+    }
+
+    @DeleteMapping("/{cashItemId}")
+    public ApiMessage deleteCashItem(@PathVariable("cashItemId") int cashItemId){
+        return cashItemService.delete(cashItemId);
+    }
 }

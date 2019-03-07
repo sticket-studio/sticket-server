@@ -59,7 +59,7 @@ public class Motionticon {
     private int purchaseCnt;
 
     public Motionticon(User author, List<Sticker> stickers, Motion motion, String name, List<Theme> themes, String imgUrl
-            , int price, String description, int likeCnt, int purchaseCnt) {
+            , int price, String description) {
         this.author = author;
         this.stickers = stickers;
         this.motion = motion;
@@ -69,8 +69,8 @@ public class Motionticon {
         this.createdTime = LocalDateTime.now();
         this.price = price;
         this.description = description;
-        this.likeCnt = likeCnt;
-        this.purchaseCnt = purchaseCnt;
+        this.likeCnt = 0;
+        this.purchaseCnt = 0;
     }
 
     public void setAuthor(User author) {

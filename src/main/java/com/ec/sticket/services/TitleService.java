@@ -30,8 +30,34 @@ public class TitleService {
         return titleRepository.findAll();
     }
 
-    public Title findById(int themeId) {
-        Optional<Title> titleOptional = titleRepository.findById(themeId);
+    public Title findById(int titleId) {
+        Optional<Title> titleOptional = titleRepository.findById(titleId);
         return titleOptional.orElseGet(Title::new);
+    }
+
+    public ApiMessage update(Title modified) {
+        Optional<Title> titleOptional = titleRepository.findById(modified.getId());
+
+        if (titleOptional.isPresent()) {
+            Title title = titleOptional.get();
+
+            title.setName(modified.getName());
+
+            titleRepository.save(title);
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage();
+        }
+    }
+    
+    public ApiMessage deleteById(int titleId){
+        Optional<Title> titleOptional = titleRepository.findById(titleId);
+
+        if (titleOptional.isPresent()) {
+            titleRepository.deleteById(titleId);
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage();
+        }
     }
 }

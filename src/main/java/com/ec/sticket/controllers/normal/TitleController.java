@@ -33,4 +33,14 @@ public class TitleController {
     public ApiMessage saveTitle(@RequestBody Title title){
         return titleService.save(title);
     }
+
+    @PutMapping("")
+    public ApiMessage updateTitle(@RequestBody Title title){
+        return titleService.update(title);
+    }
+
+    @DeleteMapping("/{titleId}")
+    public ApiMessage deleteTitle(@PathVariable("titleId")int titleId){
+        return titleService.deleteById(titleId);
+    }
 }

@@ -2,10 +2,8 @@ package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.models.Sticker;
 import com.ec.sticket.services.StickerService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ec.sticket.util.ApiMessage;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,9 +17,29 @@ public class StickerController {
         this.stickerService = stickerService;
     }
 
+    @GetMapping("")
+    public List<Sticker> findAllStickers(){
+        return stickerService.findAll();
+    }
+
     @GetMapping("/{stickerId}")
-    public Sticker getStickerById(@PathVariable("stickerId") int stickerId) {
-        return stickerService.getStickerById(stickerId);
+    public Sticker findStickerById(@PathVariable("stickerId") int stickerId){
+        return stickerService.findById(stickerId);
+    }
+
+    @PostMapping("{authorId}")
+    public ApiMessage saveSticker(@PathVariable("authorId") int authorId, @RequestBody Sticker sticker){
+        return stickerService.save(authorId, sticker);
+    }
+
+    @PutMapping("")
+    public ApiMessage updateSticker(@RequestBody Sticker sticker){
+        return stickerService.update(sticker);
+    }
+
+    @DeleteMapping("/{stickerId}")
+    public ApiMessage deleteSticker(@PathVariable("stickerId") int stickerId){
+        return stickerService.delete(stickerId);
     }
 
     @GetMapping("/author/{authorId}")
