@@ -6,6 +6,7 @@ import com.ec.sticket.repositories.AssetRepository;
 import com.ec.sticket.repositories.StickerRepository;
 import com.ec.sticket.repositories.UserRepository;
 import com.ec.sticket.util.ApiMessage;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,10 +58,21 @@ public class UserService {
         }
     }
 
+    // 완전 삭제가 아닌 데이터 수정
     public ApiMessage delete(int userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            userRepository.deleteById(userId);
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            user.setName("탈퇴한 유저");
+            user.setEmail(String.valueOf(user.getId()));
+            user.setPw(BCrypt.hashpw("0000","salt"));
+            // TODO: 이미지 파일도 삭제
+            user.setImgUrl(null);
+            user.setStick(0);
+            user.setToken(null);
+
+            userRepository.save(user);
             return ApiMessage.getSuccessMessage();
         } else {
             return ApiMessage.getFailMessage();

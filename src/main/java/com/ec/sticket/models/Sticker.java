@@ -2,7 +2,6 @@ package com.ec.sticket.models;
 
 import com.ec.sticket.models.mapping.UserStickerPurchase;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class Sticker {
 
     @Id
@@ -61,8 +60,14 @@ public class Sticker {
     private int likeCnt;
     private int purchaseCnt;
 
+    public Sticker() {
+        createdTime = LocalDateTime.now();
+        likeCnt = 0;
+        purchaseCnt = 0;
+    }
+
     public Sticker(User author, List<Asset> assets, List<Theme> themes, String name, String imgUrl, int price
-            , String description, int likeCnt, int purchaseCnt) {
+            , String description) {
         this.author = author;
         this.name = name;
         this.assets = assets;
@@ -71,8 +76,8 @@ public class Sticker {
         this.createdTime = LocalDateTime.now();
         this.price = price;
         this.description = description;
-        this.likeCnt = likeCnt;
-        this.purchaseCnt = purchaseCnt;
+        this.likeCnt = 0;
+        this.purchaseCnt = 0;
     }
 
     public void setAuthor(User author) {

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/quest")
+@RequestMapping("/api/normal/quest")
 public class QuestController {
 
     private final QuestService questService;
