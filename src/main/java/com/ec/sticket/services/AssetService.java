@@ -2,6 +2,7 @@ package com.ec.sticket.services;
 
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.repositories.AssetRepository;
+import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,14 +17,50 @@ public class AssetService {
         this.assetRepository = assetRepository;
     }
 
-    // Methods
-    public void addAsset(Asset asset) {
-        assetRepository.save(asset);
+    public List<Asset> findAll() {
+        return assetRepository.findAll();
     }
 
-    public Asset getAssetById(int assetId) {
-        Optional<Asset> assetOptional = assetRepository.findById(assetId);
-        return assetOptional.orElseGet(Asset::new);
+    public Asset findById(int assetId) {
+        Optional<Asset> asset = assetRepository.findById(assetId);
+        return asset.orElseGet(Asset::new);
+    }
+
+    public ApiMessage save(Asset asset) {
+        if (asset != null && asset.getAuthor() != null) {
+            assetRepository.save(asset);
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage();
+        }
+    }
+
+    public ApiMessage update(Asset modified) {
+        Optional<Asset> assetOptional = assetRepository.findById(modified.getId());
+        if (assetOptional.isPresent()) {
+            Asset asset = assetOptional.get();
+
+            asset.setName(modified.getName());
+            asset.setDescription(modified.getDescription());
+            asset.setImgUrl(modified.getImgUrl());
+            asset.setThemes(modified.getThemes());
+            asset.setPrice(modified.getPrice());
+
+            assetRepository.save(asset);
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage();
+        }
+    }
+
+    public ApiMessage delete(int assetId) {
+        Optional<Asset> asset = assetRepository.findById(assetId);
+        if (asset.isPresent()) {
+            assetRepository.deleteById(assetId);
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage();
+        }
     }
 
     public List<Asset> findAssetsByAuthorId(int authorId) {
@@ -42,7 +79,7 @@ public class AssetService {
         return assetRepository.findAllByLandmark(landmark);
     }
 
-    public List<Asset> findAssetsByThemeId(int themeId) {
-        return assetRepository.findAllByThemeId(themeId);
+    public List<Asset> findAssetsByThemeId(int assetId) {
+        return assetRepository.findAllByThemeId(assetId);
     }
 }

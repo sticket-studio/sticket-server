@@ -10,8 +10,6 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    User findById(int userId);
-
     @Query(value = "SELECT u FROM User u INNER JOIN u.sellingAssets a WHERE a.id = :assetId")
     List<User> findAllBySellingAssetId(@Param("assetId") int assetId);
 

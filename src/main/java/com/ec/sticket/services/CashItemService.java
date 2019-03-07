@@ -5,6 +5,7 @@ import com.ec.sticket.repositories.CashItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CashItemService {
@@ -16,5 +17,10 @@ public class CashItemService {
 
     public List<CashItem> findAll(){
         return cashItemRepository.findAll();
+    }
+
+    public CashItem findById(int cashItemId){
+        Optional<CashItem> cashItemOptional =cashItemRepository.findById(cashItemId);
+        return cashItemOptional.orElseGet(CashItem::new);
     }
 }

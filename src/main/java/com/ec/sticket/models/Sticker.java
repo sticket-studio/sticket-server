@@ -3,6 +3,7 @@ package com.ec.sticket.models;
 import com.ec.sticket.models.mapping.UserStickerPurchase;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Getter @Setter
 public class Sticker {
 
     @Id
@@ -52,6 +53,7 @@ public class Sticker {
     )
     private List<Theme> themes = new ArrayList<>();
 
+    private String name;
     private String imgUrl;
     private LocalDateTime createdTime;
     private int price;
@@ -59,17 +61,26 @@ public class Sticker {
     private int likeCnt;
     private int purchaseCnt;
 
-    public Sticker(User author, List<Asset> assets, List<Theme> themes, String imgUrl, LocalDateTime createdTime
-            , int price, String description, int likeCnt, int purchaseCnt) {
+    public Sticker(User author, List<Asset> assets, List<Theme> themes, String name, String imgUrl, int price
+            , String description, int likeCnt, int purchaseCnt) {
         this.author = author;
-        this.userStickerPurchases = userStickerPurchases;
+        this.name = name;
         this.assets = assets;
         this.themes = themes;
         this.imgUrl = imgUrl;
-        this.createdTime = createdTime;
+        this.createdTime = LocalDateTime.now();
         this.price = price;
         this.description = description;
         this.likeCnt = likeCnt;
         this.purchaseCnt = purchaseCnt;
+    }
+
+    public void setAuthor(User author) {
+        if (this.author == null) {
+            author.getSellingStickers().add(this);
+            this.author = author;
+        } else {
+            throw new RuntimeException("Cannot modify author");
+        }
     }
 }

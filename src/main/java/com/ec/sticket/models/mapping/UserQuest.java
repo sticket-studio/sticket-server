@@ -5,12 +5,13 @@ import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.compositekey.UserQuestKey;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Getter @Setter
 @IdClass(value = UserQuestKey.class)
 public class UserQuest {
 

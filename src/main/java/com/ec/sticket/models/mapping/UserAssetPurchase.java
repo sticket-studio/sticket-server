@@ -5,13 +5,14 @@ import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.compositekey.UserAssetPurchaseKey;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Getter @Setter
 @IdClass(value= UserAssetPurchaseKey.class)
 public class UserAssetPurchase {
 
@@ -29,10 +30,10 @@ public class UserAssetPurchase {
     private int price;
     private LocalDateTime purchaseTime;
 
-    public UserAssetPurchase(User user, Asset asset, int price, LocalDateTime purchaseTime) {
+    public UserAssetPurchase(User user, Asset asset, int price) {
         this.user = user;
         this.asset = asset;
         this.price = price;
-        this.purchaseTime = purchaseTime;
+        this.purchaseTime = LocalDateTime.now();
     }
 }

@@ -16,21 +16,45 @@ public class ThemeService {
         this.themeRepository = themeRepository;
     }
 
-    public ApiMessage save(Theme theme){
-        if(theme!=null && theme.getName()!=null) {
+    public List<Theme> findAll() {
+        return themeRepository.findAll();
+    }
+
+    public Theme findById(int themeId) {
+        Optional<Theme> theme = themeRepository.findById(themeId);
+        return theme.orElseGet(Theme::new);
+    }
+
+    public ApiMessage save(Theme theme) {
+        if (theme != null && theme.getName() != null) {
             themeRepository.save(theme);
             return ApiMessage.getSuccessMessage();
-        }else{
+        } else {
             return ApiMessage.getFailMessage();
         }
     }
 
-    public List<Theme> findAll(){
-        return themeRepository.findAll();
+    public ApiMessage update(Theme modified) {
+        Optional<Theme> themeOptional = themeRepository.findById(modified.getId());
+        if (themeOptional.isPresent()) {
+            Theme theme = themeOptional.get();
+
+            theme.setName(modified.getName());
+
+            themeRepository.save(theme);
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage();
+        }
     }
 
-    public Theme findThemeById(int themeId){
+    public ApiMessage delete(int themeId) {
         Optional<Theme> theme = themeRepository.findById(themeId);
-        return theme.orElseGet(Theme::new);
+        if (theme.isPresent()) {
+            themeRepository.deleteById(themeId);
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage();
+        }
     }
 }

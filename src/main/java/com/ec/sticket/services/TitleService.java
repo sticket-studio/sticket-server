@@ -2,6 +2,7 @@ package com.ec.sticket.services;
 
 import com.ec.sticket.models.Title;
 import com.ec.sticket.repositories.TitleRepository;
+import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,15 @@ public class TitleService {
 
     public TitleService(TitleRepository titleRepository) {
         this.titleRepository = titleRepository;
+    }
+
+    public ApiMessage save(Title title) {
+        if (title != null && title.getName() != null) {
+            titleRepository.save(title);
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage();
+        }
     }
 
     public List<Title> findAll() {
