@@ -17,10 +17,10 @@ public class SticketApplicationTests {
     private final StickerRepository stickerRepository;
 
     public SticketApplicationTests(UserRepository userRepository, AssetRepository assetRepository, StickerRepository stickerRepository) {
-        this.userRepository = userRepository;
-        this.assetRepository = assetRepository;
-        this.stickerRepository = stickerRepository;
-    }
+    this.userRepository = userRepository;
+    this.assetRepository = assetRepository;
+    this.stickerRepository = stickerRepository;
+}
 
     @Test
     public void contextLoads() {

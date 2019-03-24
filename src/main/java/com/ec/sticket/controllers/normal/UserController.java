@@ -2,6 +2,7 @@ package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Quest;
+import com.ec.sticket.models.Sticker;
 import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.UserQuest;
 import com.ec.sticket.services.CashItemService;
@@ -59,6 +60,11 @@ public class UserController {
     @PostMapping("/{userId}/asset")
     public ApiMessage addSellingAsset(@PathVariable("userId") int userId, @RequestBody Asset asset){
         return userService.addSellingAsset(userId,asset);
+    }
+
+    @PostMapping("/{userId}/sticker")
+    public ApiMessage addSellingSticker(@PathVariable("userId") int userId, @RequestBody Sticker sticker){
+        return userService.addSellingSticker(userId,sticker);
     }
 
     // 이건 나중에 userId 없애도 될 듯

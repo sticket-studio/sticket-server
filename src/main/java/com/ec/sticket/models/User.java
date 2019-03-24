@@ -72,10 +72,10 @@ public class User {
     private SnsType snsType;
 
     private String email;
-    private String pw;
+    @JsonIgnore
+    private String password;
     private String name;
     private LocalDateTime createdTime;
-    private String token;
     private String imgUrl;
     private int stick;
 
@@ -84,13 +84,13 @@ public class User {
         stick = 0;
     }
 
-    public User(SnsType snsType, String email, String pw, String name, String token, String imgUrl) {
+    public User(SnsType snsType, String email, String password, String name, String imgUrl) {
         this.snsType = snsType;
         this.email = email;
-        this.pw = pw;
+        this.password = password;
         this.name = name;
-        this.token = token;
         this.imgUrl = imgUrl;
+        this.createdTime = LocalDateTime.now();
         this.stick = 0;
     }
 
@@ -136,7 +136,7 @@ public class User {
 
     public void update(User modified) {
         this.email = modified.getEmail();
-        this.pw = modified.getPw();
+        this.password = modified.getPassword();
         this.name = modified.getName();
         this.imgUrl = modified.getImgUrl();
     }
