@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -62,12 +64,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors()
                 .and()
-                .csrf()
-                .disable()
-                .anonymous()
-                .disable()
-                .authorizeRequests()
-                .antMatchers("/api-docs/**").permitAll();
+                .csrf().ignoringAntMatchers("/h2-console/**")
+                .and()
+                .anonymous().disable()
+                .authorizeRequests().antMatchers("/h2-console/**").permitAll()
+                .anyRequest().authenticated()
+                .and().headers().frameOptions().sameOrigin();
     }
 
     @Bean
