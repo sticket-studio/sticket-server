@@ -1,5 +1,6 @@
 package com.ec.sticket.models;
 
+import com.ec.sticket.models.mapping.MotionticonSticker;
 import com.ec.sticket.models.mapping.UserMotionticonPurchase;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter @Setter
 public class Motionticon {
-    public enum Motion {
-        MOTION_OPEN_MOUTH, MOTION_CLOSE_EYE
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,14 +27,8 @@ public class Motionticon {
     @OneToMany(mappedBy = "motionticon")
     private List<UserMotionticonPurchase> userMotionticonPurchases = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "motionticon_sticker",
-            joinColumns = @JoinColumn(name = "motionticon_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "sticker_id",
-                    referencedColumnName = "id")
-    )
-    private List<Sticker> stickers = new ArrayList<>();
+    @OneToMany(mappedBy = "motionticon")
+    private List<MotionticonSticker> motionticonStickers = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Motion motion;
@@ -58,10 +50,10 @@ public class Motionticon {
     private int likeCnt;
     private int purchaseCnt;
 
-    public Motionticon(User author, List<Sticker> stickers, Motion motion, String name, List<Theme> themes, String imgUrl
+    public Motionticon(User author, List<MotionticonSticker> motionticonStickers, Motion motion, String name, List<Theme> themes, String imgUrl
             , int price, String description) {
         this.author = author;
-        this.stickers = stickers;
+        this.motionticonStickers = motionticonStickers;
         this.motion = motion;
         this.name = name;
         this.themes = themes;
@@ -80,5 +72,9 @@ public class Motionticon {
         } else {
             throw new RuntimeException("Cannot modify author");
         }
+    }
+
+    public enum Motion {
+        MOTION_OPEN_MOUTH, MOTION_CLOSE_EYE
     }
 }
