@@ -1,5 +1,7 @@
 package com.ec.sticket.models;
 
+import com.ec.sticket.models.mapping.MotionticonSticker;
+import com.ec.sticket.models.mapping.StickerAsset;
 import com.ec.sticket.models.mapping.UserStickerPurchase;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,23 +27,11 @@ public class Sticker {
     @OneToMany(mappedBy = "sticker")
     private List<UserStickerPurchase> userStickerPurchases = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "sticker_asset",
-            joinColumns = @JoinColumn(name = "sticker_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "asset_id",
-                    referencedColumnName = "id")
-    )
-    private List<Asset> assets = new ArrayList<>();
+    @OneToMany(mappedBy = "sticker")
+    private List<MotionticonSticker> motionticonStickers = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "motionticon_sticker",
-            joinColumns = @JoinColumn(name = "sticker_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "motionticon_id",
-                    referencedColumnName = "id")
-    )
-    private List<Asset> motionticons = new ArrayList<>();
+    @OneToMany(mappedBy = "sticker")
+    private List<StickerAsset> stickerAssets = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "sticker_theme",
@@ -66,11 +56,11 @@ public class Sticker {
         purchaseCnt = 0;
     }
 
-    public Sticker(User author, List<Asset> assets, List<Theme> themes, String name, String imgUrl, int price
+    public Sticker(User author, List<StickerAsset> stickerAssets, List<Theme> themes, String name, String imgUrl, int price
             , String description) {
         this.author = author;
         this.name = name;
-        this.assets = assets;
+        this.stickerAssets = stickerAssets;
         this.themes = themes;
         this.imgUrl = imgUrl;
         this.createdTime = LocalDateTime.now();
