@@ -1,5 +1,6 @@
 package com.ec.sticket.models;
 
+import com.ec.sticket.models.mapping.StickerAsset;
 import com.ec.sticket.models.mapping.UserAssetPurchase;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,14 +26,8 @@ public class Asset {
     @OneToMany(mappedBy = "asset")
     private List<UserAssetPurchase> userAssetPurchases = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "sticker_asset",
-            joinColumns = @JoinColumn(name = "asset_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "sticker_id",
-                    referencedColumnName = "id")
-    )
-    private List<Sticker> stickers = new ArrayList<>();
+    @OneToMany(mappedBy = "asset")
+    private List<StickerAsset> stickerAssets = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "asset_theme",
