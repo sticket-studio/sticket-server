@@ -25,11 +25,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         // Resource에 대한 인증 처리
-        http.
-                anonymous().disable()
+        http
+                .anonymous().disable()
                 .authorizeRequests()
-                .antMatchers("/api/normal/user/**").authenticated()
-                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+                .antMatchers("/api/normal/**").authenticated()
+                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
+                .and().headers().frameOptions().sameOrigin();
     }
 
 }
