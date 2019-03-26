@@ -130,3 +130,11 @@ public class UserAssetPurchase {
     - (패스워드 공백)
 
 3. 접속!
+
+### 2019.03.26, Spring Security 적용 이후 H2 Console 접속 안되던 현상.
+
+
+
+#### 참고 문헌
+
+- [Spring Security, H2 연동했을때 문제해결](https://www.slipp.net/questions/546)
