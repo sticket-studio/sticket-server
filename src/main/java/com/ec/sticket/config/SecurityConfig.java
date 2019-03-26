@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
-import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -61,15 +59,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Resource 이외의 것에 대한 인증 처리
-        http
-                .cors()
-                .and()
-                .csrf().ignoringAntMatchers("/h2-console/**")
+        http    .cors()
                 .and()
                 .anonymous().disable()
-                .authorizeRequests().antMatchers("/h2-console/**").permitAll()
-                .anyRequest().authenticated()
-                .and().headers().frameOptions().sameOrigin();
+                // for h2-database start
+                .headers().frameOptions().sameOrigin()
+                .and()
+                .csrf().disable()
+                .authorizeRequests().antMatchers("/h2-console/*").permitAll()
+                // for h2-database end
+                .anyRequest().authenticated();
     }
 
     @Bean
