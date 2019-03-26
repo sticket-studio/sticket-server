@@ -59,15 +59,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Resource 이외의 것에 대한 인증 처리
-        http
-                .cors()
+        http    .cors()
                 .and()
-                .csrf()
-                .disable()
-                .anonymous()
-                .disable()
-                .authorizeRequests()
-                .antMatchers("/api-docs/**").permitAll();
+                .anonymous().disable()
+                // for h2-database start
+                .headers().frameOptions().sameOrigin()
+                .and()
+                .csrf().disable()
+                .authorizeRequests().antMatchers("/h2-console/*").permitAll()
+                // for h2-database end
+                .anyRequest().authenticated();
     }
 
     @Bean
