@@ -138,3 +138,21 @@ public class UserAssetPurchase {
 #### 참고 문헌
 
 - [Spring Security, H2 연동했을때 문제해결](https://www.slipp.net/questions/546)
+
+### 2019.04.11, AWS RDS UTF-8 설정
+
+이거 때문에 몇 시간 삽질한거지....
+- `character-set-client-handshake` : 1
+- `character_set_client` : utf8
+- `character_set_connection` : utf8
+- `character_set_database` : utf8
+- `character_set_filesystem` : utf8
+- `character_set_results` : utf8
+- `character_set_server` : utf8
+- `skip-character-set-client-handshake` : 0
+- `collation_connection` : utf8_general_ci
+- `collation_server` : utf8_general_ci
+
+특히 이거 꼭 해줘야함;; 이거 안하면 위에서 설정해줘봤자 안 바뀜
+- `character-set-client-handshake` : 1
+- `skip-character-set-client-handshake` : 0
