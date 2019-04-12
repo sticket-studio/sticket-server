@@ -1,8 +1,16 @@
 package com.ec.sticket.controllers.normal;
 
-import org.springframework.stereotype.Controller;
+import com.ec.sticket.services.MotionticonService;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class MotionticionController {
+
+    private  final MotionticonService motionticonService;
+
+    public MotionticionController(MotionticonService motionticonService) {
+        this.motionticonService = motionticonService;
+    }
+
 
 }
