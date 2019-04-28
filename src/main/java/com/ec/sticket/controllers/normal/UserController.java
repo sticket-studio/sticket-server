@@ -11,12 +11,14 @@ import com.ec.sticket.services.TitleService;
 import com.ec.sticket.services.UserService;
 import com.ec.sticket.services.mapping.UserQuestService;
 import com.ec.sticket.util.ApiMessage;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/normal/user")
+@Api(value = "UserController", description = "유저 컨트롤러")
 public class UserController {
     private final UserService userService;
     private final CashItemService cashItemService;

@@ -2,7 +2,6 @@ package com.ec.sticket.models.mapping;
 
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Sticker;
-import com.ec.sticket.models.mapping.compositekey.MotionticonStickerKey;
 import com.ec.sticket.models.mapping.compositekey.StickerAssetKey;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +11,7 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @IdClass(value = StickerAssetKey.class)
 public class StickerAsset {
 

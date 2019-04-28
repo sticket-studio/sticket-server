@@ -7,6 +7,7 @@ import com.ec.sticket.repositories.UserRepository;
 import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,8 +74,12 @@ public class AssetService {
         }
     }
 
+    public List<Asset> findFreeAssets() {
+        return assetRepository.findAllByPriceBetween(0, 0);
+    }
+
     public List<Asset> findAssetsByAuthorId(int authorId) {
-        return assetRepository.findAllByAuthorId(authorId);
+        return assetRepository.findAllByAuthorId(authorId).orElseGet(ArrayList::new);
     }
 
     public List<Asset> findAssetsByBuyerId(int buyerId) {

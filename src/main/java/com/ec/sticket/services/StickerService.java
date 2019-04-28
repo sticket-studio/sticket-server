@@ -80,12 +80,12 @@ public class StickerService {
         return stickerRepository.findAllByBuyerId(buyerId);
     }
 
-    public List<Sticker> getStickersByAssetId(int stickerId) {
-        return stickerRepository.findAllByAssetId(stickerId);
+    public List<Sticker> getStickersByAssetId(int assetId) {
+        return stickerRepository.findAllByAssetId(assetId);
     }
 
-    public List<Sticker> getStickersByMotionticonId(int landmarkId) {
-        return stickerRepository.findAllByMotionticonId(landmarkId);
+    public List<Sticker> getStickersByMotionticonId(int motionticonId) {
+        return stickerRepository.findAllByMotionticonId(motionticonId);
     }
 
     public List<Sticker> getStickersByThemeId(int themeId) {
