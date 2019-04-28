@@ -2,6 +2,8 @@ package com.ec.sticket.models;
 
 import com.ec.sticket.models.mapping.StickerAsset;
 import com.ec.sticket.models.mapping.UserAssetPurchase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,10 +15,12 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ApiModel(description = "asset")
 public class Asset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "AssetGenerator")
+    @ApiModelProperty(notes = "Id for Asset")
     private Integer id;
 
     @ManyToOne
@@ -38,9 +42,11 @@ public class Asset {
     )
     private List<Theme> themes = new ArrayList<>();
 
+    @ApiModelProperty(notes = "name for Asset", example = "에셋이름!!")
     private String name;
     private String imgUrl;
     private LocalDateTime createdTime;
+    @ApiModelProperty(notes = "price for Asset", example = "30")
     private int price;
     private String description;
     private int likeCnt;

@@ -3,12 +3,14 @@ package com.ec.sticket.controllers.normal;
 import com.ec.sticket.models.Sticker;
 import com.ec.sticket.services.StickerService;
 import com.ec.sticket.util.ApiMessage;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/normal/sticker")
+@Api(value = "StickerController", description = "스티콘 컨트롤러")
 public class StickerController {
 
     private final StickerService stickerService;
