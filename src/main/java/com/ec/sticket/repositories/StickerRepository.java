@@ -16,8 +16,10 @@ public interface StickerRepository extends JpaRepository<Sticker, Integer> {
     @Query(value = "SELECT s FROM Sticker s INNER JOIN s.userStickerPurchases usp WHERE usp.user.id = :buyerId")
     List<Sticker> findAllByBuyerId(@Param("buyerId") int buyerId);
 
+
     @Query(value = "SELECT s FROM Sticker s INNER JOIN s.stickerAssets sa WHERE sa.asset.id = :assetId")
     List<Sticker> findAllByAssetId(@Param("assetId") int assetId);
+
 
     @Query(value = "SELECT s FROM Sticker s INNER JOIN s.motionticonStickers ms WHERE ms.motionticon.id = :motionticonId")
     List<Sticker> findAllByMotionticonId(@Param("motionticonId") int motionticonId);

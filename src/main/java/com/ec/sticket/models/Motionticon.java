@@ -1,6 +1,7 @@
 package com.ec.sticket.models;
 
 import com.ec.sticket.models.mapping.MotionticonSticker;
+import com.ec.sticket.models.mapping.StickerAsset;
 import com.ec.sticket.models.mapping.UserMotionticonPurchase;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,16 @@ public class Motionticon {
 
     @OneToMany(mappedBy = "motionticon")
     private List<MotionticonSticker> motionticonStickers = new ArrayList<>();
+
+    /*
+    @OneToMany(mappedBy = "motionticon")
+    private List<Sticker> stickers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "motionticon")
+    private List<StickerAsset> stickerAssets = new ArrayList<>();
+    */
+
+
 
     @Enumerated(EnumType.STRING)
     private Motion motion;

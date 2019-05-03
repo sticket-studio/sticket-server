@@ -80,9 +80,11 @@ public class StickerService {
         return stickerRepository.findAllByBuyerId(buyerId);
     }
 
+
     public List<Sticker> getStickersByAssetId(int stickerId) {
         return stickerRepository.findAllByAssetId(stickerId);
     }
+
 
     public List<Sticker> getStickersByMotionticonId(int landmarkId) {
         return stickerRepository.findAllByMotionticonId(landmarkId);
