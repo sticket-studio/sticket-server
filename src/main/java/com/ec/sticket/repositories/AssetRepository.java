@@ -19,8 +19,8 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
     @Query(value = "SELECT a FROM Asset a INNER JOIN a.userAssetPurchases uap WHERE uap.user.id = :buyerId")
     List<Asset> findAllByBuyerId(@Param("buyerId") int buyerId);
 
-    @Query(value = "SELECT a FROM Asset a INNER JOIN a.stickerAssets sa WHERE sa.sticker.id = :stickerId")
-    List<Asset> findAllByStickerId(@Param("stickerId") int stickerId);
+    @Query(value = "SELECT a FROM Asset a INNER JOIN a.sticonAssets sa WHERE sa.sticon.id = :sticonId")
+    List<Asset> findAllBySticonId(@Param("sticonId") int sticonId);
 
     List<Asset> findAllByLandmark(Asset.Landmark landmark);
 

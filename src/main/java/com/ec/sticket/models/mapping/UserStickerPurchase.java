@@ -1,8 +1,8 @@
 package com.ec.sticket.models.mapping;
 
-import com.ec.sticket.models.Sticker;
+import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.User;
-import com.ec.sticket.models.mapping.compositekey.UserStickerPurchaseKey;
+import com.ec.sticket.models.mapping.compositekey.UserSticonPurchaseKey;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter @Setter
-@IdClass(value= UserStickerPurchaseKey.class)
-public class UserStickerPurchase {
+@IdClass(value= UserSticonPurchaseKey.class)
+public class UserSticonPurchase {
 
     @Id
     @ManyToOne
@@ -24,16 +24,16 @@ public class UserStickerPurchase {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "sticker_id"
+    @JoinColumn(name = "sticon_id"
             , referencedColumnName = "id")
-    private Sticker sticker;
+    private Sticon sticon;
 
     private int price;
     private LocalDateTime purchaseTime;
 
-    public UserStickerPurchase(User user, Sticker sticker, int price, LocalDateTime purchaseTime) {
+    public UserSticonPurchase(User user, Sticon sticon, int price, LocalDateTime purchaseTime) {
         this.user = user;
-        this.sticker = sticker;
+        this.sticon = sticon;
         this.price = price;
         this.purchaseTime = purchaseTime;
     }

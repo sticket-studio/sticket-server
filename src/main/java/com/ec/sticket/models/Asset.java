@@ -1,6 +1,6 @@
 package com.ec.sticket.models;
 
-import com.ec.sticket.models.mapping.StickerAsset;
+import com.ec.sticket.models.mapping.SticonAsset;
 import com.ec.sticket.models.mapping.UserAssetPurchase;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,7 +31,7 @@ public class Asset {
     private List<UserAssetPurchase> userAssetPurchases = new ArrayList<>();
 
     @OneToMany(mappedBy = "asset")
-    private List<StickerAsset> stickerAssets = new ArrayList<>();
+    private List<SticonAsset> sticonAssets = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "asset_theme",

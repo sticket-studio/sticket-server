@@ -26,13 +26,13 @@ public class Theme {
     private List<Asset> assets = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "sticker_theme",
+    @JoinTable(name = "sticon_theme",
             joinColumns = @JoinColumn(name = "theme_id",
                     referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "sticker_id",
+            inverseJoinColumns = @JoinColumn(name = "sticon_id",
                     referencedColumnName = "id")
     )
-    private List<Sticker> stickers = new ArrayList<>();
+    private List<Sticon> sticons = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "motionticon_theme",

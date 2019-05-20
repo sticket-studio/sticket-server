@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/normal/quest")
+@RequestMapping("/api/normal/quests")
 @Api(value = "QuestController", description = "퀘스트 컨트롤러")
 public class QuestController {
 

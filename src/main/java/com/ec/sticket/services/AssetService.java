@@ -86,8 +86,8 @@ public class AssetService {
         return assetRepository.findAllByBuyerId(buyerId);
     }
 
-    public List<Asset> findAssetsByStickerId(int stickerId) {
-        return assetRepository.findAllByStickerId(stickerId);
+    public List<Asset> findAssetsBySticonId(int sticonId) {
+        return assetRepository.findAllBySticonId(sticonId);
     }
 
     public List<Asset> findAssetsByLandmark(Asset.Landmark landmark) {

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/normal/theme")
+@RequestMapping("/api/normal/themes")
 @Api(value = "ThemeController", description = "테마 컨트롤러")
 public class ThemeController {
     private final UserService userService;
