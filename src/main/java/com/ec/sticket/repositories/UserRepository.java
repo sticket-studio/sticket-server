@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(String email);
 
     @Query(value = "SELECT u FROM User u INNER JOIN u.sellingAssets a WHERE a.id = :assetId")
-    List<User> findAllBySellingAssetId(@Param("assetId") int assetId);
+    List<User> findAllBySellingAssetId(@Param("sticonId") int assetId);
 
     @Query(value = "SELECT u FROM User u INNER JOIN u.sellingSticons s WHERE s.id = :sticonId")
     List<User> findAllBySellingSticonId(@Param("sticonId") int sticonId);
@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findAllBySellingMotionticonId(@Param("motionticonId") int motionticonId);
 
     @Query(value = "SELECT u FROM User u INNER JOIN u.userAssetPurchases a WHERE a.id = :assetId")
-    List<User> findAllByPurchasedAssetId(@Param("assetId") int assetId);
+    List<User> findAllByPurchasedAssetId(@Param("sticonId") int assetId);
 
     @Query(value = "SELECT u FROM User u INNER JOIN u.userSticonPurchases s WHERE s.id = :sticonId")
     List<User> findAllByPurchasedSticonId(@Param("sticonId") int sticonId);
