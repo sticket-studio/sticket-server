@@ -37,9 +37,9 @@ public class SticketApplication extends SpringBootServletInitializer {
 
 ### 2019-02-19, JPA ID 설정 에러
 
-`user_sticker_purchase`, `user_asset_purchase`, `user_quest`와 같은 매핑테이블들은
+`user_sticon_purchase`, `user_asset_purchase`, `user_quest`와 같은 매핑테이블들은
 각각 다른 테이블들의 id를 외래키로 참조하고, 그 두 개를 묶어 기본키로 사용한다.
-- (user_id, sticker_id)
+- (user_id, sticon_id)
 - (user_id, asset_id)
 - (user_id, quest_id)
  
@@ -97,7 +97,7 @@ public class UserAssetPurchaseKey implements Serializable {
 ```
 
 ```java
-@IdClass(value= UserStickerPurchaseKey.class)
+@IdClass(value= UserSticonPurchaseKey.class)
 public class UserAssetPurchase {
 
 

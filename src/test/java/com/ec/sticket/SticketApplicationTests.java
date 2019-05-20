@@ -1,7 +1,7 @@
 package com.ec.sticket;
 
 import com.ec.sticket.models.*;
-import com.ec.sticket.models.mapping.StickerAsset;
+import com.ec.sticket.models.mapping.SticonAsset;
 import com.ec.sticket.repositories.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,7 @@ public class SticketApplicationTests {
     @Autowired
     private AssetRepository assetRepository;
     @Autowired
-    private StickerRepository stickerRepository;
+    private SticonRepository sticonRepository;
     @Autowired
     private ThemeRepository themeRepository;
 
@@ -139,35 +139,35 @@ public class SticketApplicationTests {
         assetRepository.save(asset3);
         assetRepository.save(asset4);
 
-        // Sticker - 스티커
+        // Sticon - 스티커
 
-        StickerAsset stickerAsset1 = new StickerAsset();
-        stickerAsset1.setAsset(asset1);
-        stickerAsset1.setOffsetX(-0.1f);
-        stickerAsset1.setOffsetY(0f);
-        stickerAsset1.setRotate(0);
-        stickerAsset1.setFlip(false);
-        StickerAsset stickerAsset2 = new StickerAsset();
-        stickerAsset2.setAsset(asset1);
-        stickerAsset2.setOffsetX(0.1f);
-        stickerAsset2.setOffsetY(0f);
-        stickerAsset2.setRotate(180);
-        stickerAsset2.setFlip(true);
-        StickerAsset stickerAsset3 = new StickerAsset();
-        stickerAsset3.setAsset(asset2);
-        stickerAsset3.setOffsetX(0f);
-        stickerAsset3.setOffsetY(0f);
-        stickerAsset3.setRotate(0);
-        stickerAsset3.setFlip(false);
+        SticonAsset sticonAsset1 = new SticonAsset();
+        sticonAsset1.setAsset(asset1);
+        sticonAsset1.setOffsetX(-0.1f);
+        sticonAsset1.setOffsetY(0f);
+        sticonAsset1.setRotate(0);
+        sticonAsset1.setFlip(false);
+        SticonAsset sticonAsset2 = new SticonAsset();
+        sticonAsset2.setAsset(asset1);
+        sticonAsset2.setOffsetX(0.1f);
+        sticonAsset2.setOffsetY(0f);
+        sticonAsset2.setRotate(180);
+        sticonAsset2.setFlip(true);
+        SticonAsset sticonAsset3 = new SticonAsset();
+        sticonAsset3.setAsset(asset2);
+        sticonAsset3.setOffsetX(0f);
+        sticonAsset3.setOffsetY(0f);
+        sticonAsset3.setRotate(0);
+        sticonAsset3.setFlip(false);
 
-        List<StickerAsset> stickerAssets1 = new ArrayList<>();
-        stickerAssets1.add(stickerAsset1);
-        stickerAssets1.add(stickerAsset2);
-        stickerAssets1.add(stickerAsset3);
+        List<SticonAsset> sticonAssets1 = new ArrayList<>();
+        sticonAssets1.add(sticonAsset1);
+        sticonAssets1.add(sticonAsset2);
+        sticonAssets1.add(sticonAsset3);
 
-        Sticker sticker1 = new Sticker(user1, stickerAssets1, themes1, "궁예","대표이미지 URL", 6, "안대 두개 한 궁예");
+        Sticon sticon1 = new Sticon(user1, sticonAssets1, themes1, "궁예","대표이미지 URL", 6, "안대 두개 한 궁예");
 
-        stickerRepository.save(sticker1);
+        sticonRepository.save(sticon1);
 
         // Motionticon - 모션티콘
 

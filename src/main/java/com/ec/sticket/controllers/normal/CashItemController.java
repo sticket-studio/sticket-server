@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/normal/cashitem")
+@RequestMapping("/api/normal/cashitems")
 @Api(value = "CashItemController", description = "캐시아이템 컨트롤러")
 public class CashItemController {
     private final UserService userService;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/normal/asset")
+@RequestMapping("/api/normal/assets")
 @Api(value = "AssetController", description = "에셋 컨트롤러")
 public class AssetController {
 
@@ -82,12 +82,12 @@ public class AssetController {
         return assetService.findAssetsByBuyerId(buyerId);
     }
 
-    @GetMapping("/sticker/{stickerId}")
-    @ApiOperation(value = "에셋 찾기 : stickerId", notes = "Sticker ID로 Asset 찾기")
-    public List<Asset> getAssetsByStickerId(
+    @GetMapping("/sticon/{sticonId}")
+    @ApiOperation(value = "에셋 찾기 : sticonId", notes = "Sticon ID로 Asset 찾기")
+    public List<Asset> getAssetsBySticonId(
             @ApiParam(value = "찾을 에셋의 스티커 ID", defaultValue = "1", required = true)
-            @PathVariable("stickerId") int stickerId) {
-        return assetService.findAssetsByStickerId(stickerId);
+            @PathVariable("sticonId") int sticonId) {
+        return assetService.findAssetsBySticonId(sticonId);
     }
 
     @GetMapping("/landmark/{landmark}")

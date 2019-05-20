@@ -29,7 +29,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<UserStickerPurchase> userStickerPurchases = new ArrayList<>();
+    private List<UserSticonPurchase> userSticonPurchases = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -46,7 +46,7 @@ public class User {
             // 탈퇴했을 시엔 개인정보만 지우고, '탈퇴한유저'라는 값을 넣을 예정임
             /*, orphanRemoval = false*/)
     @JsonIgnore
-    private List<Sticker> sellingStickers = new ArrayList<>();
+    private List<Sticon> sellingSticons = new ArrayList<>();
 
     @OneToMany(mappedBy = "author"
             /*, orphanRemoval = false*/)
@@ -102,22 +102,22 @@ public class User {
         if (asset.getAuthor() == null) {
 //            throw new RuntimeException("Need to set author. Use AllArgsConstructor.");
         } else if (asset.getAuthor() != this) {
-//            throw new RuntimeException("The sticker isn't this user's own.");
+//            throw new RuntimeException("The sticon isn't this user's own.");
         } else {
             sellingAssets.add(asset);
         }
     }
 
-    public void addSellingSticker(Sticker sticker) {
+    public void addSellingSticon(Sticon sticon) {
 
-        // sticker.setAuthor(this);
+        // sticon.setAuthor(this);
 
-        if (sticker.getAuthor() == null) {
+        if (sticon.getAuthor() == null) {
 //            throw new RuntimeException("Need to set author. Use AllArgsConstructor.");
-        } else if (sticker.getAuthor() != this) {
-//            throw new RuntimeException("The sticker isn't this user's own.");
+        } else if (sticon.getAuthor() != this) {
+//            throw new RuntimeException("The sticon isn't this user's own.");
         } else {
-            sellingStickers.add(sticker);
+            sellingSticons.add(sticon);
         }
     }
 
@@ -128,7 +128,7 @@ public class User {
         if (motionticon.getAuthor() == null) {
 //            throw new RuntimeException("Need to set author. Use AllArgsConstructor.");
         } else if (motionticon.getAuthor() != this) {
-//            throw new RuntimeException("The sticker isn't this user's own.");
+//            throw new RuntimeException("The sticon isn't this user's own.");
         } else {
             sellingMotionticons.add(motionticon);
         }

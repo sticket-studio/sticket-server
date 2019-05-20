@@ -1,10 +1,10 @@
 package com.ec.sticket.services;
 
 import com.ec.sticket.models.Asset;
-import com.ec.sticket.models.Sticker;
+import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.User;
 import com.ec.sticket.repositories.AssetRepository;
-import com.ec.sticket.repositories.StickerRepository;
+import com.ec.sticket.repositories.SticonRepository;
 import com.ec.sticket.repositories.UserRepository;
 import com.ec.sticket.util.ApiMessage;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,16 +27,16 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final AssetRepository assetRepository;
-    private final StickerRepository stickerRepository;
+    private final SticonRepository sticonRepository;
 //    private final MotionticonRepository motionticonRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, AssetRepository assetRepository
-            , StickerRepository stickerRepository, PasswordEncoder passwordEncoder) {
+            , SticonRepository sticonRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.assetRepository = assetRepository;
-        this.stickerRepository = stickerRepository;
+        this.sticonRepository = sticonRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -119,14 +119,14 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public ApiMessage addSellingSticker(int userId, Sticker sticker) {
+    public ApiMessage addSellingSticon(int userId, Sticon sticon) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
-            sticker.setAuthor(user);
+            sticon.setAuthor(user);
 
-            stickerRepository.save(sticker);
+            sticonRepository.save(sticon);
 
             return ApiMessage.getSuccessMessage();
         } else {

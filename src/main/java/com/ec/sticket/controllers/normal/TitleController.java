@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/normal/title")
+@RequestMapping("/api/normal/titles")
 @Api(value = "TitleController", description = "칭호 컨트롤러")
 public class TitleController {
     private final UserService userService;
