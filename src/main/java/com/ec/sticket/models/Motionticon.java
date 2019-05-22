@@ -30,6 +30,16 @@ public class Motionticon {
     @OneToMany(mappedBy = "motionticon")
     private List<MotionticonSticon> motionticonSticons = new ArrayList<>();
 
+    /*
+    @OneToMany(mappedBy = "motionticon")
+    private List<Sticker> stickers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "motionticon")
+    private List<StickerAsset> stickerAssets = new ArrayList<>();
+    */
+
+
+
     @Enumerated(EnumType.STRING)
     private Motion motion;
 
