@@ -1,5 +1,6 @@
 package com.ec.sticket.controllers.normal;
 
+import com.ec.sticket.dto.request.asset.AssetLikeRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.services.AssetService;
 import com.ec.sticket.util.ApiMessage;
@@ -23,13 +24,27 @@ public class AssetController {
     }
 
     @GetMapping("")
-    @ApiOperation(value = "모든 에셋 가져오기", notes = "모든 Asset 리스트를 반환하는 API")
+    @ApiOperation(value = "모든 에셋 조회", notes = "모든 Asset 리스트를 반환")
     public List<Asset> findAllAssets() {
         return assetService.findAll();
     }
 
+    //TODO: 인기 에셋 조회 구현
+    @GetMapping("/today")
+    @ApiOperation(value = "오늘의 에셋 조회", notes = "오늘의 Asset 리스트를 반환(미구현)")
+    public List<Asset> findTodayAssets() {
+        return assetService.findAll();
+    }
+
+    //TODO: 인기 에셋 조회 구현
+    @GetMapping("/popular")
+    @ApiOperation(value = "인기 에셋 조회", notes = "인기 있는 Asset 리스트를 반환(미구현)")
+    public List<Asset> findPopularAssets() {
+        return assetService.findAll();
+    }
+
     @GetMapping("/{assetId}")
-    @ApiOperation(value = "ID를 통해 에셋 가져오기", notes = "Asset을 반환하는 API")
+    @ApiOperation(value = "ID를 통해 에셋 조회", notes = "Asset을 반환")
     public Asset findAssetById(
             @ApiParam(value = "에셋 ID", defaultValue = "1", required = true)
             @PathVariable("assetId") int assetId) {
@@ -58,6 +73,15 @@ public class AssetController {
             @ApiParam(value = "삭제할 에셋 ID", defaultValue = "1", required = true)
             @PathVariable("assetId") int assetId) {
         return assetService.delete(assetId);
+    }
+
+    //TODO: 미구현
+    @PostMapping("/like")
+    @ApiOperation(value = "에셋 좋아요", notes = "Asset 좋아요")
+    @ApiImplicitParam(name = "asset", value = "에셋 좋아요", required = true,  paramType= "body")
+    public ApiMessage deleteAsset(@RequestBody AssetLikeRequest request) {
+//        return assetService.like(request);
+        return null;
     }
 
     @GetMapping("/free")
@@ -99,7 +123,7 @@ public class AssetController {
     }
 
     @GetMapping("/theme/{themeId}")
-    @ApiOperation(value = "에셋 찾기 : assetId", notes = "Asset ID로 Asset 찾기")
+    @ApiOperation(value = "에셋 찾기 : sticonId", notes = "Asset ID로 Asset 찾기")
     public List<Asset> getAssetsByAssetId(
             @ApiParam(value = "찾을 에셋의 테마 ID", defaultValue = "1", required = true)
             @PathVariable("themeId") int themeId) {
