@@ -1,9 +1,8 @@
 package com.ec.sticket.models.mapping;
 
 import com.ec.sticket.models.Asset;
-import com.ec.sticket.models.Sticker;
-import com.ec.sticket.models.mapping.compositekey.MotionticonStickerKey;
-import com.ec.sticket.models.mapping.compositekey.StickerAssetKey;
+import com.ec.sticket.models.Sticon;
+import com.ec.sticket.models.mapping.compositekey.SticonAssetKey;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,15 +11,14 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
-@IdClass(value = StickerAssetKey.class)
-public class StickerAsset {
+@Getter @Setter
+@IdClass(value = SticonAssetKey.class)
+public class SticonAsset {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "sticker_id")
-    private Sticker sticker;
+    @JoinColumn(name = "sticon_id")
+    private Sticon sticon;
 
     @Id
     @ManyToOne
@@ -32,8 +30,8 @@ public class StickerAsset {
     private int rotate;
     private boolean flip;
 
-    public StickerAsset(Sticker sticker, Asset asset, double offsetX, double offsetY, int rotate, boolean flip) {
-        this.sticker = sticker;
+    public SticonAsset(Sticon sticon, Asset asset, double offsetX, double offsetY, int rotate, boolean flip) {
+        this.sticon = sticon;
         this.asset = asset;
         this.offsetX = offsetX;
         this.offsetY = offsetY;

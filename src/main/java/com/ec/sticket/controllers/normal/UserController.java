@@ -1,8 +1,11 @@
 package com.ec.sticket.controllers.normal;
 
+import com.ec.sticket.dto.request.user.SignupRequest;
+import com.ec.sticket.dto.request.user.UserLikeRequest;
+import com.ec.sticket.dto.request.user.UserUpdateRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Quest;
-import com.ec.sticket.models.Sticker;
+import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.UserQuest;
 import com.ec.sticket.services.CashItemService;
@@ -11,12 +14,16 @@ import com.ec.sticket.services.TitleService;
 import com.ec.sticket.services.UserService;
 import com.ec.sticket.services.mapping.UserQuestService;
 import com.ec.sticket.util.ApiMessage;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/normal/user")
+@RequestMapping("/api/normal/users")
+@Api(value = "UserController", description = "유저 컨트롤러")
 public class UserController {
     private final UserService userService;
     private final CashItemService cashItemService;
@@ -42,14 +49,18 @@ public class UserController {
         return userService.findById(userId);
     }
 
+    //TODO: 미구현
     @PostMapping("")
-    public ApiMessage saveUser(@RequestBody User user){
-        return userService.save(user);
+    public ApiMessage signup(@RequestBody SignupRequest request){
+//        return userService.save(request);
+        return null;
     }
 
+    //TODO: 미구현
     @PutMapping("")
-    public ApiMessage updateUser(@RequestBody User user){
-        return userService.update(user);
+    public ApiMessage updateUser(@RequestBody UserUpdateRequest user){
+        return null;
+//        return userService.update(user);
     }
 
     @DeleteMapping("/{userId}")
@@ -57,14 +68,23 @@ public class UserController {
         return userService.delete(userId);
     }
 
+    //TODO: 미구현
+    @PostMapping("/like")
+    @ApiOperation(value = "작가 좋아요", notes = "User 좋아요")
+    @ApiImplicitParam(name = "user", value = "작가 좋아요", required = true,  paramType= "body")
+    public ApiMessage deleteAsset(@RequestBody UserLikeRequest request) {
+//        return userService.like(request);
+        return null;
+    }
+
     @PostMapping("/{userId}/asset")
     public ApiMessage addSellingAsset(@PathVariable("userId") int userId, @RequestBody Asset asset){
         return userService.addSellingAsset(userId,asset);
     }
 
-    @PostMapping("/{userId}/sticker")
-    public ApiMessage addSellingSticker(@PathVariable("userId") int userId, @RequestBody Sticker sticker){
-        return userService.addSellingSticker(userId,sticker);
+    @PostMapping("/{userId}/sticon")
+    public ApiMessage addSellingSticon(@PathVariable("userId") int userId, @RequestBody Sticon sticon){
+        return userService.addSellingSticon(userId, sticon);
     }
 
     // 이건 나중에 userId 없애도 될 듯

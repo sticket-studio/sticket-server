@@ -1,8 +1,8 @@
 package com.ec.sticket.models;
 
-import com.ec.sticket.models.mapping.MotionticonSticker;
-import com.ec.sticket.models.mapping.StickerAsset;
-import com.ec.sticket.models.mapping.UserStickerPurchase;
+import com.ec.sticket.models.mapping.MotionticonSticon;
+import com.ec.sticket.models.mapping.SticonAsset;
+import com.ec.sticket.models.mapping.UserSticonPurchase;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Sticker {
+public class Sticon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,18 +24,18 @@ public class Sticker {
     @JoinColumn(name = "author_id")
     private User author;
 
-    @OneToMany(mappedBy = "sticker")
-    private List<UserStickerPurchase> userStickerPurchases = new ArrayList<>();
+    @OneToMany(mappedBy = "sticon")
+    private List<UserSticonPurchase> userSticonPurchases = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sticker")
-    private List<MotionticonSticker> motionticonStickers = new ArrayList<>();
+    @OneToMany(mappedBy = "sticon")
+    private List<MotionticonSticon> motionticonSticons = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sticker")
-    private List<StickerAsset> stickerAssets = new ArrayList<>();
+    @OneToMany(mappedBy = "sticon")
+    private List<SticonAsset> sticonAssets = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "sticker_theme",
-            joinColumns = @JoinColumn(name = "sticker_id",
+    @JoinTable(name = "sticon_theme",
+            joinColumns = @JoinColumn(name = "sticon_id",
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "theme_id",
                     referencedColumnName = "id")
@@ -50,17 +50,17 @@ public class Sticker {
     private int likeCnt;
     private int purchaseCnt;
 
-    public Sticker() {
+    public Sticon() {
         createdTime = LocalDateTime.now();
         likeCnt = 0;
         purchaseCnt = 0;
     }
 
-    public Sticker(User author, List<StickerAsset> stickerAssets, List<Theme> themes, String name, String imgUrl, int price
+    public Sticon(User author, List<SticonAsset> sticonAssets, List<Theme> themes, String name, String imgUrl, int price
             , String description) {
         this.author = author;
         this.name = name;
-        this.stickerAssets = stickerAssets;
+        this.sticonAssets = sticonAssets;
         this.themes = themes;
         this.imgUrl = imgUrl;
         this.createdTime = LocalDateTime.now();
@@ -72,7 +72,7 @@ public class Sticker {
 
     public void setAuthor(User author) {
         if (this.author == null) {
-            author.getSellingStickers().add(this);
+            author.getSellingSticons().add(this);
             this.author = author;
         } else {
             throw new RuntimeException("Cannot modify author");

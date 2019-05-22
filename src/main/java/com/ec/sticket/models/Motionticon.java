@@ -1,6 +1,6 @@
 package com.ec.sticket.models;
 
-import com.ec.sticket.models.mapping.MotionticonSticker;
+import com.ec.sticket.models.mapping.MotionticonSticon;
 import com.ec.sticket.models.mapping.UserMotionticonPurchase;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +28,17 @@ public class Motionticon {
     private List<UserMotionticonPurchase> userMotionticonPurchases = new ArrayList<>();
 
     @OneToMany(mappedBy = "motionticon")
-    private List<MotionticonSticker> motionticonStickers = new ArrayList<>();
+    private List<MotionticonSticon> motionticonSticons = new ArrayList<>();
+
+    /*
+    @OneToMany(mappedBy = "motionticon")
+    private List<Sticker> stickers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "motionticon")
+    private List<StickerAsset> stickerAssets = new ArrayList<>();
+    */
+
+
 
     @Enumerated(EnumType.STRING)
     private Motion motion;
@@ -50,10 +60,10 @@ public class Motionticon {
     private int likeCnt;
     private int purchaseCnt;
 
-    public Motionticon(User author, List<MotionticonSticker> motionticonStickers, Motion motion, String name, List<Theme> themes, String imgUrl
+    public Motionticon(User author, List<MotionticonSticon> motionticonSticons, Motion motion, String name, List<Theme> themes, String imgUrl
             , int price, String description) {
         this.author = author;
-        this.motionticonStickers = motionticonStickers;
+        this.motionticonSticons = motionticonSticons;
         this.motion = motion;
         this.name = name;
         this.themes = themes;

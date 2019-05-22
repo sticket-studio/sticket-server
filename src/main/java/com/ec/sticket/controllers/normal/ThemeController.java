@@ -4,12 +4,14 @@ import com.ec.sticket.models.Theme;
 import com.ec.sticket.services.ThemeService;
 import com.ec.sticket.services.UserService;
 import com.ec.sticket.util.ApiMessage;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/normal/theme")
+@RequestMapping("/api/normal/themes")
+@Api(value = "ThemeController", description = "테마 컨트롤러")
 public class ThemeController {
     private final UserService userService;
     private final ThemeService themeService;
