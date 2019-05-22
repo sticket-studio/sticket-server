@@ -13,19 +13,19 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(String email);
 
     @Query(value = "SELECT u FROM User u INNER JOIN u.sellingAssets a WHERE a.id = :assetId")
-    List<User> findAllBySellingAssetId(@Param("assetId") int assetId);
+    List<User> findAllBySellingAssetId(@Param("sticonId") int assetId);
 
-    @Query(value = "SELECT u FROM User u INNER JOIN u.sellingStickers s WHERE s.id = :stickerId")
-    List<User> findAllBySellingStickerId(@Param("stickerId") int stickerId);
+    @Query(value = "SELECT u FROM User u INNER JOIN u.sellingSticons s WHERE s.id = :sticonId")
+    List<User> findAllBySellingSticonId(@Param("sticonId") int sticonId);
 
     @Query(value = "SELECT u FROM User u INNER JOIN u.sellingMotionticons m WHERE m.id = :motionticonId")
     List<User> findAllBySellingMotionticonId(@Param("motionticonId") int motionticonId);
 
     @Query(value = "SELECT u FROM User u INNER JOIN u.userAssetPurchases a WHERE a.id = :assetId")
-    List<User> findAllByPurchasedAssetId(@Param("assetId") int assetId);
+    List<User> findAllByPurchasedAssetId(@Param("sticonId") int assetId);
 
-    @Query(value = "SELECT u FROM User u INNER JOIN u.userStickerPurchases s WHERE s.id = :stickerId")
-    List<User> findAllByPurchasedStickerId(@Param("stickerId") int stickerId);
+    @Query(value = "SELECT u FROM User u INNER JOIN u.userSticonPurchases s WHERE s.id = :sticonId")
+    List<User> findAllByPurchasedSticonId(@Param("sticonId") int sticonId);
 
     @Query(value = "SELECT u FROM User u INNER JOIN u.userMotionticonPurchases m WHERE m.id = :motionticonId")
     List<User> findAllByPurchasedMotionticonId(@Param("motionticonId") int motionticonId);
