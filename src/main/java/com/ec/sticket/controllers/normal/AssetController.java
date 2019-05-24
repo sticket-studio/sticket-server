@@ -3,7 +3,6 @@ package com.ec.sticket.controllers.normal;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.mapping.UserAssetPurchase;
 import com.ec.sticket.services.AssetService;
-import com.ec.sticket.services.UserService;
 import com.ec.sticket.util.ApiMessage;
 import com.ec.sticket.util.JwtParser;
 import io.swagger.annotations.Api;
@@ -24,12 +23,10 @@ import java.util.stream.Collectors;
 public class AssetController {
 
     private final AssetService assetService;
-    private final UserService userService;
     private final JwtParser jwtParser;
 
-    public AssetController(AssetService assetService, UserService userService, JwtParser jwtParser) {
+    public AssetController(AssetService assetService, JwtParser jwtParser) {
         this.assetService = assetService;
-        this.userService = userService;
         this.jwtParser = jwtParser;
     }
 

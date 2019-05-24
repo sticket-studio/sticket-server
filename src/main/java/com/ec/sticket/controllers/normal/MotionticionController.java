@@ -1,19 +1,26 @@
 package com.ec.sticket.controllers.normal;
+
 import com.ec.sticket.models.Motionticon;
+import com.ec.sticket.models.mapping.UserMotionticonPurchase;
 import com.ec.sticket.services.MotionticonService;
 import com.ec.sticket.util.ApiMessage;
+import com.ec.sticket.util.JwtParser;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/normal/motionticon")
 public class MotionticionController {
 
     private final MotionticonService motionticonService;
+    private final JwtParser jwtParser;
 
-    public MotionticionController(MotionticonService motionticonService) {
+    public MotionticionController(MotionticonService motionticonService, JwtParser jwtParser) {
         this.motionticonService = motionticonService;
+        this.jwtParser = jwtParser;
     }
 
     @GetMapping("")
@@ -46,9 +53,10 @@ public class MotionticionController {
         return motionticonService.getMotionticonByAuthorId(authorId);
     }
 
-    @GetMapping("/buyer/{buyerId}")
-    public List<Motionticon> getMotionticonsByBuyerId(@PathVariable("buyerId") int buyerId){
-        return motionticonService.getMotionticonByBuyerId(buyerId);
+    @GetMapping("/buyer")
+    public List<Motionticon> getMotionticonsByBuyerId(Authentication authentication){
+        return jwtParser.getUserFromJwt(authentication).getUserMotionticonPurchases()
+                .stream().map(UserMotionticonPurchase::getMotionticon).collect(Collectors.toList());
     }
 
     /*
