@@ -25,6 +25,7 @@ public class ApiMessage {
         return new ApiMessage(Status.UNAUTHORIZATION);
     }
 
+    // TODO: Status code와 Response message 분리
     @Getter
     public enum Status{
         SUCCESS(200, "Success"), UNAUTHORIZATION(403, "You don't have authorization")

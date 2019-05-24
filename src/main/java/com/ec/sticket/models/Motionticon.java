@@ -32,10 +32,10 @@ public class Motionticon {
 
     /*
     @OneToMany(mappedBy = "motionticon")
-    private List<Sticker> stickers = new ArrayList<>();
+    private List<Sticon> sticons = new ArrayList<>();
 
     @OneToMany(mappedBy = "motionticon")
-    private List<StickerAsset> stickerAssets = new ArrayList<>();
+    private List<SticonAsset> sticonAssets = new ArrayList<>();
     */
 
 

@@ -55,7 +55,7 @@ public class MotionticonService {
             motion.setThemes(modified.getThemes());
             motion.setPrice(modified.getPrice());
             motion.setMotion(modified.getMotion());
-            motion.setMotionticonStickers(modified.getMotionticonStickers());
+            motion.setMotionticonSticons(modified.getMotionticonSticons());
 
             motionticonRepository.save(motion);
             return ApiMessage.getSuccessMessage();
@@ -83,8 +83,8 @@ public class MotionticonService {
     }
 
     /*
-    public List<Motionticon> getMotionticonByStickerId(int stickerId){
-        return motionticonRepository.findAllByStickerId(stickerId);
+    public List<Motionticon> getMotionticonBySticonId(int sticonId){
+        return motionticonRepository.findAllBySticonId(sticonId);
     }
 
     public List<Motionticon> getMotionticonByAssetId(int assetId){

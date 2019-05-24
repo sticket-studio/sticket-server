@@ -97,6 +97,10 @@ local.properties
 # TeXlipse plugin
 .texlipse
 
+### Security
+*.jks
+*.cer
+*.yaml
 
 ### Java template
 *.class

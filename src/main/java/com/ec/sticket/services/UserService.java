@@ -1,5 +1,9 @@
 package com.ec.sticket.services;
 
+import com.ec.sticket.dto.request.user.AssetLikeRequest;
+import com.ec.sticket.dto.request.user.MotionticonLikeRequest;
+import com.ec.sticket.dto.request.user.SignupRequest;
+import com.ec.sticket.dto.request.user.SticonLikeRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.User;
@@ -45,8 +49,12 @@ public class UserService implements UserDetailsService {
         String newEmail = "yhc944@gmail.com";
         User yhc944 = userRepository.findByEmail(newEmail);
         if (yhc944 == null) {
-            User user = new User(User.SnsType.FACEBOOK, newEmail, "password", "양희찬", null);
-            ApiMessage apiMessage = this.save(user);
+            SignupRequest request = SignupRequest.builder()
+                    .email(newEmail)
+                    .name("양희찬")
+                    .password("password")
+                    .build();
+            ApiMessage apiMessage = this.save(request);
             System.out.println(apiMessage.getMessage());
         }
     }
@@ -60,9 +68,10 @@ public class UserService implements UserDetailsService {
         return user.orElseGet(User::new);
     }
 
-    public ApiMessage save(User user) {
-        if (user != null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public ApiMessage save(SignupRequest request) {
+        if (request != null) {
+            User user = new User(User.SnsType.NONE, request.getEmail(), passwordEncoder.encode(request.getPassword()),
+                    request.getName(), null);
             userRepository.save(user);
             return ApiMessage.getSuccessMessage();
         } else {
@@ -104,6 +113,24 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public ApiMessage likeAsset(AssetLikeRequest request){
+        userRepository.likeAsset(request.getAssetId(),request.getUserId());
+
+        return ApiMessage.getSuccessMessage();
+    }
+
+    public ApiMessage likeSticon(SticonLikeRequest request){
+        userRepository.likeSticon(request.getSticonId(), request.getUserId());
+
+        return ApiMessage.getSuccessMessage();
+    }
+
+    public ApiMessage likeMotionticon(MotionticonLikeRequest request){
+        userRepository.likeMotionticon(request.getMotionticonId(), request.getUserId());
+
+        return ApiMessage.getSuccessMessage();
+    }
+
     public ApiMessage addSellingAsset(int userId, Asset asset) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
@@ -137,7 +164,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(userId);
         if (user == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
+            throw new UsernameNotFoundException("Invalid name or password.");
         }
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthorities());
     }
