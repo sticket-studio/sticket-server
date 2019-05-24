@@ -1,4 +1,4 @@
-package com.ec.sticket.dto.request.sticon;
+package com.ec.sticket.dto.request.user;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class SticonLikeRequest {
     private int sticonId;
+    private int userId;
 }

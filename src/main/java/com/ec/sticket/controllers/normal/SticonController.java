@@ -1,12 +1,9 @@
 package com.ec.sticket.controllers.normal;
 
-import com.ec.sticket.dto.request.sticon.SticonLikeRequest;
 import com.ec.sticket.models.Sticon;
 import com.ec.sticket.services.SticonService;
 import com.ec.sticket.util.ApiMessage;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,15 +42,6 @@ public class SticonController {
     @DeleteMapping("/{sticonId}")
     public ApiMessage deleteSticon(@PathVariable("sticonId") int sticonId){
         return sticonService.delete(sticonId);
-    }
-
-    //TODO: 미구현
-    @PostMapping("/like")
-    @ApiOperation(value = "스티콘 좋아요", notes = "Sticon 좋아요")
-    @ApiImplicitParam(name = "sticon", value = "스티콘 좋아요", required = true,  paramType= "body")
-    public ApiMessage deleteAsset(@RequestBody SticonLikeRequest request) {
-//        return sticonService.like(request);
-        return null;
     }
 
     @GetMapping("/author/{authorId}")

@@ -5,6 +5,18 @@
 #spring.jpa.hibernate.ddl-auto = create-drop
 
 #spring.jpa.properties.hibernate.show_sql=true
+
+oauth:
+  client-id: sticket_id
+  client-secret: sticket_secret
+
+jwt:
+  jk-path: sticket_server.jks
+  jk-password: 1q2w3e4r!@#
+  key-alias: server_private
+  key-password: 1q2w3e4r!@#
+
+---
 spring:
   profiles:
 #    active: prod

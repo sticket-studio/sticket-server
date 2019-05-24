@@ -27,7 +27,7 @@ public class MotionticionController {
     }
 
     @PostMapping("/{authorId}")
-    public ApiMessage saveSticker(@PathVariable("authorId") int authorId, @RequestBody Motionticon motionticon){
+    public ApiMessage saveSticon(@PathVariable("authorId") int authorId, @RequestBody Motionticon motionticon){
         return motionticonService.save(authorId,motionticon);
     }
 
@@ -59,9 +59,9 @@ public class MotionticionController {
     }
 
 
-    @GetMapping("/sticker/{stickerId}")
-    public List<Motionticon> getMotionticonByStickerId(@PathVariable("stickerId") int stickerId){
-        return motionticonService.getMotionticonByStickerId(stickerId);
+    @GetMapping("/sticon/{sticonId}")
+    public List<Motionticon> getMotionticonBySticonId(@PathVariable("sticonId") int sticonId){
+        return motionticonService.getMotionticonBySticonId(sticonId);
     }
     */
 
