@@ -162,3 +162,8 @@ public class UserAssetPurchase {
 #### 참고 문헌
 
 - [Spring security JWT 연동](https://yookeun.github.io/java/2017/07/23/spring-jwt/)
+
+### 2019.05.24, Git 모든 History에서 특정 파일 삭제
+
+`git filter-branch -f --index-filter 'git rm --cached --ignore-unmatch *.cert' --prune-empty -- --all`
+`git push origin --force --all
