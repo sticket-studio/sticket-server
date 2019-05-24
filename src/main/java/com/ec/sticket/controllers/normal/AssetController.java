@@ -1,6 +1,5 @@
 package com.ec.sticket.controllers.normal;
 
-import com.ec.sticket.dto.request.asset.AssetLikeRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.services.AssetService;
 import com.ec.sticket.util.ApiMessage;
@@ -75,15 +74,6 @@ public class AssetController {
         return assetService.delete(assetId);
     }
 
-    //TODO: 미구현
-    @PostMapping("/like")
-    @ApiOperation(value = "에셋 좋아요", notes = "Asset 좋아요")
-    @ApiImplicitParam(name = "asset", value = "에셋 좋아요", required = true,  paramType= "body")
-    public ApiMessage deleteAsset(@RequestBody AssetLikeRequest request) {
-//        return assetService.like(request);
-        return null;
-    }
-
     @GetMapping("/free")
     @ApiOperation(value = "무료 에셋 찾기", notes = "무료 에셋 찾기")
     public List<Asset> getFreeAssets() {
@@ -117,7 +107,7 @@ public class AssetController {
     @GetMapping("/landmark/{landmark}")
     @ApiOperation(value = "에셋 찾기 : landmarkId", notes = "Landmark ID로 Asset 찾기")
     public List<Asset> getAssetsByLandmarkId(
-            @ApiParam(value = "찾을 에셋의 랜드마크 ID", defaultValue = "1", required = true)
+            @ApiParam(value = "찾을 에셋의 랜드마크 ID", defaultValue = "EYE_LEFT", required = true)
             @PathVariable("landmark") Asset.Landmark landmark) {
         return assetService.findAssetsByLandmark(landmark);
     }

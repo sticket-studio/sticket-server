@@ -16,14 +16,14 @@ public interface MotionticonRepository extends JpaRepository<Motionticon, Intege
     List<Motionticon> findAllByBuyerId(@Param("buyerId") int buyerId);
 
 
-    @Query(value = "SELECT m FROM Motionticon m INNER JOIN m.motionticonStickers ms WHERE ms.motionticon.id = :motionticonId")
+    @Query(value = "SELECT m FROM Motionticon m INNER JOIN m.motionticonSticons ms WHERE ms.motionticon.id = :motionticonId")
     List<Motionticon> findAllByMotionticonId(@Param("motionticonId") int motionticonId);
 
     /*
-    @Query(value ="SELECT m FROM Motionticon  m INNER JOIN m.stickers s WHERE s.sticker.id = :stickerId")
-    List<Motionticon> findAllByStickerId(@Param("stickerId") int stickerId);
+    @Query(value ="SELECT m FROM Motionticon  m INNER JOIN m.sticons s WHERE s.sticon.id = :sticonId")
+    List<Motionticon> findAllBySticonId(@Param("sticonId") int sticonId);
 
-    @Query(value = "SELECT m FROM Motionticon m INNER JOIN m.stickerAssets sa WHERE sa.asset.id = :assetId")
+    @Query(value = "SELECT m FROM Motionticon m INNER JOIN m.sticonAssets sa WHERE sa.asset.id = :assetId")
     List<Motionticon> findAllByAssetId(@Param("assetId") int assetId);
     */
 

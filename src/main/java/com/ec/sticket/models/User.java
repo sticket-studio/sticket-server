@@ -35,6 +35,36 @@ public class User {
     @JsonIgnore
     private List<UserMotionticonPurchase> userMotionticonPurchases = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_like_asset",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "asset_id",
+                    referencedColumnName = "id")
+    )
+    @JsonIgnore
+    private List<Asset> likeAssets = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_like_sticon",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "sticon_id",
+                    referencedColumnName = "id")
+    )
+    @JsonIgnore
+    private List<Sticon> likeSticons = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_like_montionticon",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "montionticon_id",
+                    referencedColumnName = "id")
+    )
+    @JsonIgnore
+    private List<Motionticon> likeMotionticons = new ArrayList<>();
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<UserQuest> userQuests = new ArrayList<>();
@@ -46,12 +76,12 @@ public class User {
             // 탈퇴했을 시엔 개인정보만 지우고, '탈퇴한유저'라는 값을 넣을 예정임
             /*, orphanRemoval = false*/)
     @JsonIgnore
-    private List<Sticon> sellingSticons = new ArrayList<>();
+    private List<Asset> sellingAssets = new ArrayList<>();
 
     @OneToMany(mappedBy = "author"
             /*, orphanRemoval = false*/)
     @JsonIgnore
-    private List<Asset> sellingAssets = new ArrayList<>();
+    private List<Sticon> sellingSticons = new ArrayList<>();
 
     @OneToMany(mappedBy = "author"
             /*, orphanRemoval = false*/)

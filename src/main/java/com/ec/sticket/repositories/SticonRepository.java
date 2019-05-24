@@ -17,7 +17,7 @@ public interface SticonRepository extends JpaRepository<Sticon, Integer> {
     List<Sticon> findAllByBuyerId(@Param("buyerId") int buyerId);
 
     @Query(value = "SELECT s FROM Sticon s INNER JOIN s.sticonAssets sa WHERE sa.asset.id = :assetId")
-    List<Sticon> findAllByAssetId(@Param("sticonId") int assetId);
+    List<Sticon> findAllByAssetId(@Param("assetId") int assetId);
 
     @Query(value = "SELECT s FROM Sticon s INNER JOIN s.motionticonSticons ms WHERE ms.motionticon.id = :motionticonId")
     List<Sticon> findAllByMotionticonId(@Param("motionticonId") int motionticonId);

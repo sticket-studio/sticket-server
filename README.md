@@ -156,3 +156,9 @@ public class UserAssetPurchase {
 특히 이거 꼭 해줘야함;; 이거 안하면 위에서 설정해줘봤자 안 바뀜
 - `character-set-client-handshake` : 1
 - `skip-character-set-client-handshake` : 0
+
+### 2019.05.24, Spring Security OAuth 2.0 + JWT
+
+#### 참고 문헌
+
+- [Spring security JWT 연동](https://yookeun.github.io/java/2017/07/23/spring-jwt/)
