@@ -1,25 +1,36 @@
 package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.models.Asset;
+import com.ec.sticket.models.mapping.UserAssetPurchase;
 import com.ec.sticket.services.AssetService;
+import com.ec.sticket.services.UserService;
 import com.ec.sticket.util.ApiMessage;
+import com.ec.sticket.util.JwtParser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/normal/assets")
 @Api(value = "AssetController", description = "에셋 컨트롤러")
 public class AssetController {
 
     private final AssetService assetService;
+    private final UserService userService;
+    private final JwtParser jwtParser;
 
-    public AssetController(AssetService assetService) {
+    public AssetController(AssetService assetService, UserService userService, JwtParser jwtParser) {
         this.assetService = assetService;
+        this.userService = userService;
+        this.jwtParser = jwtParser;
     }
 
     @GetMapping("")
@@ -88,12 +99,11 @@ public class AssetController {
         return assetService.findAssetsByAuthorId(authorId);
     }
 
-    @GetMapping("/buyer/{buyerId}")
+    @GetMapping("/buyer")
     @ApiOperation(value = "에셋 찾기 : buyerId", notes = "Buyer ID로 Asset 찾기")
-    public List<Asset> getAssetsByBuyerId(
-            @ApiParam(value = "찾을 에셋의 구매자 ID", defaultValue = "1", required = true)
-            @PathVariable("buyerId") int buyerId) {
-        return assetService.findAssetsByBuyerId(buyerId);
+    public List<Asset> getAssetsByBuyerId(Authentication authentication) {
+        return jwtParser.getUserFromJwt(authentication).getUserAssetPurchases()
+                .stream().map(UserAssetPurchase::getAsset).collect(Collectors.toList());
     }
 
     @GetMapping("/sticon/{sticonId}")

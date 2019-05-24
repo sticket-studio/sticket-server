@@ -68,6 +68,10 @@ public class UserService implements UserDetailsService {
         return user.orElseGet(User::new);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public ApiMessage save(SignupRequest request) {
         if (request != null) {
             User user = new User(User.SnsType.NONE, request.getEmail(), passwordEncoder.encode(request.getPassword()),
@@ -161,6 +165,8 @@ public class UserService implements UserDetailsService {
         }
     }
 
+
+    @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(userId);
         if (user == null) {

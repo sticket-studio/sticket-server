@@ -1,12 +1,16 @@
 package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.models.Sticon;
+import com.ec.sticket.models.mapping.UserSticonPurchase;
 import com.ec.sticket.services.SticonService;
 import com.ec.sticket.util.ApiMessage;
+import com.ec.sticket.util.JwtParser;
 import io.swagger.annotations.Api;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/normal/sticons")
@@ -14,9 +18,11 @@ import java.util.List;
 public class SticonController {
 
     private final SticonService sticonService;
+    private final JwtParser jwtParser;
 
-    public SticonController(SticonService sticonService) {
+    public SticonController(SticonService sticonService, JwtParser jwtParser) {
         this.sticonService = sticonService;
+        this.jwtParser = jwtParser;
     }
 
     @GetMapping("")
@@ -49,9 +55,10 @@ public class SticonController {
         return sticonService.getSticonsByAuthorId(authorId);
     }
 
-    @GetMapping("/buyer/{buyerId}")
-    public List<Sticon> getSticonsByBuyerId(@PathVariable("buyerId") int buyerId) {
-        return sticonService.getSticonsByBuyerId(buyerId);
+    @GetMapping("/buyer")
+    public List<Sticon> getSticonsByBuyerId(Authentication authentication) {
+        return jwtParser.getUserFromJwt(authentication).getUserSticonPurchases()
+                .stream().map(UserSticonPurchase::getSticon).collect(Collectors.toList());
     }
 
     @GetMapping("/asset/{assetId}")
