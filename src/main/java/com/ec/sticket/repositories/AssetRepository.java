@@ -2,6 +2,7 @@ package com.ec.sticket.repositories;
 
 import com.ec.sticket.models.Asset;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -26,4 +27,8 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
 
     @Query(value = "SELECT a FROM Asset a INNER JOIN a.themes t WHERE t.id = :themeId")
     List<Asset> findAllByThemeId(@Param("themeId") int themeId);
+
+    @Modifying
+    @Query(value = "INSERT INTO user_like_asset VALUES(:userId, :assetId)", nativeQuery = true)
+    void like(@Param("userId") int userId, @Param("assetId") int assetId);
 }

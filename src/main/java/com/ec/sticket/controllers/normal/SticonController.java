@@ -1,11 +1,14 @@
 package com.ec.sticket.controllers.normal;
 
+import com.ec.sticket.dto.request.user.SticonLikeRequest;
 import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.mapping.UserSticonPurchase;
 import com.ec.sticket.services.SticonService;
 import com.ec.sticket.util.ApiMessage;
 import com.ec.sticket.util.JwtParser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,5 +77,13 @@ public class SticonController {
     @GetMapping("/theme/{themeId}")
     public List<Sticon> getSticonsByThemeId(@PathVariable("themeId") int themeId) {
         return sticonService.getSticonsByThemeId(themeId);
+    }
+
+    @PostMapping("/like")
+    @ApiOperation(value = "스티콘 좋아요", notes = "Sticon 좋아요")
+    @ApiImplicitParam(name = "sticon", value = "스티콘 좋아요", required = true,  paramType= "body")
+    public ApiMessage likeSticon(@RequestBody SticonLikeRequest request, Authentication authentication) {
+        request.setUserId(jwtParser.getUserIdFromJwt(authentication));
+        return sticonService.like(request);
     }
 }

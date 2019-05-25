@@ -2,7 +2,6 @@ package com.ec.sticket.controllers;
 
 import com.ec.sticket.controllers.normal.AssetController;
 import com.ec.sticket.services.AssetService;
-import com.ec.sticket.services.UserService;
 import com.ec.sticket.util.JwtParser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
@@ -23,9 +22,6 @@ public class AssetControllerTest {
     private AssetService assetService;
 
     @Mock
-    private UserService userService;
-
-    @Mock
     JwtParser jwtParser;
 
     @Mock
@@ -37,7 +33,7 @@ public class AssetControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        assetController = new AssetController(assetService, userService, jwtParser);
+        assetController = new AssetController(assetService, jwtParser);
 
         mockMvc = MockMvcBuilders.standaloneSetup(assetController).build();
     }

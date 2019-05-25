@@ -29,7 +29,7 @@ public class ApiMessage {
     @Getter
     public enum Status{
         SUCCESS(200, "Success"), UNAUTHORIZATION(403, "You don't have authorization")
-        , FAIL(403, "Fail");
+        , FAIL(400, "Fail");
 
         private int code;
         private String message;

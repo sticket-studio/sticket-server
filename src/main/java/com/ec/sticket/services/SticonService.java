@@ -1,11 +1,13 @@
 package com.ec.sticket.services;
 
+import com.ec.sticket.dto.request.user.SticonLikeRequest;
 import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.User;
 import com.ec.sticket.repositories.SticonRepository;
 import com.ec.sticket.repositories.UserRepository;
 import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +68,17 @@ public class SticonService {
         Optional<Sticon> sticonOptional = sticonRepository.findById(sticonId);
         if (sticonOptional.isPresent()) {
             sticonRepository.deleteById(sticonId);
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage();
+        }
+    }
+
+    @Transactional
+    public ApiMessage like(SticonLikeRequest request) {
+        Optional<Sticon> sticon = sticonRepository.findById(request.getSticonId());
+        if (sticon.isPresent()) {
+            sticonRepository.like(request.getUserId(), request.getSticonId());
             return ApiMessage.getSuccessMessage();
         } else {
             return ApiMessage.getFailMessage();

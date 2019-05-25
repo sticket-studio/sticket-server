@@ -1,6 +1,7 @@
 package com.ec.sticket.controllers.normal;
 
-import com.ec.sticket.dto.request.user.*;
+import com.ec.sticket.dto.request.user.UserLikeRequest;
+import com.ec.sticket.dto.request.user.UserUpdateRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Quest;
 import com.ec.sticket.models.Sticon;
@@ -66,31 +67,6 @@ public class UserController {
     public ApiMessage deleteAsset(@RequestBody UserLikeRequest request) {
 //        return userService.like(request);
         return null;
-    }
-
-    //TODO: 미구현
-    @PostMapping("/like/asset")
-    @ApiOperation(value = "에셋 좋아요", notes = "Asset 좋아요")
-    @ApiImplicitParam(name = "asset", value = "에셋 좋아요", required = true,  paramType= "body")
-    public ApiMessage likeAsset(@RequestBody AssetLikeRequest request) {
-        return userService.likeAsset(request);
-    }
-
-    //TODO: 미구현
-    @PostMapping("/like/sticon")
-    @ApiOperation(value = "스티콘 좋아요", notes = "Sticon 좋아요")
-    @ApiImplicitParam(name = "sticon", value = "스티콘 좋아요", required = true,  paramType= "body")
-    public ApiMessage likeSticon(@RequestHeader(value = "Authorization", required = false) String jwtToken,
-                                 @RequestBody SticonLikeRequest request) {
-        return userService.likeSticon(request);
-    }
-
-    //TODO: 미구현
-    @PostMapping("/like/motionticon")
-    @ApiOperation(value = "모션티콘 좋아요", notes = "Motionticon 좋아요")
-    @ApiImplicitParam(name = "motionticon", value = "모션티콘 좋아요", required = true,  paramType= "body")
-    public ApiMessage likeMotionticon(@RequestBody MotionticonLikeRequest request) {
-        return userService.likeMotionticon(request);
     }
 
     @PostMapping("/{userId}/asset")

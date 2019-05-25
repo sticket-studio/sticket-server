@@ -2,6 +2,7 @@ package com.ec.sticket.models;
 
 import com.ec.sticket.models.mapping.SticonAsset;
 import com.ec.sticket.models.mapping.UserAssetPurchase;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -41,6 +42,16 @@ public class Asset {
                     referencedColumnName = "id")
     )
     private List<Theme> themes = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_like_asset",
+            joinColumns = @JoinColumn(name = "asset_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id")
+    )
+    @JsonIgnore
+    private List<Asset> likeAssets = new ArrayList<>();
 
     @ApiModelProperty(notes = "name for Asset", example = "에셋이름!!")
     private String name;

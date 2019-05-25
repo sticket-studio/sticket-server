@@ -1,11 +1,13 @@
 package com.ec.sticket.services;
 
+import com.ec.sticket.dto.request.user.AssetLikeRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.User;
 import com.ec.sticket.repositories.AssetRepository;
 import com.ec.sticket.repositories.UserRepository;
 import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +70,17 @@ public class AssetService {
         Optional<Asset> asset = assetRepository.findById(assetId);
         if (asset.isPresent()) {
             assetRepository.deleteById(assetId);
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage();
+        }
+    }
+
+    @Transactional
+    public ApiMessage like(AssetLikeRequest request) {
+        Optional<Asset> asset = assetRepository.findById(request.getAssetId());
+        if (asset.isPresent()) {
+            assetRepository.like(request.getUserId(), request.getAssetId());
             return ApiMessage.getSuccessMessage();
         } else {
             return ApiMessage.getFailMessage();

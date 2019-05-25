@@ -1,10 +1,13 @@
 package com.ec.sticket.controllers.normal;
 
+import com.ec.sticket.dto.request.user.MotionticonLikeRequest;
 import com.ec.sticket.models.Motionticon;
 import com.ec.sticket.models.mapping.UserMotionticonPurchase;
 import com.ec.sticket.services.MotionticonService;
 import com.ec.sticket.util.ApiMessage;
 import com.ec.sticket.util.JwtParser;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,12 +86,11 @@ public class MotionticionController {
         return motionticonService.getMotionticonByThemeId(themeId);
     }
 
-
-
-
-
-
-
-
-
+    @PostMapping("/like")
+    @ApiOperation(value = "모션티콘 좋아요", notes = "Motionticon 좋아요")
+    @ApiImplicitParam(name = "motionticon", value = "모션티콘 좋아요", required = true,  paramType= "body")
+    public ApiMessage likeMotionticon(@RequestBody MotionticonLikeRequest request, Authentication authentication) {
+        request.setUserId(jwtParser.getUserIdFromJwt(authentication));
+        return motionticonService.like(request);
+    }
 }

@@ -2,6 +2,7 @@ package com.ec.sticket.repositories;
 
 import com.ec.sticket.models.Sticon;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,8 @@ public interface SticonRepository extends JpaRepository<Sticon, Integer> {
 
     @Query(value = "SELECT s FROM Sticon s INNER JOIN s.themes t WHERE t.id = :themeId")
     List<Sticon> findAllByThemeId(@Param("themeId") int themeId);
+
+    @Modifying
+    @Query(value = "INSERT INTO user_like_sticon VALUES(:userId, :sticonId)", nativeQuery = true)
+    void like(@Param("userId") int userId, @Param("sticonId") int sticonId);
 }

@@ -1,5 +1,6 @@
 package com.ec.sticket.controllers.normal;
 
+import com.ec.sticket.dto.request.user.AssetLikeRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.mapping.UserAssetPurchase;
 import com.ec.sticket.services.AssetService;
@@ -125,5 +126,13 @@ public class AssetController {
             @ApiParam(value = "찾을 에셋의 테마 ID", defaultValue = "1", required = true)
             @PathVariable("themeId") int themeId) {
         return assetService.findAssetsByThemeId(themeId);
+    }
+
+    @PostMapping("/like")
+    @ApiOperation(value = "에셋 좋아요", notes = "Asset 좋아요")
+    @ApiImplicitParam(name = "asset", value = "에셋 좋아요", required = true,  paramType= "body")
+    public ApiMessage likeAsset(@RequestBody AssetLikeRequest request, Authentication authentication) {
+        request.setUserId(jwtParser.getUserIdFromJwt(authentication));
+        return assetService.like(request);
     }
 }

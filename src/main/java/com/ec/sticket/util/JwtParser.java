@@ -56,4 +56,8 @@ public class JwtParser {
     public User getUserFromJwt(Authentication authentication){
         return userService.findByEmail(authentication.getName());
     }
+
+    public int getUserIdFromJwt(Authentication authentication){
+        return userService.findByEmail(authentication.getName()).getId();
+    }
 }
