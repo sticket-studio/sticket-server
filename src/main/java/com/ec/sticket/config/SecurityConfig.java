@@ -73,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs",
                         "/configuration/**",
                         "/swagger*/**",
+                        "/api/normal/users/signup",
                         "/webjars/**")
                 .permitAll()
                 // for h2-database end

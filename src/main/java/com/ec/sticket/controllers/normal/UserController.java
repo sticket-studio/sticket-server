@@ -1,5 +1,6 @@
 package com.ec.sticket.controllers.normal;
 
+import com.ec.sticket.dto.request.user.SignupRequest;
 import com.ec.sticket.dto.request.user.UserLikeRequest;
 import com.ec.sticket.dto.request.user.UserUpdateRequest;
 import com.ec.sticket.models.Asset;
@@ -41,6 +42,11 @@ public class UserController {
     @GetMapping("")
     public List<User> findAllUsers(){
         return userService.findAll();
+    }
+
+    @PostMapping("/signup")
+    public ApiMessage signup(SignupRequest request){
+        return userService.save(request);
     }
 
     @GetMapping("/{userId}")
