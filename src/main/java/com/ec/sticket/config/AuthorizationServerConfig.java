@@ -1,5 +1,6 @@
 package com.ec.sticket.config;
 
+import com.ec.sticket.util.CustomTokenEnhancer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +11,13 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import java.security.KeyPair;
+import java.util.Arrays;
 
 /**
  * OAuth 인가 과정을 처리하는 설정
@@ -54,11 +57,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private final PasswordEncoder passwordEncoder;
 
+    private final CustomTokenEnhancer customTokenEnhancer;
+
     public AuthorizationServerConfig(TokenStore tokenStore, AuthenticationManager authenticationManager
-            , PasswordEncoder passwordEncoder) {
+            , PasswordEncoder passwordEncoder, CustomTokenEnhancer customTokenEnhancer) {
         this.tokenStore = tokenStore;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
+        this.customTokenEnhancer = customTokenEnhancer;
     }
 
     @Override
@@ -76,11 +82,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(
+                Arrays.asList(customTokenEnhancer, jwtAccessTokenConverter()));
+
         endpoints.tokenStore(tokenStore)
-                .accessTokenConverter(jwtAccessTokenConverter())
+                .tokenEnhancer(tokenEnhancerChain)
                 .authenticationManager(authenticationManager);
     }
+
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {

@@ -101,6 +101,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private SnsType snsType;
 
+    @Column(unique=true)
     private String email;
     @JsonIgnore
     private String password;
