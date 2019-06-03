@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ApiMessage signup(SignupRequest request){
+    public ApiMessage signup(@RequestBody SignupRequest request){
         return userService.save(request);
     }
 
