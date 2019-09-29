@@ -19,33 +19,35 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonIgnore
     private List<UserCashItemPurchase> userCashItemPurchases = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonIgnore
     private List<UserAssetPurchase> userAssetPurchases = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonIgnore
     private List<UserSticonPurchase> userSticonPurchases = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonIgnore
     private List<UserMotionticonPurchase> userMotionticonPurchases = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_like_asset",
-            joinColumns = @JoinColumn(name = "user_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "asset_id",
-                    referencedColumnName = "id")
-    )
+    @OneToMany(mappedBy = "following",fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Asset> likeAssets = new ArrayList<>();
+    private List<UserLikeUser> followers = new ArrayList<>();
 
-    @ManyToMany
+    @OneToMany(mappedBy = "follower",fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<UserLikeUser> followings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<UserLikeAsset> userLikeAssets = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_like_sticon",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
@@ -55,21 +57,21 @@ public class User {
     @JsonIgnore
     private List<Sticon> likeSticons = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_like_montionticon",
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_like_motionticon",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "montionticon_id",
+            inverseJoinColumns = @JoinColumn(name = "motionticon_id",
                     referencedColumnName = "id")
     )
     @JsonIgnore
     private List<Motionticon> likeMotionticons = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<UserQuest> userQuests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author"
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY
             // 판매자가 삭제돼도 구매자들을 위해 남아있어야한다.
             // 하지만 default값이 false이므로 주석처리해도 됨
             // 근데 사실 유저는 삭제되지 않을 예정.
@@ -78,17 +80,17 @@ public class User {
     @JsonIgnore
     private List<Asset> sellingAssets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author"
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY
             /*, orphanRemoval = false*/)
     @JsonIgnore
     private List<Sticon> sellingSticons = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author"
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY
             /*, orphanRemoval = false*/)
     @JsonIgnore
     private List<Motionticon> sellingMotionticons = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_title",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),

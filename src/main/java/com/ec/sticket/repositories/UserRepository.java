@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -16,16 +17,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u FROM User u INNER JOIN u.sellingAssets a WHERE a.id = :assetId")
     List<User> findAllBySellingAssetId(@Param("assetId") int assetId);
 
+    @Transactional
     @Modifying
-    @Query(value = "INSERT INTO user_like_asset(userId, assetId) VALUES(:userId, :assetId)", nativeQuery = true)
-    void likeAsset(@Param("userId") int userId, @Param("assetId") int assetId);
-
-    @Modifying
-    @Query(value = "INSERT INTO user_like_sticon(userId, sticonId) VALUES(:userId, :sticonId)", nativeQuery = true)
+    @Query(value = "INSERT INTO user_like_sticon(USER_ID, STICON_ID, LIKE_TIME) VALUES(:userId, :sticonId, NOW())", nativeQuery = true)
     void likeSticon(@Param("userId") int userId, @Param("sticonId") int sticonId);
 
+    @Transactional
     @Modifying
-    @Query(value = "INSERT INTO user_like_motionticon(userId, motionticonId) VALUES(:userId, :motionticonId)", nativeQuery = true)
+    @Query(value = "INSERT INTO USER_LIKE_MOTIONTICON(USER_ID, MONTIONTICON_ID, LIKE_TIME) VALUES(:userId, :motionticonId, NOW())", nativeQuery = true)
     void likeMotionticon(@Param("userId") int userId, @Param("motionticonId") int motionticonId);
 
     @Query(value = "SELECT u FROM User u INNER JOIN u.sellingSticons s WHERE s.id = :sticonId")

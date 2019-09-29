@@ -29,7 +29,7 @@ public interface MotionticonRepository extends JpaRepository<Motionticon, Intege
     */
 
 
-    @Query(value = "SELECT m FROM Motionticon m INNER JOIN m.themes t WHERE t.id = :themeId")
+    @Query(value = "SELECT m FROM Motionticon m WHERE m.theme = :themeId")
     List<Motionticon> findAllByThemeId(@Param("themeId") int themeId);
 
     @Modifying

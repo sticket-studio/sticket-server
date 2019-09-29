@@ -1,12 +1,14 @@
 package com.ec.sticket.util;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter @Setter
+@AllArgsConstructor
 public class ApiMessage {
     private final int code;
-    private final String message;
+    private final Object message;
 
     public ApiMessage(Status status) {
         this.code = status.getCode();
@@ -15,6 +17,10 @@ public class ApiMessage {
 
     public static ApiMessage getSuccessMessage(){
         return new ApiMessage(Status.SUCCESS);
+    }
+
+    public static ApiMessage getSuccessMessage(Object message){
+        return new ApiMessage(Status.SUCCESS.code, message);
     }
 
     public static ApiMessage getFailMessage(){

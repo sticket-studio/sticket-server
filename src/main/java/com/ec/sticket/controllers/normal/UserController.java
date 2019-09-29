@@ -1,7 +1,6 @@
 package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.dto.request.user.SignupRequest;
-import com.ec.sticket.dto.request.user.UserLikeRequest;
 import com.ec.sticket.dto.request.user.UserUpdateRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Quest;
@@ -17,6 +16,8 @@ import com.ec.sticket.util.ApiMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,12 +40,12 @@ public class UserController {
         this.titleService = titleService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<User> findAllUsers(){
         return userService.findAll();
     }
 
-    @PostMapping("/signup")
+    @PostMapping
     public ApiMessage signup(@RequestBody SignupRequest request){
         return userService.save(request);
     }
@@ -55,7 +56,7 @@ public class UserController {
     }
 
     //TODO: 미구현
-    @PutMapping("")
+    @PutMapping
     public ApiMessage updateUser(@RequestBody UserUpdateRequest user){
         return null;
 //        return userService.update(user);
@@ -66,13 +67,28 @@ public class UserController {
         return userService.delete(userId);
     }
 
-    //TODO: 미구현
-    @PostMapping("/like/user")
-    @ApiOperation(value = "작가 좋아요", notes = "User 좋아요")
-    @ApiImplicitParam(name = "user", value = "작가 좋아요", required = true,  paramType= "body")
-    public ApiMessage deleteAsset(@RequestBody UserLikeRequest request) {
-//        return userService.like(request);
-        return null;
+    @GetMapping("/like/{followingId}")
+    @ApiOperation(value = "작가 좋아요 조회 1", notes = "작가 좋아요 조회 2")
+    @ApiImplicitParam(name = "user", value = "작가 좋아요 조회 3")
+    public ApiMessage findLikes(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int followingId) {
+        int followerId = userService.findByEmail(userDetails.getUsername()).getId();
+        return userService.findLike(followerId, followingId);
+    }
+
+    @PostMapping("/like/{followingId}")
+    @ApiOperation(value = "작가 좋아요", notes = "작가 좋아요")
+    @ApiImplicitParam(name = "user", value = "작가 좋아요")
+    public ApiMessage like(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int followingId) {
+        int followerId = userService.findByEmail(userDetails.getUsername()).getId();
+        return userService.likeUser(followerId, followingId);
+    }
+
+    @DeleteMapping("/dislike/{followingId}")
+    @ApiOperation(value = "작가 좋아요 취소", notes = "작가 좋아요 취소")
+    @ApiImplicitParam(name = "user", value = "작가 좋아요 취소")
+    public ApiMessage dislike(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int followingId) {
+        int followerId = userService.findByEmail(userDetails.getUsername()).getId();
+        return userService.dislikeUser(followerId, followingId);
     }
 
     @PostMapping("/{userId}/asset")

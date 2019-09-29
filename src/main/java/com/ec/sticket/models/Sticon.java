@@ -1,5 +1,6 @@
 package com.ec.sticket.models;
 
+import com.ec.sticket.exceptions.ModifyAuthorException;
 import com.ec.sticket.models.mapping.MotionticonSticon;
 import com.ec.sticket.models.mapping.SticonAsset;
 import com.ec.sticket.models.mapping.UserSticonPurchase;
@@ -33,14 +34,9 @@ public class Sticon {
     @OneToMany(mappedBy = "sticon")
     private List<SticonAsset> sticonAssets = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "sticon_theme",
-            joinColumns = @JoinColumn(name = "sticon_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "theme_id",
-                    referencedColumnName = "id")
-    )
-    private List<Theme> themes = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "theme_id")
+    private Theme theme;
 
     private String name;
     private String imgUrl;
@@ -56,12 +52,12 @@ public class Sticon {
         purchaseCnt = 0;
     }
 
-    public Sticon(User author, List<SticonAsset> sticonAssets, List<Theme> themes, String name, String imgUrl, int price
+    public Sticon(User author, List<SticonAsset> sticonAssets, Theme theme, String name, String imgUrl, int price
             , String description) {
         this.author = author;
         this.name = name;
         this.sticonAssets = sticonAssets;
-        this.themes = themes;
+        this.theme = theme;
         this.imgUrl = imgUrl;
         this.createdTime = LocalDateTime.now();
         this.price = price;
@@ -75,7 +71,7 @@ public class Sticon {
             author.getSellingSticons().add(this);
             this.author = author;
         } else {
-            throw new RuntimeException("Cannot modify author");
+            throw new ModifyAuthorException("Cannot modify author");
         }
     }
 }

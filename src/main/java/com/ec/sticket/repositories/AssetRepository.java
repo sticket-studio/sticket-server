@@ -8,27 +8,28 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface AssetRepository extends JpaRepository<Asset, Integer> {
 
-    Optional<List<Asset>> findAllByAuthorId(int authorId);
+    @Query(value = "SELECT a FROM Asset a WHERE (:authorId = -1 or a.author.id = :authorId) AND " +
+            "(:buyerId = -1 or a.author.id = :buyerId) AND " +
+//            "(:sticonId  = -1 or a.sticonAssets.sticon = :sticonId) AND " + // sticonId 안됨
+            "(:landmark LIKE '' or a.landmark LIKE :landmark) AND " +
+            "(:themeId = -1 or a.theme.id = :themeId) AND :sticonId=:sticonId")
+    List<Asset> findAllByQuery(int authorId, int buyerId, int sticonId, String landmark, int themeId);
 
     List<Asset> findAllByPriceBetween(int priceLow, int priceHigh);
 
-    @Query(value = "SELECT a FROM Asset a INNER JOIN a.userAssetPurchases uap WHERE uap.user.id = :buyerId")
-    List<Asset> findAllByBuyerId(@Param("buyerId") int buyerId);
-
-    @Query(value = "SELECT a FROM Asset a INNER JOIN a.sticonAssets sa WHERE sa.sticon.id = :sticonId")
-    List<Asset> findAllBySticonId(@Param("sticonId") int sticonId);
-
-    List<Asset> findAllByLandmark(Asset.Landmark landmark);
-
-    @Query(value = "SELECT a FROM Asset a INNER JOIN a.themes t WHERE t.id = :themeId")
-    List<Asset> findAllByThemeId(@Param("themeId") int themeId);
 
     @Modifying
-    @Query(value = "INSERT INTO user_like_asset VALUES(:userId, :assetId)", nativeQuery = true)
+    @Query(value = "INSERT INTO user_like_asset VALUES(:userId, :assetId, now())", nativeQuery = true)
     void like(@Param("userId") int userId, @Param("assetId") int assetId);
+
+    @Query(value = "SELECT a FROM Asset a INNER JOIN a.userLikeAssets l WHERE l.likeTime = CURRENT_DATE" +
+            " GROUP BY a ORDER BY COUNT(a) DESC")
+    List<Asset> findTodayAssets();
+
+    @Query(value = "SELECT a FROM Asset a INNER JOIN a.userLikeAssets l GROUP BY a ORDER BY COUNT(a) DESC")
+    List<Asset> findPopularAssets();
 }

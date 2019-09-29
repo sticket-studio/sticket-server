@@ -54,7 +54,7 @@ public class SticonService {
             // 저자는 변경불가
 //            sticon.setAuthor(modified.getAuthor());
             sticon.setImgUrl(modified.getImgUrl());
-            sticon.setThemes(modified.getThemes());
+            sticon.setTheme(modified.getTheme());
             sticon.setPrice(modified.getPrice());
 
             sticonRepository.save(sticon);

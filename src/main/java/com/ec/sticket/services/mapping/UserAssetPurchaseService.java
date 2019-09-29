@@ -2,7 +2,7 @@ package com.ec.sticket.services.mapping;
 
 import com.ec.sticket.models.mapping.UserAssetPurchase;
 import com.ec.sticket.models.mapping.compositekey.UserAssetPurchaseKey;
-import com.ec.sticket.repositories.mapping.UserAssetPurchaseRepository;
+import com.ec.sticket.repositories.mapping.purchase.UserAssetPurchaseRepository;
 import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
 

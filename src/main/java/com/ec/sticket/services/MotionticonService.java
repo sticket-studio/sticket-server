@@ -54,7 +54,7 @@ public class MotionticonService {
             motion.setName(modified.getName());
             motion.setDescription(modified.getDescription());
             motion.setImgUrl(modified.getImgUrl());
-            motion.setThemes(modified.getThemes());
+            motion.setTheme(modified.getTheme());
             motion.setPrice(modified.getPrice());
             motion.setMotion(modified.getMotion());
             motion.setMotionticonSticons(modified.getMotionticonSticons());

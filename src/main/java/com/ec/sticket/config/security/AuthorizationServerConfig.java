@@ -1,6 +1,7 @@
-package com.ec.sticket.config;
+package com.ec.sticket.config.security;
 
 import com.ec.sticket.util.CustomTokenEnhancer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import java.util.Arrays;
  * OAuth 인가 과정을 처리하는 설정
  * 토큰 발급 등
  */
+@Slf4j
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -69,7 +71,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
-
         configurer
                 .inMemory()
                 .withClient(CLIENT_ID)

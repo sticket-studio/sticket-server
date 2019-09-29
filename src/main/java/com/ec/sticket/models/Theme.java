@@ -1,5 +1,6 @@
 package com.ec.sticket.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,31 +17,16 @@ public class Theme {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToMany
-    @JoinTable(name = "asset_theme",
-            joinColumns = @JoinColumn(name = "theme_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "asset_id",
-                    referencedColumnName = "id")
-    )
+    @JsonIgnore
+    @OneToMany(mappedBy = "theme")
     private List<Asset> assets = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "sticon_theme",
-            joinColumns = @JoinColumn(name = "theme_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "sticon_id",
-                    referencedColumnName = "id")
-    )
+    @JsonIgnore
+    @OneToMany(mappedBy = "theme")
     private List<Sticon> sticons = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "motionticon_theme",
-            joinColumns = @JoinColumn(name = "theme_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "motionticon_id",
-                    referencedColumnName = "id")
-    )
+    @JsonIgnore
+    @OneToMany(mappedBy = "theme")
     private List<Motionticon> motionticons = new ArrayList<>();
 
     private String name;

@@ -9,6 +9,7 @@ import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,12 +17,23 @@ import java.util.Optional;
 @Service
 public class AssetService {
 
+    // for caching
+    private final List<Asset> todayAssets;
+    private final List<Asset> popularAssets;
+    private LocalDate lastUpdateTodayAssets;
+    private LocalDate lastUpdatePopularAssets;
+
     private final UserRepository userRepository;
     private final AssetRepository assetRepository;
 
     public AssetService(UserRepository userRepository, AssetRepository assetRepository) {
         this.userRepository = userRepository;
         this.assetRepository = assetRepository;
+        this.todayAssets = new ArrayList<>();
+        this.popularAssets = new ArrayList<>();
+        // 처음에 업데이트 하기 위해 하루 전으로 세팅
+        this.lastUpdateTodayAssets = LocalDate.now().minusDays(1);
+        this.lastUpdatePopularAssets = LocalDate.now().minusDays(1);
     }
 
     public List<Asset> findAll() {
@@ -55,7 +67,7 @@ public class AssetService {
             asset.setName(modified.getName());
             asset.setDescription(modified.getDescription());
             asset.setImgUrl(modified.getImgUrl());
-            asset.setThemes(modified.getThemes());
+            asset.setTheme(modified.getTheme());
             asset.setPrice(modified.getPrice());
             asset.setLandmark(modified.getLandmark());
 
@@ -91,23 +103,24 @@ public class AssetService {
         return assetRepository.findAllByPriceBetween(0, 0);
     }
 
-    public List<Asset> findAssetsByAuthorId(int authorId) {
-        return assetRepository.findAllByAuthorId(authorId).orElseGet(ArrayList::new);
+    public List<Asset> findAssetsByQuery(int authorId, int buyerId, int sticonId, String landmark, int themeId) {
+        return assetRepository.findAllByQuery(authorId, buyerId, sticonId, landmark, themeId);
     }
 
-    public List<Asset> findAssetsByBuyerId(int buyerId) {
-        return assetRepository.findAllByBuyerId(buyerId);
+    public List<Asset> findTodayAssets() {
+        // Caching today's assets
+        if (this.todayAssets.isEmpty() || lastUpdateTodayAssets.isBefore(LocalDate.now())) {
+            this.todayAssets.clear();
+            this.todayAssets.addAll(assetRepository.findTodayAssets());
+        }
+        return this.todayAssets;
     }
 
-    public List<Asset> findAssetsBySticonId(int sticonId) {
-        return assetRepository.findAllBySticonId(sticonId);
-    }
-
-    public List<Asset> findAssetsByLandmark(Asset.Landmark landmark) {
-        return assetRepository.findAllByLandmark(landmark);
-    }
-
-    public List<Asset> findAssetsByThemeId(int assetId) {
-        return assetRepository.findAllByThemeId(assetId);
+    public List<Asset> findPopularAssets() {
+        // Caching popular assets
+        if (this.popularAssets.isEmpty() || lastUpdatePopularAssets.isBefore(LocalDate.now())) {
+            this.todayAssets.addAll(assetRepository.findPopularAssets());
+        }
+        return this.popularAssets;
     }
 }

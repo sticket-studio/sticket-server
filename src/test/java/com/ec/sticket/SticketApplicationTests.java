@@ -106,32 +106,16 @@ public class SticketApplicationTests {
 
         // Asset - 에셋
 
-        List<Theme> themes1 = new ArrayList<>();
-        themes1.add(theme1);
-        themes1.add(theme2);
-        themes1.add(theme6);
-        List<Theme> themes2 = new ArrayList<>();
-        themes1.add(theme2);
-        themes1.add(theme3);
-        themes1.add(theme4);
-        List<Theme> themes3 = new ArrayList<>();
-        themes1.add(theme1);
-        themes1.add(theme2);
-        themes1.add(theme5);
-        List<Theme> themes4 = new ArrayList<>();
-        themes1.add(theme1);
-        themes1.add(theme2);
-
-        Asset asset1 = new Asset(user1, Asset.Landmark.EYE_LEFT, themes1, "궁예안대"
+        Asset asset1 = new Asset(user1, Asset.Landmark.EYE_LEFT, theme1, "궁예안대"
                 , "https://aws.xxx.xxx/s3/xxxxx", 3, "궁예가 쓰던 안대를 써보자!");
 
-        Asset asset2 = new Asset(user1, Asset.Landmark.EYE_LEFT, themes3, "하트 눈"
+        Asset asset2 = new Asset(user1, Asset.Landmark.EYE_LEFT, theme3, "하트 눈"
                 , "https://aws.xxx.xxx/s3/xxxxx", 3, "하트 뿅뿅");
 
-        Asset asset3 = new Asset(user1, Asset.Landmark.CHEEK_LEFT, themes2, "홍조"
+        Asset asset3 = new Asset(user1, Asset.Landmark.CHEEK_LEFT, theme2, "홍조"
                 , "https://aws.xxx.xxx/s3/xxxx1", 4, "부끄부끄>.<");
 
-        Asset asset4 = new Asset(user2, Asset.Landmark.NOSE, themes4, "돼지코"
+        Asset asset4 = new Asset(user2, Asset.Landmark.NOSE, theme4, "돼지코"
                 , "https://aws.xxx.xxx/s3/xxxx2", 3, "꿀꿀꿀!! 꿀..! 꿀꿀꿀!!");
 
         assetRepository.save(asset1);
@@ -165,7 +149,7 @@ public class SticketApplicationTests {
         sticonAssets1.add(sticonAsset2);
         sticonAssets1.add(sticonAsset3);
 
-        Sticon sticon1 = new Sticon(user1, sticonAssets1, themes1, "궁예","대표이미지 URL", 6, "안대 두개 한 궁예");
+        Sticon sticon1 = new Sticon(user1, sticonAssets1, theme1, "궁예","대표이미지 URL", 6, "안대 두개 한 궁예");
 
         sticonRepository.save(sticon1);
 

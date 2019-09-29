@@ -1,4 +1,4 @@
-package com.ec.sticket.repositories.mapping;
+package com.ec.sticket.repositories.mapping.purchase;
 
 import com.ec.sticket.models.mapping.UserAssetPurchase;
 import com.ec.sticket.models.mapping.compositekey.UserAssetPurchaseKey;

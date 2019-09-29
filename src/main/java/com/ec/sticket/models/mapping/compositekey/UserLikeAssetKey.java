@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 @EqualsAndHashCode
-public class UserAssetPurchaseKey implements Serializable {
+public class UserLikeAssetKey implements Serializable {
     private User user;
     private Asset asset;
 }

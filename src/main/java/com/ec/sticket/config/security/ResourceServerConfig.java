@@ -1,4 +1,4 @@
-package com.ec.sticket.config;
+package com.ec.sticket.config.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,7 +28,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .anonymous().disable()
                 .authorizeRequests()
-                .antMatchers("/api/normal/**").authenticated()
+                    .antMatchers("/login*/**", "/api/users/signup").permitAll()
+                    .antMatchers("/api/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                    .antMatchers("/ADM/**").hasRole("ADMIN")
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
                 .and().headers().frameOptions().sameOrigin();
     }

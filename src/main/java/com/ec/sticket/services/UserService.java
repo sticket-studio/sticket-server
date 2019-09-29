@@ -1,16 +1,17 @@
 package com.ec.sticket.services;
 
-import com.ec.sticket.dto.request.user.AssetLikeRequest;
-import com.ec.sticket.dto.request.user.MotionticonLikeRequest;
 import com.ec.sticket.dto.request.user.SignupRequest;
-import com.ec.sticket.dto.request.user.SticonLikeRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.User;
+import com.ec.sticket.models.mapping.UserLikeUser;
+import com.ec.sticket.models.mapping.compositekey.UserLikeUserKey;
 import com.ec.sticket.repositories.AssetRepository;
 import com.ec.sticket.repositories.SticonRepository;
 import com.ec.sticket.repositories.UserRepository;
+import com.ec.sticket.repositories.mapping.like.UserLikeUserRepository;
 import com.ec.sticket.util.ApiMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,43 +21,31 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final AssetRepository assetRepository;
     private final SticonRepository sticonRepository;
+    private final UserLikeUserRepository userLikeUserRepository;
 //    private final MotionticonRepository motionticonRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, AssetRepository assetRepository
-            , SticonRepository sticonRepository, PasswordEncoder passwordEncoder) {
+            , SticonRepository sticonRepository, UserLikeUserRepository userLikeUserRepository,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.assetRepository = assetRepository;
         this.sticonRepository = sticonRepository;
+        this.userLikeUserRepository = userLikeUserRepository;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @PostConstruct
-    public void init() {
-        String newEmail = "yhc944@gmail.com";
-        User yhc944 = userRepository.findByEmail(newEmail);
-        if (yhc944 == null) {
-            SignupRequest request = SignupRequest.builder()
-                    .email(newEmail)
-                    .name("양희찬")
-                    .password("password")
-                    .build();
-            ApiMessage apiMessage = this.save(request);
-            System.out.println(apiMessage.getMessage());
-        }
     }
 
     public List<User> findAll() {
@@ -117,22 +106,23 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public ApiMessage likeAsset(AssetLikeRequest request){
-        userRepository.likeAsset(request.getAssetId(),request.getUserId());
+    public ApiMessage findLike(int followerId, int followingId) {
+        return ApiMessage.getSuccessMessage(userLikeUserRepository.getOne(new UserLikeUserKey(followerId, followingId)).getId());
+    }
 
+    public ApiMessage likeUser(int followerId, int followingId) {
+        userLikeUserRepository.save(new UserLikeUser(new UserLikeUserKey(followerId, followingId)));
         return ApiMessage.getSuccessMessage();
     }
 
-    public ApiMessage likeSticon(SticonLikeRequest request){
-        userRepository.likeSticon(request.getSticonId(), request.getUserId());
-
-        return ApiMessage.getSuccessMessage();
-    }
-
-    public ApiMessage likeMotionticon(MotionticonLikeRequest request){
-        userRepository.likeMotionticon(request.getMotionticonId(), request.getUserId());
-
-        return ApiMessage.getSuccessMessage();
+    public ApiMessage dislikeUser(int followerId, int followingId) {
+        try {
+            userLikeUserRepository.deleteById(new UserLikeUserKey(followerId, followingId));
+            return ApiMessage.getSuccessMessage();
+        } catch (Exception e) {
+            log.error(e.toString());
+            return ApiMessage.getFailMessage();
+        }
     }
 
     public ApiMessage addSellingAsset(int userId, Asset asset) {
