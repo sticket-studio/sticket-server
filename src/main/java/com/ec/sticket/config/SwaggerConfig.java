@@ -46,11 +46,11 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Hello REST API",
+                "Sticket REST API",
                 "Some custom description of API.",
                 "API TOS",
                 "Terms of service",
-                new Contact("LOG.INFO", "loginfo.dev", "yhc944@gmail.com"),
+                new Contact("LOG.INFO", "https://loginfo.dev", "yhc944@gmail.com"),
                 "License of API", "API license URL", Collections.emptyList());
     }
 }
