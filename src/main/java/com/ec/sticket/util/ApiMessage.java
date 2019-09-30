@@ -26,6 +26,9 @@ public class ApiMessage {
     public static ApiMessage getFailMessage(){
         return new ApiMessage(Status.FAIL);
     }
+    public static ApiMessage getFailMessage(Object message){
+        return new ApiMessage(Status.FAIL.code, message);
+    }
 
     public static ApiMessage getUnauthorizationMessage(){
         return new ApiMessage(Status.UNAUTHORIZATION);

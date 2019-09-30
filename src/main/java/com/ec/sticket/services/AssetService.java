@@ -3,13 +3,17 @@ package com.ec.sticket.services;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.UserLikeAsset;
+import com.ec.sticket.models.mapping.UserPurchaseAsset;
 import com.ec.sticket.models.mapping.compositekey.UserLikeAssetKey;
+import com.ec.sticket.models.mapping.compositekey.UserPurchaseAssetKey;
 import com.ec.sticket.repositories.AssetRepository;
 import com.ec.sticket.repositories.UserRepository;
 import com.ec.sticket.repositories.mapping.like.UserLikeAssetRepository;
+import com.ec.sticket.repositories.mapping.purchase.UserPurchaseAssetRepository;
 import com.ec.sticket.util.ApiMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,12 +34,15 @@ public class AssetService {
     private final UserRepository userRepository;
     private final AssetRepository assetRepository;
     private final UserLikeAssetRepository userLikeAssetRepository;
+    private final UserPurchaseAssetRepository userPurchaseAssetRepository;
 
     public AssetService(UserRepository userRepository, AssetRepository assetRepository,
-                        UserLikeAssetRepository userLikeAssetRepository) {
+                        UserLikeAssetRepository userLikeAssetRepository,
+                        UserPurchaseAssetRepository userPurchaseAssetRepository) {
         this.userRepository = userRepository;
         this.assetRepository = assetRepository;
         this.userLikeAssetRepository = userLikeAssetRepository;
+        this.userPurchaseAssetRepository = userPurchaseAssetRepository;
         this.todayAssets = new ArrayList<>();
         this.popularAssets = new ArrayList<>();
         // 처음에 업데이트 하기 위해 하루 전으로 세팅
@@ -66,8 +73,8 @@ public class AssetService {
         }
     }
 
-    public ApiMessage update(Asset modified) {
-        Optional<Asset> assetOptional = assetRepository.findById(modified.getId());
+    public ApiMessage update(int assetId, Asset modified) {
+        Optional<Asset> assetOptional = assetRepository.findById(assetId);
         if (assetOptional.isPresent()) {
             Asset asset = assetOptional.get();
 
@@ -81,7 +88,7 @@ public class AssetService {
             assetRepository.save(asset);
             return ApiMessage.getSuccessMessage();
         } else {
-            return ApiMessage.getFailMessage();
+            return ApiMessage.getFailMessage("The asset with id [" + assetId + "] doesn't exist");
         }
     }
 
@@ -91,22 +98,8 @@ public class AssetService {
             assetRepository.deleteById(assetId);
             return ApiMessage.getSuccessMessage();
         } else {
-            return ApiMessage.getFailMessage();
+            return ApiMessage.getFailMessage("The asset with id [" + assetId + "] doesn't exist");
         }
-    }
-
-    public ApiMessage like(int userId, int assetId) {
-        Optional<Asset> asset = assetRepository.findById(assetId);
-        if (asset.isPresent()) {
-            userLikeAssetRepository.save(new UserLikeAsset(new UserLikeAssetKey(userId, assetId)));
-            return ApiMessage.getSuccessMessage();
-        } else {
-            return ApiMessage.getFailMessage();
-        }
-    }
-
-    public List<Asset> like(User user) {
-        return userLikeAssetRepository.findAllByUser(user).stream().map(UserLikeAsset::getAsset).collect(Collectors.toList());
     }
 
     public List<Asset> findFreeAssets() {
@@ -132,5 +125,40 @@ public class AssetService {
             this.todayAssets.addAll(assetRepository.findPopularAssets());
         }
         return this.popularAssets;
+    }
+
+    public ApiMessage like(User user, int assetId) {
+        Optional<Asset> asset = assetRepository.findById(assetId);
+        if (asset.isPresent()) {
+            userLikeAssetRepository.save(new UserLikeAsset(new UserLikeAssetKey(user.getId(), assetId)));
+            return ApiMessage.getSuccessMessage();
+        } else {
+            return ApiMessage.getFailMessage("The asset with id [" + assetId + "] doesn't exist");
+        }
+    }
+
+    public List<Asset> getUsersLikeAssets(User user) {
+        return userLikeAssetRepository.findAllByUser(user).stream().map(UserLikeAsset::getAsset).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public ApiMessage purchaseAsset(User user, int assetId) {
+        Optional<Asset> asset = assetRepository.findById(assetId);
+        if (asset.isPresent()) {
+            if (user.getStick() > asset.get().getPrice()) {
+                userPurchaseAssetRepository.save(new UserPurchaseAsset(new UserPurchaseAssetKey(user.getId(), assetId)));
+                user.setStick(user.getStick() - asset.get().getPrice());
+                return ApiMessage.getSuccessMessage();
+            } else {
+                // Stick이 충분하지 않으면 Fail
+                return ApiMessage.getFailMessage("Not enough stick. Please charge your stick.");
+            }
+        } else {
+            return ApiMessage.getFailMessage("The asset with id [" + assetId + "] doesn't exist.");
+        }
+    }
+
+    public List<Asset> getUsersBoughtAssets(User user) {
+        return userPurchaseAssetRepository.findAllByUser(user).stream().map(UserPurchaseAsset::getAsset).collect(Collectors.toList());
     }
 }

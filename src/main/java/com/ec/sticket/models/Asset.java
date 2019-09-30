@@ -2,8 +2,8 @@ package com.ec.sticket.models;
 
 import com.ec.sticket.exceptions.ModifyAuthorException;
 import com.ec.sticket.models.mapping.SticonAsset;
-import com.ec.sticket.models.mapping.UserAssetPurchase;
 import com.ec.sticket.models.mapping.UserLikeAsset;
+import com.ec.sticket.models.mapping.UserPurchaseAsset;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -33,7 +33,7 @@ public class Asset implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "asset")
-    private List<UserAssetPurchase> userAssetPurchases = new ArrayList<>();
+    private List<UserPurchaseAsset> userPurchaseAssets = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "asset")

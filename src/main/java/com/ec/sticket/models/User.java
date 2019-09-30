@@ -26,7 +26,7 @@ public class User implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserAssetPurchase> userAssetPurchases = new ArrayList<>();
+    private List<UserPurchaseAsset> userPurchaseAssets = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

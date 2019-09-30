@@ -101,6 +101,7 @@ local.properties
 *.jks
 *.cer
 *.yaml
+/**/*config/**
 
 ### Java template
 *.class
@@ -163,4 +164,3 @@ buildNumber.properties
 
 # "temporary" build files
 /target
-/**/*config/**

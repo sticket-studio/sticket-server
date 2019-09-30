@@ -75,10 +75,10 @@ public class AssetController {
         return assetService.save(authorId, asset);
     }
 
-    @PutMapping("")
+    @PutMapping("/{assetId}")
     @ApiOperation(value = "에셋 수정", notes = "Asset 수정")
-    public ApiMessage updateAsset(@RequestBody Asset asset) {
-        return assetService.update(asset);
+    public ApiMessage updateAsset(@PathVariable int assetId, @RequestBody Asset asset) {
+        return assetService.update(assetId, asset);
     }
 
     @DeleteMapping("/{assetId}")
@@ -97,15 +97,26 @@ public class AssetController {
 
     @PostMapping("/{assetId}/like")
     @ApiOperation(value = "에셋 좋아요", notes = "Asset 좋아요")
-    @ApiImplicitParam(name = "asset", value = "에셋 좋아요", required = true, paramType = "body")
-    public ApiMessage likeAsset(@PathVariable("assetId") int assetId, Authentication authentication) {
-        return assetService.like(jwtParser.getUserIdFromJwt(authentication), assetId);
+    public ApiMessage like(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.like(jwtParser.getUserFromJwt(authentication), assetId);
     }
 
     @GetMapping("/like")
     @ApiOperation(value = "내가 좋아요한 에셋 조회", notes = "내가 좋아요한 에셋 조회")
-    @ApiImplicitParam(name = "asset", value = "내가 좋아요한 에셋 조회", required = true, paramType = "body")
-    public List<Asset> likeAsset(Authentication authentication) {
-        return assetService.like(jwtParser.getUserFromJwt(authentication));
+    public List<Asset> getLikeList(Authentication authentication) {
+        return assetService.getUsersLikeAssets(jwtParser.getUserFromJwt(authentication));
+    }
+
+    @PostMapping("/{assetId}/purchase")
+    @ApiOperation(value = "에셋 구매", notes = "Asset 구매")
+    public ApiMessage purchaseAsset(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.purchaseAsset(jwtParser.getUserFromJwt(authentication), assetId);
+    }
+
+    @GetMapping("/purchase")
+    @ApiOperation(value = "내가 구매한한 에셋 조회", notes = "내가 구매한 에셋 조회")
+    @ApiImplicitParam(name = "asset", value = "내가 구매한 에셋 조회", required = true, paramType = "body")
+    public List<Asset> getBoughtList(Authentication authentication) {
+        return assetService.getUsersBoughtAssets(jwtParser.getUserFromJwt(authentication));
     }
 }
