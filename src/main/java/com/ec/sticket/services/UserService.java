@@ -1,5 +1,6 @@
 package com.ec.sticket.services;
 
+import com.ec.sticket.dto.request.auth.FindPasswordRequest;
 import com.ec.sticket.dto.request.user.SignupRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Sticon;
@@ -11,6 +12,7 @@ import com.ec.sticket.repositories.SticonRepository;
 import com.ec.sticket.repositories.UserRepository;
 import com.ec.sticket.repositories.mapping.like.UserLikeUserRepository;
 import com.ec.sticket.util.ApiMessage;
+import com.ec.sticket.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,7 +58,7 @@ public class UserService implements UserDetailsService {
 
     public User findById(int userId) {
         Optional<User> user = userRepository.findById(userId);
-        return user.orElseGet(User::new);
+        return user.orElse(null);
     }
 
     public User findByEmail(String email) {
@@ -109,7 +112,7 @@ public class UserService implements UserDetailsService {
 
     public ApiMessage findLike(int followerId) {
         List<UserLikeUser> userLikeUsers = userLikeUserRepository.findAllByFollowerId(followerId);
-        List<User> followings= userLikeUsers.stream().map(UserLikeUser::getFollowing).collect(Collectors.toList());
+        List<User> followings = userLikeUsers.stream().map(UserLikeUser::getFollowing).collect(Collectors.toList());
         return ApiMessage.getSuccessMessage(followings);
     }
 
@@ -117,21 +120,57 @@ public class UserService implements UserDetailsService {
         return ApiMessage.getSuccessMessage(userLikeUserRepository.getOne(new UserLikeUserKey(followerId, followingId)));
     }
 
+    @Transactional
     public ApiMessage likeUser(int followerId, int followingId) {
-        if(followerId==followingId){
-            return ApiMessage.getFailMessage();
+        if (followerId == followingId) {
+            return ApiMessage.getFailMessage("Can't like myself");
         }
-        userLikeUserRepository.save(new UserLikeUser(new UserLikeUserKey(followerId, followingId)));
-        return ApiMessage.getSuccessMessage();
+
+        User follower = findById(followerId);
+        User following = findById(followingId);
+
+        if (follower == null || following == null) {
+            return ApiMessage.getFailMessage("follower/following doesn't exist");
+        }
+
+        UserLikeUserKey userLikeUserKey = new UserLikeUserKey(followerId, followingId);
+
+        if (userLikeUserRepository.findById(userLikeUserKey).isPresent()) {
+            return ApiMessage.getFailMessage(String.format("User with id [%d] already like User with id [%d]",
+                    followerId, followingId));
+        } else {
+            userLikeUserRepository.save(new UserLikeUser(userLikeUserKey));
+            follower.setFollowingCnt(follower.getFollowingCnt() + 1);
+            following.setFollowerCnt(following.getFollowerCnt() + 1);
+            return ApiMessage.getSuccessMessage();
+
+        }
     }
 
+    @Transactional
     public ApiMessage dislikeUser(int followerId, int followingId) {
-        try {
-            userLikeUserRepository.deleteById(new UserLikeUserKey(followerId, followingId));
+        if (followerId == followingId) {
+            return ApiMessage.getFailMessage("Can't dislike myself");
+        }
+
+        User follower = findById(followerId);
+        User following = findById(followingId);
+
+        if (follower == null || following == null) {
+            return ApiMessage.getFailMessage("follower/following doesn't exist");
+        }
+
+        UserLikeUserKey userLikeUserKey = new UserLikeUserKey(followerId, followingId);
+
+        if (!userLikeUserRepository.findById(userLikeUserKey).isPresent()) {
+            return ApiMessage.getFailMessage(String.format("User with id [%d] doesn't like User with id [%d]",
+                    followerId, followingId));
+        } else {
+            userLikeUserRepository.deleteById(userLikeUserKey);
+            follower.setFollowingCnt(follower.getFollowingCnt() - 1);
+            following.setFollowerCnt(following.getFollowerCnt() - 1);
             return ApiMessage.getSuccessMessage();
-        } catch (Exception e) {
-            log.error(e.toString());
-            return ApiMessage.getFailMessage();
+
         }
     }
 
@@ -162,6 +201,18 @@ public class UserService implements UserDetailsService {
             return ApiMessage.getSuccessMessage();
         } else {
             return ApiMessage.getFailMessage();
+        }
+    }
+
+    public String findRandomPassword(FindPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail());
+        if (user != null) {
+            String randomPassword = RandomUtil.getRandomPassword();
+            user.setPassword(passwordEncoder.encode(randomPassword));
+            userRepository.save(user);
+            return randomPassword;
+        }else{
+            return null;
         }
     }
 

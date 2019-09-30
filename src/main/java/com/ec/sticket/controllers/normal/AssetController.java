@@ -47,14 +47,14 @@ public class AssetController {
 
     @GetMapping("/today")
     @ApiOperation(value = "오늘의 에셋 조회", notes = "오늘의 Asset 리스트를 반환(미구현)")
-    public List<Asset> findTodayAssets() {
-        return assetService.findTodayAssets();
+    public List<Asset> findTodayAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return assetService.findTodayAssets(--page);
     }
 
     @GetMapping("/popular")
     @ApiOperation(value = "인기 에셋 조회", notes = "인기 있는 Asset 리스트를 반환(미구현)")
-    public List<Asset> findPopularAssets() {
-        return assetService.findPopularAssets();
+    public List<Asset> findPopularAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return assetService.findPopularAssets(--page);
     }
 
     @GetMapping("/{assetId}")
@@ -97,8 +97,14 @@ public class AssetController {
 
     @PostMapping("/{assetId}/like")
     @ApiOperation(value = "에셋 좋아요", notes = "Asset 좋아요")
-    public ApiMessage like(@PathVariable("assetId") int assetId, Authentication authentication) {
+    public ApiMessage likeAsset(@PathVariable("assetId") int assetId, Authentication authentication) {
         return assetService.like(jwtParser.getUserFromJwt(authentication), assetId);
+    }
+
+    @PostMapping("/{assetId}/dislike")
+    @ApiOperation(value = "에셋 좋아요 취소", notes = "Asset 좋아요 취소")
+    public ApiMessage dislikeAsset(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.dislike(jwtParser.getUserFromJwt(authentication), assetId);
     }
 
     @GetMapping("/{assetId}/like")

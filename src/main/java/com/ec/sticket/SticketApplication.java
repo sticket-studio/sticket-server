@@ -68,11 +68,14 @@ public class SticketApplication extends SpringBootServletInitializer {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // For Test
     @PostConstruct
     private void init() {
         // User - 유저
         User user1 = new User(User.SnsType.NAVER, "yhc94@naver.com", passwordEncoder.encode("test"), "양희찬1", null);
+        user1.setStick(200);
         User user2 = new User(User.SnsType.GOOGLE, "yhc944@gmail.com", passwordEncoder.encode("test"), "양희찬2", null);
+        user2.setStick(200);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -93,7 +96,7 @@ public class SticketApplication extends SpringBootServletInitializer {
 
         Title title1 = new Title("초보 디자이너");
         Title title2 = new Title("중급 디자이너");
-        Title title3 = new Title("고오급 디자이너");
+        Title title3 = new Title("창조신");
         Title title4 = new Title("초보 이용자");
         Title title5 = new Title("중급 이용자");
         Title title6 = new Title("지름신");

@@ -111,6 +111,8 @@ public class User implements Serializable {
     private String name;
     private LocalDateTime createdTime;
     private String imgUrl;
+    private int followerCnt;
+    private int followingCnt;
     private int stick;
 
     public User() {
@@ -125,6 +127,8 @@ public class User implements Serializable {
         this.name = name;
         this.imgUrl = imgUrl;
         this.createdTime = LocalDateTime.now();
+        this.followerCnt = 0;
+        this.followingCnt = 0;
         this.stick = 0;
     }
 

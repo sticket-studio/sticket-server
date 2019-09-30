@@ -12,6 +12,7 @@ import com.ec.sticket.repositories.mapping.like.UserLikeAssetRepository;
 import com.ec.sticket.repositories.mapping.purchase.UserPurchaseAssetRepository;
 import com.ec.sticket.util.ApiMessage;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class AssetService {
+    private static final int PAGE_SIZE = 20;
 
     // for caching
     private final List<Asset> todayAssets;
@@ -110,30 +112,56 @@ public class AssetService {
         return assetRepository.findAllByQuery(authorId, buyerId, sticonId, landmark, themeId);
     }
 
-    public List<Asset> findTodayAssets() {
+    public List<Asset> findTodayAssets(int page) {
         // Caching today's assets
         if (this.todayAssets.isEmpty() || lastUpdateTodayAssets.isBefore(LocalDate.now())) {
             this.todayAssets.clear();
-            this.todayAssets.addAll(assetRepository.findTodayAssets());
+            this.todayAssets.addAll(assetRepository.findTodayAssets(PageRequest.of(page, PAGE_SIZE)));
         }
         return this.todayAssets;
     }
 
-    public List<Asset> findPopularAssets() {
+    public List<Asset> findPopularAssets(int page) {
         // Caching popular assets
         if (this.popularAssets.isEmpty() || lastUpdatePopularAssets.isBefore(LocalDate.now())) {
-            this.todayAssets.addAll(assetRepository.findPopularAssets());
+            this.todayAssets.addAll(assetRepository.findPopularAssets(PageRequest.of(page, PAGE_SIZE)));
         }
         return this.popularAssets;
     }
 
+    @Transactional
     public ApiMessage like(User user, int assetId) {
         Optional<Asset> asset = assetRepository.findById(assetId);
-        if (asset.isPresent()) {
-            userLikeAssetRepository.save(new UserLikeAsset(new UserLikeAssetKey(user.getId(), assetId)));
-            return ApiMessage.getSuccessMessage();
-        } else {
+        UserLikeAssetKey userLikeAssetKey = new UserLikeAssetKey(user.getId(), assetId);
+
+        if (!asset.isPresent()) {
             return ApiMessage.getFailMessage("The asset with id [" + assetId + "] doesn't exist");
+        } else if (userLikeAssetRepository.findById(userLikeAssetKey).isPresent()) {
+            return ApiMessage.getFailMessage(String.format("User with id [%d] already like Asset with id [%d]",
+                    user.getId(), assetId));
+        } else {
+            userLikeAssetRepository.save(new UserLikeAsset(userLikeAssetKey));
+            assetRepository.save(asset.get());
+            asset.get().setLikeCnt(asset.get().getLikeCnt() + 1);
+            return ApiMessage.getSuccessMessage();
+        }
+    }
+
+    @Transactional
+    public ApiMessage dislike(User user, int assetId) {
+        Optional<Asset> asset = assetRepository.findById(assetId);
+        UserLikeAssetKey userLikeAssetKey = new UserLikeAssetKey(user.getId(), assetId);
+
+        if (!asset.isPresent()) {
+            return ApiMessage.getFailMessage("The asset with id [" + assetId + "] doesn't exist");
+        } else if(!userLikeAssetRepository.findById(userLikeAssetKey).isPresent()){
+            return ApiMessage.getFailMessage(String.format("User with id [%d] don't like Asset with id [%d]",
+                    user.getId(), assetId));
+        } else{
+            userLikeAssetRepository.deleteById(userLikeAssetKey);
+            assetRepository.save(asset.get());
+            asset.get().setLikeCnt(asset.get().getLikeCnt() - 1);
+            return ApiMessage.getSuccessMessage();
         }
     }
 

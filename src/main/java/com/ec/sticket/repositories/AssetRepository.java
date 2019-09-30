@@ -1,6 +1,7 @@
 package com.ec.sticket.repositories;
 
 import com.ec.sticket.models.Asset;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,10 +27,10 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
     @Query(value = "INSERT INTO user_like_asset VALUES(:userId, :assetId, now())", nativeQuery = true)
     void like(@Param("userId") int userId, @Param("assetId") int assetId);
 
-    @Query(value = "SELECT a FROM Asset a INNER JOIN a.userLikeAssets l WHERE l.likeTime = CURRENT_DATE" +
+    @Query(value = "SELECT a FROM Asset a INNER JOIN a.userLikeAssets l " +
             " GROUP BY a ORDER BY COUNT(a) DESC")
-    List<Asset> findTodayAssets();
+    List<Asset> findTodayAssets(Pageable pageable);
 
-    @Query(value = "SELECT a FROM Asset a INNER JOIN a.userLikeAssets l GROUP BY a ORDER BY COUNT(a) DESC")
-    List<Asset> findPopularAssets();
+    @Query(value = "SELECT a FROM Asset a INNER JOIN a.userPurchaseAssets p GROUP BY a ORDER BY COUNT(a) DESC")
+    List<Asset> findPopularAssets(Pageable pageable);
 }
