@@ -101,6 +101,12 @@ public class AssetController {
         return assetService.like(jwtParser.getUserFromJwt(authentication), assetId);
     }
 
+    @GetMapping("/{assetId}/like")
+    @ApiOperation(value = "에셋 좋아요 여부 확인", notes = "Asset 좋아요 여부 확인")
+    public ApiMessage checkLike(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.checkLike(jwtParser.getUserFromJwt(authentication), assetId);
+    }
+
     @GetMapping("/like")
     @ApiOperation(value = "내가 좋아요한 에셋 조회", notes = "내가 좋아요한 에셋 조회")
     public List<Asset> getLikeList(Authentication authentication) {
@@ -111,6 +117,12 @@ public class AssetController {
     @ApiOperation(value = "에셋 구매", notes = "Asset 구매")
     public ApiMessage purchaseAsset(@PathVariable("assetId") int assetId, Authentication authentication) {
         return assetService.purchaseAsset(jwtParser.getUserFromJwt(authentication), assetId);
+    }
+
+    @GetMapping("/{assetId}/purchase")
+    @ApiOperation(value = "에셋 구매 여부 확인", notes = "Asset 구매 여부 확인")
+    public ApiMessage checkPurchase(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.checkPurchase(jwtParser.getUserFromJwt(authentication), assetId);
     }
 
     @GetMapping("/purchase")

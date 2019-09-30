@@ -137,6 +137,15 @@ public class AssetService {
         }
     }
 
+    public ApiMessage checkLike(User user, int assetId) {
+        Optional<Asset> asset = assetRepository.findById(assetId);
+        if (asset.isPresent()) {
+            return ApiMessage.getSuccessMessage(userLikeAssetRepository.findById(new UserLikeAssetKey(user.getId(), assetId)).isPresent());
+        } else {
+            return ApiMessage.getFailMessage("The asset with id [" + assetId + "] doesn't exist");
+        }
+    }
+
     public List<Asset> getUsersLikeAssets(User user) {
         return userLikeAssetRepository.findAllByUser(user).stream().map(UserLikeAsset::getAsset).collect(Collectors.toList());
     }
@@ -155,6 +164,15 @@ public class AssetService {
             }
         } else {
             return ApiMessage.getFailMessage("The asset with id [" + assetId + "] doesn't exist.");
+        }
+    }
+
+    public ApiMessage checkPurchase(User user, int assetId) {
+        Optional<Asset> asset = assetRepository.findById(assetId);
+        if (asset.isPresent()) {
+            return ApiMessage.getSuccessMessage(userPurchaseAssetRepository.findById(new UserPurchaseAssetKey(user.getId(), assetId)).isPresent());
+        } else {
+            return ApiMessage.getFailMessage("The asset with id [" + assetId + "] doesn't exist");
         }
     }
 
