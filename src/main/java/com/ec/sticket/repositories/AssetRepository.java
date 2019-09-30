@@ -13,10 +13,10 @@ import java.util.List;
 public interface AssetRepository extends JpaRepository<Asset, Integer> {
 
     @Query(value = "SELECT a FROM Asset a WHERE (:authorId = -1 or a.author.id = :authorId) AND " +
-            "(:buyerId = -1 or a.author.id = :buyerId) AND " +
+//            "(:buyerId = -1 or a.author.id = :buyerId) AND " +
 //            "(:sticonId  = -1 or a.sticonAssets.sticon = :sticonId) AND " + // sticonId 안됨
             "(:landmark LIKE '' or a.landmark LIKE :landmark) AND " +
-            "(:themeId = -1 or a.theme.id = :themeId) AND :sticonId=:sticonId")
+            "(:themeId = -1 or a.theme.id = :themeId) AND :sticonId=:sticonId AND :buyerId=:buyerId")
     List<Asset> findAllByQuery(int authorId, int buyerId, int sticonId, String landmark, int themeId);
 
     List<Asset> findAllByPriceBetween(int priceLow, int priceHigh);

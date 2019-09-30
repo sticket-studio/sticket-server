@@ -1,13 +1,17 @@
 package com.ec.sticket.models.mapping.compositekey;
 
-import com.ec.sticket.models.Asset;
-import com.ec.sticket.models.User;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 @EqualsAndHashCode
 public class UserLikeAssetKey implements Serializable {
-    private User user;
-    private Asset asset;
+    @Column(name = "user_id")
+    private int userId;
+    @Column(name = "asset_id")
+    private int assetId;
 }

@@ -42,6 +42,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u FROM User u INNER JOIN u.userMotionticonPurchases m WHERE m.id = :motionticonId")
     List<User> findAllByPurchasedMotionticonId(@Param("motionticonId") int motionticonId);
 
-    @Query(value = "SELECT u FROM User u INNER JOIN u.userCashItemPurchases c WHERE c.id = :cashItemId")
-    List<User> findAllByPurchasedCashItemId(@Param("cashItemId") int cashItemId);
+    @Query(value = "SELECT u FROM User u INNER JOIN u.userStickPurchases c WHERE c.id = :stickId")
+    List<User> findAllByPurchasedStickId(@Param("stickId") int stickId);
 }

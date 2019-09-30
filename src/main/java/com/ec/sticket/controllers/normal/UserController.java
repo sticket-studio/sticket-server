@@ -1,21 +1,22 @@
 package com.ec.sticket.controllers.normal;
 
-import com.ec.sticket.dto.request.user.SignupRequest;
 import com.ec.sticket.dto.request.user.UserUpdateRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Quest;
 import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.UserQuest;
-import com.ec.sticket.services.CashItemService;
 import com.ec.sticket.services.QuestService;
+import com.ec.sticket.services.StickService;
 import com.ec.sticket.services.TitleService;
 import com.ec.sticket.services.UserService;
 import com.ec.sticket.services.mapping.UserQuestService;
 import com.ec.sticket.util.ApiMessage;
+import com.ec.sticket.util.JwtParser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -27,17 +28,20 @@ import java.util.List;
 @Api(value = "UserController", description = "유저 컨트롤러")
 public class UserController {
     private final UserService userService;
-    private final CashItemService cashItemService;
+    private final StickService stickService;
     private final QuestService questService;
     private final UserQuestService userQuestService;
     private final TitleService titleService;
+    private final JwtParser jwtParser;
 
-    public UserController(UserService userService, CashItemService cashItemService, QuestService questService, UserQuestService userQuestService, TitleService titleService) {
+    public UserController(UserService userService, StickService stickService, QuestService questService,
+                          UserQuestService userQuestService, TitleService titleService, JwtParser jwtParser) {
         this.userService = userService;
-        this.cashItemService = cashItemService;
+        this.stickService = stickService;
         this.questService = questService;
         this.userQuestService = userQuestService;
         this.titleService = titleService;
+        this.jwtParser = jwtParser;
     }
 
     @GetMapping
@@ -45,14 +49,16 @@ public class UserController {
         return userService.findAll();
     }
 
-    @PostMapping
-    public ApiMessage signup(@RequestBody SignupRequest request){
-        return userService.save(request);
-    }
-
     @GetMapping("/{userId}")
     public User findUserById(@PathVariable("userId") int userId){
         return userService.findById(userId);
+    }
+
+    @GetMapping("/me")
+    @ApiOperation(value = "내 정보 조회 1", notes = "내 정보 조회 2")
+    @ApiImplicitParam(name = "user", value = "내 정보 조회 3")
+    public User findUserByToken(Authentication authentication){
+        return jwtParser.getUserFromJwt(authentication);
     }
 
     //TODO: 미구현
@@ -65,6 +71,14 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ApiMessage deleteUser(@PathVariable("userId") int userId){
         return userService.delete(userId);
+    }
+
+    @GetMapping("/like")
+    @ApiOperation(value = "작가 좋아요 조회 1", notes = "작가 좋아요 조회 2")
+    @ApiImplicitParam(name = "user", value = "작가 좋아요 조회 3")
+    public ApiMessage findLikes(@AuthenticationPrincipal UserDetails userDetails) {
+        int followerId = userService.findByEmail(userDetails.getUsername()).getId();
+        return userService.findLike(followerId);
     }
 
     @GetMapping("/like/{followingId}")

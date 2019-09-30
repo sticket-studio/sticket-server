@@ -1,6 +1,5 @@
 package com.ec.sticket.controllers.normal;
 
-import com.ec.sticket.dto.request.user.AssetLikeRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.services.AssetService;
 import com.ec.sticket.util.ApiMessage;
@@ -68,7 +67,7 @@ public class AssetController {
 
     @PostMapping("/{authorId}")
     @ApiOperation(value = "에셋 저장하기", notes = "Asset 저장")
-    @ApiImplicitParam(name = "asset", value = "생성하는 에셋 내용", required = true,  paramType= "body")
+    @ApiImplicitParam(name = "asset", value = "생성하는 에셋 내용", required = true, paramType = "body")
     public ApiMessage saveAsset(
             @ApiParam(value = "저자 ID", defaultValue = "1", required = true)
             @PathVariable("authorId") int authorId,
@@ -96,11 +95,17 @@ public class AssetController {
         return assetService.findFreeAssets();
     }
 
-    @PostMapping("/like")
+    @PostMapping("/{assetId}/like")
     @ApiOperation(value = "에셋 좋아요", notes = "Asset 좋아요")
-    @ApiImplicitParam(name = "asset", value = "에셋 좋아요", required = true,  paramType= "body")
-    public ApiMessage likeAsset(@RequestBody AssetLikeRequest request, Authentication authentication) {
-        request.setUserId(jwtParser.getUserIdFromJwt(authentication));
-        return assetService.like(request);
+    @ApiImplicitParam(name = "asset", value = "에셋 좋아요", required = true, paramType = "body")
+    public ApiMessage likeAsset(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.like(jwtParser.getUserIdFromJwt(authentication), assetId);
+    }
+
+    @GetMapping("/like")
+    @ApiOperation(value = "내가 좋아요한 에셋 조회", notes = "내가 좋아요한 에셋 조회")
+    @ApiImplicitParam(name = "asset", value = "내가 좋아요한 에셋 조회", required = true, paramType = "body")
+    public List<Asset> likeAsset(Authentication authentication) {
+        return assetService.like(jwtParser.getUserFromJwt(authentication));
     }
 }

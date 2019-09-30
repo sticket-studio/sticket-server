@@ -26,11 +26,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         // Resource에 대한 인증 처리
         http
-                .anonymous().disable()
+//                .anonymous().disable()
                 .authorizeRequests()
-                    .antMatchers("/login*/**", "/api/users/signup").permitAll()
-                    .antMatchers("/api/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                    .antMatchers("/ADM/**").hasRole("ADMIN")
+                    .antMatchers("/api/auth/**").permitAll()
+                    .antMatchers("/api/normal/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                    .antMatchers("/api/ADM/**").hasRole("ADMIN")
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
                 .and().headers().frameOptions().sameOrigin();
     }

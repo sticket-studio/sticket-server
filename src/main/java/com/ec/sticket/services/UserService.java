@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -106,11 +107,20 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public ApiMessage findLike(int followerId) {
+        List<UserLikeUser> userLikeUsers = userLikeUserRepository.findAllByFollowerId(followerId);
+        List<User> followings= userLikeUsers.stream().map(UserLikeUser::getFollowing).collect(Collectors.toList());
+        return ApiMessage.getSuccessMessage(followings);
+    }
+
     public ApiMessage findLike(int followerId, int followingId) {
-        return ApiMessage.getSuccessMessage(userLikeUserRepository.getOne(new UserLikeUserKey(followerId, followingId)).getId());
+        return ApiMessage.getSuccessMessage(userLikeUserRepository.getOne(new UserLikeUserKey(followerId, followingId)));
     }
 
     public ApiMessage likeUser(int followerId, int followingId) {
+        if(followerId==followingId){
+            return ApiMessage.getFailMessage();
+        }
         userLikeUserRepository.save(new UserLikeUser(new UserLikeUserKey(followerId, followingId)));
         return ApiMessage.getSuccessMessage();
     }

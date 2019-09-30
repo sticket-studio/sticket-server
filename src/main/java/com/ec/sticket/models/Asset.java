@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @ApiModel(description = "asset")
-public class Asset {
+public class Asset implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "AssetGenerator")
@@ -42,8 +43,8 @@ public class Asset {
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
-    @OneToMany(mappedBy = "asset")
     @JsonIgnore
+    @OneToMany(mappedBy = "asset")
     private List<UserLikeAsset> userLikeAssets = new ArrayList<>();
 
     @ApiModelProperty(notes = "name for Asset", example = "에셋이름!!")

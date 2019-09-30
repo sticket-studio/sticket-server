@@ -53,7 +53,7 @@ public class SticketApplication extends SpringBootServletInitializer {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private CashItemRepository cashItemRepository;
+    private StickRepository stickRepository;
     @Autowired
     private TitleRepository titleRepository;
     @Autowired
@@ -77,17 +77,17 @@ public class SticketApplication extends SpringBootServletInitializer {
         userRepository.save(user1);
         userRepository.save(user2);
 
-        // CashItem - 캐시 아이템
+        // Stick - 캐시 아이템
 
-        CashItem cashItem1 = new CashItem(10, 1000, null);
-        CashItem cashItem2 = new CashItem(25, 2000, null);
-        CashItem cashItem3 = new CashItem(50, 3000, null);
-        CashItem cashItem4 = new CashItem(80, 5000, null);
+        Stick stick1 = new Stick(10, 1000, null);
+        Stick stick2 = new Stick(25, 2000, null);
+        Stick stick3 = new Stick(50, 3000, null);
+        Stick stick4 = new Stick(80, 5000, null);
 
-        cashItemRepository.save(cashItem1);
-        cashItemRepository.save(cashItem2);
-        cashItemRepository.save(cashItem3);
-        cashItemRepository.save(cashItem4);
+        stickRepository.save(stick1);
+        stickRepository.save(stick2);
+        stickRepository.save(stick3);
+        stickRepository.save(stick4);
 
         // Title - 칭호
 

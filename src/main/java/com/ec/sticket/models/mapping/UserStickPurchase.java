@@ -1,6 +1,6 @@
 package com.ec.sticket.models.mapping;
 
-import com.ec.sticket.models.CashItem;
+import com.ec.sticket.models.Stick;
 import com.ec.sticket.models.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter @Setter
-public class UserCashItemPurchase {
+public class UserStickPurchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,13 +24,13 @@ public class UserCashItemPurchase {
 
     @ManyToOne
     @JoinColumn(name = "cash_id")
-    private CashItem cashItem;
+    private Stick stick;
 
     private LocalDateTime purchaseTime;
 
-    public UserCashItemPurchase(User user, CashItem cashItem, LocalDateTime purchaseTime) {
+    public UserStickPurchase(User user, Stick stick) {
         this.user = user;
-        this.cashItem = cashItem;
-        this.purchaseTime = purchaseTime;
+        this.stick = stick;
+        this.purchaseTime = LocalDateTime.now();
     }
 }
