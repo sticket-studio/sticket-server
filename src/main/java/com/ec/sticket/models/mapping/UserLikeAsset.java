@@ -19,12 +19,12 @@ public class UserLikeAsset {
     @EmbeddedId
     UserLikeAssetKey id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @MapsId("user_id")
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @MapsId("asset_id")
     @JoinColumn(name = "asset_id")
     private Asset asset;

@@ -18,12 +18,12 @@ public class UserLikeUser {
     @EmbeddedId
     UserLikeUserKey id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @MapsId("follower_id")
     @JoinColumn(name = "follower_id")
     private User follower;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @MapsId("following_id")
     @JoinColumn(name = "following_id")
     private User following;
