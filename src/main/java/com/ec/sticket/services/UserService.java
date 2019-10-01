@@ -1,6 +1,7 @@
 package com.ec.sticket.services;
 
 import com.ec.sticket.dto.request.auth.FindPasswordRequest;
+import com.ec.sticket.dto.request.auth.UpdatePasswordRequest;
 import com.ec.sticket.dto.request.user.SignupRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Sticon;
@@ -211,6 +212,16 @@ public class UserService implements UserDetailsService {
             user.setPassword(passwordEncoder.encode(randomPassword));
             userRepository.save(user);
             return randomPassword;
+        }else{
+            return null;
+        }
+    }
+
+    public String updatePassword(User user, UpdatePasswordRequest request) {
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+            userRepository.save(user);
+            return request.getNewPassword();
         }else{
             return null;
         }
