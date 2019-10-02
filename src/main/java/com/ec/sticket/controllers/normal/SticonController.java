@@ -28,7 +28,7 @@ public class SticonController {
         this.jwtParser = jwtParser;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<Sticon> findAllSticon(){
         return sticonService.findAll();
     }
@@ -43,7 +43,7 @@ public class SticonController {
         return sticonService.save(authorId, sticon);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ApiMessage updateSticon(@RequestBody Sticon sticon){
         return sticonService.update(sticon);
     }

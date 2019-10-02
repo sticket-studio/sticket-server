@@ -108,8 +108,8 @@ public class AssetService {
         return assetRepository.findAllByPriceBetween(0, 0);
     }
 
-    public List<Asset> findAssetsByQuery(int authorId, int buyerId, int sticonId, String landmark, int themeId) {
-        return assetRepository.findAllByQuery(authorId, buyerId, sticonId, landmark, themeId);
+    public List<Asset> findAssetsByQuery(int authorId, int buyerId, String landmark, int themeId) {
+        return assetRepository.findAllByQuery(authorId, buyerId, landmark, themeId);
     }
 
     public List<Asset> findTodayAssets(int page) {

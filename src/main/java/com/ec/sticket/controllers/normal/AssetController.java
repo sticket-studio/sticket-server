@@ -29,20 +29,18 @@ public class AssetController {
     }
 
     @GetMapping
-    @ApiOperation(value = "에셋 검색", notes = "authorId, buyerId, sticonId, landmark, themeId")
+    @ApiOperation(value = "에셋 검색", notes = "authorId, buyerId, landmark, themeId")
     public List<Asset> getAssets(
             @ApiParam(value = "찾을 에셋의 저자 ID", defaultValue = "1")
-            @RequestParam(value = "authorId", required = false, defaultValue = "-1") int authorId,
+            @RequestParam(value = "authorId", required = false, defaultValue = "0") int authorId,
             @ApiParam(value = "찾을 에셋의 구매자 ID", defaultValue = "1")
-            @RequestParam(value = "buyerId", required = false, defaultValue = "-1") int buyerId,
-            @ApiParam(value = "찾을 에셋의 Sticon ID", defaultValue = "1")
-            @RequestParam(value = "sticonId", required = false, defaultValue = "-1") int sticonId,
-            @ApiParam(value = "찾을 에셋의 Landmark")
+            @RequestParam(value = "buyerId", required = false, defaultValue = "0") int buyerId,
+            @ApiParam(value = "찾을 에셋의 Landmark", required = false, defaultValue = "EYE_LEFT")
             @RequestParam(value = "landmark", required = false, defaultValue = "") String landmark,
             @ApiParam(value = "찾을 에셋의 Theme ID", defaultValue = "1")
-            @RequestParam(value = "themeId", required = false, defaultValue = "-1") int themeId
+            @RequestParam(value = "themeId", required = false, defaultValue = "0") int themeId
     ) {
-        return assetService.findAssetsByQuery(authorId, buyerId, sticonId, landmark, themeId);
+        return assetService.findAssetsByQuery(authorId, buyerId, landmark, themeId);
     }
 
     @GetMapping("/today")

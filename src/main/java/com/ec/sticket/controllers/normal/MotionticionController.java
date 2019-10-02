@@ -26,7 +26,7 @@ public class MotionticionController {
         this.jwtParser = jwtParser;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<Motionticon> findAllMotionticions(){
         return motionticonService.findAll();
     }
@@ -41,12 +41,12 @@ public class MotionticionController {
         return motionticonService.save(authorId,motionticon);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ApiMessage updtaeMotionticon(@RequestBody Motionticon motionticon){
         return motionticonService.update(motionticon);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping
     public ApiMessage updateMotionticon(@RequestBody Motionticon motionticon){
         return motionticonService.update(motionticon);
     }
