@@ -1,10 +1,11 @@
 package com.ec.sticket.controllers.normal;
 
-import com.ec.sticket.services.CashItemService;
 import com.ec.sticket.services.QuestService;
+import com.ec.sticket.services.StickService;
 import com.ec.sticket.services.TitleService;
 import com.ec.sticket.services.UserService;
 import com.ec.sticket.services.mapping.UserQuestService;
+import com.ec.sticket.util.JwtParser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,10 +21,11 @@ public class UserControllerTest {
 
     @Mock
     private UserService userService;
-    private CashItemService cashItemService;
+    private StickService stickService;
     private QuestService questService;
     private UserQuestService userQuestService;
     private TitleService titleService;
+    private JwtParser jwtParser;
 
     private UserController userController;
 
@@ -34,10 +36,10 @@ public class UserControllerTest {
         MockitoAnnotations.initMocks(this);
 
         userController = new UserController(userService
-                , cashItemService
+                , stickService
                 , questService
                 , userQuestService
-                , titleService);
+                , titleService, jwtParser);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }

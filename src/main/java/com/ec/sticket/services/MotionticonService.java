@@ -1,11 +1,13 @@
 package com.ec.sticket.services;
 
+import com.ec.sticket.dto.request.user.MotionticonLikeRequest;
 import com.ec.sticket.models.Motionticon;
 import com.ec.sticket.models.User;
 import com.ec.sticket.repositories.MotionticonRepository;
 import com.ec.sticket.repositories.UserRepository;
 import com.ec.sticket.util.ApiMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +54,7 @@ public class MotionticonService {
             motion.setName(modified.getName());
             motion.setDescription(modified.getDescription());
             motion.setImgUrl(modified.getImgUrl());
-            motion.setThemes(modified.getThemes());
+            motion.setTheme(modified.getTheme());
             motion.setPrice(modified.getPrice());
             motion.setMotion(modified.getMotion());
             motion.setMotionticonSticons(modified.getMotionticonSticons());
@@ -70,6 +72,17 @@ public class MotionticonService {
             motionticonRepository.deleteById(motionticonId);
             return ApiMessage.getSuccessMessage();
         }else{
+            return ApiMessage.getFailMessage();
+        }
+    }
+
+    @Transactional
+    public ApiMessage like(MotionticonLikeRequest request) {
+        Optional<Motionticon> motionticonOptional = motionticonRepository.findById(request.getMotionticonId());
+        if (motionticonOptional.isPresent()) {
+            motionticonRepository.like(request.getUserId(), request.getMotionticonId());
+            return ApiMessage.getSuccessMessage();
+        } else {
             return ApiMessage.getFailMessage();
         }
     }

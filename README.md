@@ -162,3 +162,39 @@ public class UserAssetPurchase {
 #### 참고 문헌
 
 - [Spring security JWT 연동](https://yookeun.github.io/java/2017/07/23/spring-jwt/)
+
+### 2019.05.24, Git 모든 History에서 특정 파일 삭제
+
+`git filter-branch -f --index-filter 'git rm --cached --ignore-unmatch *.cert' --prune-empty -- --all`
+`git push origin --force --all`
+
+### 2019.05.25, Spring Data JPA Insert query 시 문제
+
+- Modify 에러
+    - SELECT 문에서는 발생하지 않았지만, DB를 수정하는 query에서 발생
+```text
+JdbcSQLException: Method is only allowed for a query. Use execute or executeUpdate instead of executeQuery; SQL statement:
+```
+
+- Modify 에러 해결
+```java
+    // @Modifying annotation 추가
+    @Modifying
+    @Query(value = "INSERT INTO user_like_asset VALUES(:userId, :assetId)", nativeQuery = true)
+    void like(@Param("userId") int userId, @Param("assetId") int assetId);
+```
+
+- 트랜잭션 에러
+```text
+TransactionRequiredException: Executing an update/delete query...`
+```
+- 트랜잭션 에러 해결
+```java
+    // @Transactional Annotation을 추가
+    @Transactional
+    public ApiMessage like(AssetLikeRequest request) {
+        //...
+    }
+```
+    
+

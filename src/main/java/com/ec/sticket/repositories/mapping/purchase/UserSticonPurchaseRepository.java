@@ -1,4 +1,4 @@
-package com.ec.sticket.repositories.mapping;
+package com.ec.sticket.repositories.mapping.purchase;
 
 import com.ec.sticket.models.mapping.UserSticonPurchase;
 import com.ec.sticket.models.mapping.compositekey.UserSticonPurchaseKey;

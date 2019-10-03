@@ -1,5 +1,6 @@
 package com.ec.sticket.models;
 
+import com.ec.sticket.exceptions.ModifyAuthorException;
 import com.ec.sticket.models.mapping.MotionticonSticon;
 import com.ec.sticket.models.mapping.UserMotionticonPurchase;
 import lombok.Getter;
@@ -38,19 +39,12 @@ public class Motionticon {
     private List<SticonAsset> sticonAssets = new ArrayList<>();
     */
 
-
-
     @Enumerated(EnumType.STRING)
     private Motion motion;
 
-    @ManyToMany
-    @JoinTable(name = "motionticon_theme",
-            joinColumns = @JoinColumn(name = "motionticon_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "theme_id",
-                    referencedColumnName = "id")
-    )
-    private List<Theme> themes = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "theme_id")
+    private Theme theme;
 
     private String name;
     private String imgUrl;
@@ -60,13 +54,13 @@ public class Motionticon {
     private int likeCnt;
     private int purchaseCnt;
 
-    public Motionticon(User author, List<MotionticonSticon> motionticonSticons, Motion motion, String name, List<Theme> themes, String imgUrl
-            , int price, String description) {
+    public Motionticon(User author, List<MotionticonSticon> motionticonSticons, Motion motion,
+                       String name, Theme theme, String imgUrl, int price, String description) {
         this.author = author;
         this.motionticonSticons = motionticonSticons;
         this.motion = motion;
         this.name = name;
-        this.themes = themes;
+        this.theme = theme;
         this.imgUrl = imgUrl;
         this.createdTime = LocalDateTime.now();
         this.price = price;
@@ -80,7 +74,7 @@ public class Motionticon {
             author.getSellingMotionticons().add(this);
             this.author = author;
         } else {
-            throw new RuntimeException("Cannot modify author");
+            throw new ModifyAuthorException("Cannot modify author");
         }
     }
 

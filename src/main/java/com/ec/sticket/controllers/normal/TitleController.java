@@ -21,7 +21,7 @@ public class TitleController {
         this.titleService = titleService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<Title> findAllTitles(){
         return titleService.findAll();
     }
@@ -31,12 +31,12 @@ public class TitleController {
         return titleService.findById(titleId);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ApiMessage saveTitle(@RequestBody Title title){
         return titleService.save(title);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ApiMessage updateTitle(@RequestBody Title title){
         return titleService.update(title);
     }

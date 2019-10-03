@@ -21,7 +21,7 @@ public class ThemeController {
         this.themeService = themeService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<Theme> findAllThemes(){
         return themeService.findAll();
     }
@@ -31,12 +31,12 @@ public class ThemeController {
         return themeService.findById(themeId);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ApiMessage saveTheme(@RequestBody Theme theme){
         return themeService.save(theme);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ApiMessage updateTheme(@RequestBody Theme theme){
         return themeService.update(theme);
     }
