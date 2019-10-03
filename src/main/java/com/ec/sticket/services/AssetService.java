@@ -30,8 +30,10 @@ public class AssetService {
     // for caching
     private final List<Asset> todayAssets;
     private final List<Asset> popularAssets;
+    private final List<Asset> newAssets;
     private LocalDate lastUpdateTodayAssets;
     private LocalDate lastUpdatePopularAssets;
+    private LocalDate lastUpdateNewAssets;
 
     private final UserRepository userRepository;
     private final AssetRepository assetRepository;
@@ -47,9 +49,11 @@ public class AssetService {
         this.userPurchaseAssetRepository = userPurchaseAssetRepository;
         this.todayAssets = new ArrayList<>();
         this.popularAssets = new ArrayList<>();
+        this.newAssets = new ArrayList<>();
         // 처음에 업데이트 하기 위해 하루 전으로 세팅
         this.lastUpdateTodayAssets = LocalDate.now().minusDays(1);
         this.lastUpdatePopularAssets = LocalDate.now().minusDays(1);
+        this.lastUpdateNewAssets = LocalDate.now().minusDays(1);
     }
 
     public List<Asset> findAll() {
@@ -123,10 +127,20 @@ public class AssetService {
 
     public List<Asset> findPopularAssets(int page) {
         // Caching popular assets
-        if (this.popularAssets.isEmpty() || lastUpdatePopularAssets.isBefore(LocalDate.now())) {
-            this.todayAssets.addAll(assetRepository.findPopularAssets(PageRequest.of(page, PAGE_SIZE)));
+        if (this.popularAssets.isEmpty() || lastUpdateTodayAssets.isBefore(LocalDate.now())) {
+            this.popularAssets.clear();
+            this.popularAssets.addAll(assetRepository.findPopularAssets(PageRequest.of(page, PAGE_SIZE)));
         }
         return this.popularAssets;
+    }
+
+    public List<Asset> findNewAssets(int page) {
+        // Caching today's assets
+        if (this.newAssets.isEmpty() || lastUpdateNewAssets.isBefore(LocalDate.now())) {
+            this.newAssets.clear();
+            this.newAssets.addAll(assetRepository.findNewAssets(PageRequest.of(page, PAGE_SIZE)));
+        }
+        return this.newAssets;
     }
 
     @Transactional

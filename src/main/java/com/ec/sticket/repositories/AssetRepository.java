@@ -32,4 +32,7 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
 
     @Query(value = "SELECT a FROM Asset a INNER JOIN a.userPurchaseAssets p GROUP BY a ORDER BY COUNT(a) DESC")
     List<Asset> findPopularAssets(Pageable pageable);
+
+    @Query(value = "SELECT a FROM Asset a ORDER BY a.createdTime DESC")
+    List<Asset> findNewAssets(Pageable pageable);
 }

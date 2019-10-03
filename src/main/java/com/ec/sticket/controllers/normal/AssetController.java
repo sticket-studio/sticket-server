@@ -44,15 +44,21 @@ public class AssetController {
     }
 
     @GetMapping("/today")
-    @ApiOperation(value = "오늘의 에셋 조회", notes = "오늘의 Asset 리스트를 반환(미구현)")
+    @ApiOperation(value = "오늘의 에셋 조회", notes = "오늘의 Asset 리스트를 반환")
     public List<Asset> findTodayAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         return assetService.findTodayAssets(--page);
     }
 
     @GetMapping("/popular")
-    @ApiOperation(value = "인기 에셋 조회", notes = "인기 있는 Asset 리스트를 반환(미구현)")
+    @ApiOperation(value = "인기 에셋 조회", notes = "인기 있는 Asset 리스트를 반환")
     public List<Asset> findPopularAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         return assetService.findPopularAssets(--page);
+    }
+
+    @GetMapping("/new")
+    @ApiOperation(value = "신규 에셋 조회", notes = "신규 Asset 리스트를 반환")
+    public List<Asset> findNewAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return assetService.findNewAssets(--page);
     }
 
     @GetMapping("/{assetId}")
