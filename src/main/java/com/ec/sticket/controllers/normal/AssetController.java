@@ -3,43 +3,62 @@ package com.ec.sticket.controllers.normal;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.services.AssetService;
 import com.ec.sticket.util.ApiMessage;
+import com.ec.sticket.util.JwtParser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/normal/assets")
 @Api(value = "AssetController", description = "에셋 컨트롤러")
 public class AssetController {
 
     private final AssetService assetService;
+    private final JwtParser jwtParser;
 
-    public AssetController(AssetService assetService) {
+    public AssetController(AssetService assetService, JwtParser jwtParser) {
         this.assetService = assetService;
+        this.jwtParser = jwtParser;
     }
 
-    @GetMapping("")
-    @ApiOperation(value = "모든 에셋 조회", notes = "모든 Asset 리스트를 반환")
-    public List<Asset> findAllAssets() {
-        return assetService.findAll();
+    @GetMapping
+    @ApiOperation(value = "에셋 검색", notes = "authorId, buyerId, landmark, themeId")
+    public List<Asset> getAssets(
+            @ApiParam(value = "찾을 에셋의 저자 ID", defaultValue = "1")
+            @RequestParam(value = "authorId", required = false, defaultValue = "0") int authorId,
+            @ApiParam(value = "찾을 에셋의 구매자 ID", defaultValue = "1")
+            @RequestParam(value = "buyerId", required = false, defaultValue = "0") int buyerId,
+            @ApiParam(value = "찾을 에셋의 Landmark", required = false, defaultValue = "EYE_LEFT")
+            @RequestParam(value = "landmark", required = false, defaultValue = "") String landmark,
+            @ApiParam(value = "찾을 에셋의 Theme ID", defaultValue = "1")
+            @RequestParam(value = "themeId", required = false, defaultValue = "0") int themeId
+    ) {
+        return assetService.findAssetsByQuery(authorId, buyerId, landmark, themeId);
     }
 
-    //TODO: 인기 에셋 조회 구현
     @GetMapping("/today")
-    @ApiOperation(value = "오늘의 에셋 조회", notes = "오늘의 Asset 리스트를 반환(미구현)")
-    public List<Asset> findTodayAssets() {
-        return assetService.findAll();
+    @ApiOperation(value = "오늘의 에셋 조회", notes = "오늘의 Asset 리스트를 반환")
+    public List<Asset> findTodayAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return assetService.findTodayAssets(--page);
     }
 
-    //TODO: 인기 에셋 조회 구현
     @GetMapping("/popular")
-    @ApiOperation(value = "인기 에셋 조회", notes = "인기 있는 Asset 리스트를 반환(미구현)")
-    public List<Asset> findPopularAssets() {
-        return assetService.findAll();
+    @ApiOperation(value = "인기 에셋 조회", notes = "인기 있는 Asset 리스트를 반환")
+    public List<Asset> findPopularAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return assetService.findPopularAssets(--page);
+    }
+
+    @GetMapping("/new")
+    @ApiOperation(value = "신규 에셋 조회", notes = "신규 Asset 리스트를 반환")
+    public List<Asset> findNewAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return assetService.findNewAssets(--page);
     }
 
     @GetMapping("/{assetId}")
@@ -52,7 +71,7 @@ public class AssetController {
 
     @PostMapping("/{authorId}")
     @ApiOperation(value = "에셋 저장하기", notes = "Asset 저장")
-    @ApiImplicitParam(name = "asset", value = "생성하는 에셋 내용", required = true,  paramType= "body")
+    @ApiImplicitParam(name = "asset", value = "생성하는 에셋 내용", required = true, paramType = "body")
     public ApiMessage saveAsset(
             @ApiParam(value = "저자 ID", defaultValue = "1", required = true)
             @PathVariable("authorId") int authorId,
@@ -60,10 +79,10 @@ public class AssetController {
         return assetService.save(authorId, asset);
     }
 
-    @PutMapping("")
+    @PutMapping("/{assetId}")
     @ApiOperation(value = "에셋 수정", notes = "Asset 수정")
-    public ApiMessage updateAsset(@RequestBody Asset asset) {
-        return assetService.update(asset);
+    public ApiMessage updateAsset(@PathVariable int assetId, @RequestBody Asset asset) {
+        return assetService.update(assetId, asset);
     }
 
     @DeleteMapping("/{assetId}")
@@ -80,43 +99,46 @@ public class AssetController {
         return assetService.findFreeAssets();
     }
 
-    @GetMapping("/author/{authorId}")
-    @ApiOperation(value = "에셋 찾기 : AuthorId", notes = "Author ID로 Asset 찾기")
-    public List<Asset> getAssetsByAuthorId(
-            @ApiParam(value = "찾을 에셋의 저자 ID", defaultValue = "1", required = true)
-            @PathVariable("authorId") int authorId) {
-        return assetService.findAssetsByAuthorId(authorId);
+    @PostMapping("/{assetId}/like")
+    @ApiOperation(value = "에셋 좋아요", notes = "Asset 좋아요")
+    public ApiMessage likeAsset(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.like(jwtParser.getUserFromJwt(authentication), assetId);
     }
 
-    @GetMapping("/buyer/{buyerId}")
-    @ApiOperation(value = "에셋 찾기 : buyerId", notes = "Buyer ID로 Asset 찾기")
-    public List<Asset> getAssetsByBuyerId(
-            @ApiParam(value = "찾을 에셋의 구매자 ID", defaultValue = "1", required = true)
-            @PathVariable("buyerId") int buyerId) {
-        return assetService.findAssetsByBuyerId(buyerId);
+    @PostMapping("/{assetId}/dislike")
+    @ApiOperation(value = "에셋 좋아요 취소", notes = "Asset 좋아요 취소")
+    public ApiMessage dislikeAsset(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.dislike(jwtParser.getUserFromJwt(authentication), assetId);
     }
 
-    @GetMapping("/sticon/{sticonId}")
-    @ApiOperation(value = "에셋 찾기 : sticonId", notes = "Sticon ID로 Asset 찾기")
-    public List<Asset> getAssetsBySticonId(
-            @ApiParam(value = "찾을 에셋의 스티커 ID", defaultValue = "1", required = true)
-            @PathVariable("sticonId") int sticonId) {
-        return assetService.findAssetsBySticonId(sticonId);
+    @GetMapping("/{assetId}/like")
+    @ApiOperation(value = "에셋 좋아요 여부 확인", notes = "Asset 좋아요 여부 확인")
+    public ApiMessage checkLike(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.checkLike(jwtParser.getUserFromJwt(authentication), assetId);
     }
 
-    @GetMapping("/landmark/{landmark}")
-    @ApiOperation(value = "에셋 찾기 : landmarkId", notes = "Landmark ID로 Asset 찾기")
-    public List<Asset> getAssetsByLandmarkId(
-            @ApiParam(value = "찾을 에셋의 랜드마크 ID", defaultValue = "EYE_LEFT", required = true)
-            @PathVariable("landmark") Asset.Landmark landmark) {
-        return assetService.findAssetsByLandmark(landmark);
+    @GetMapping("/like")
+    @ApiOperation(value = "내가 좋아요한 에셋 조회", notes = "내가 좋아요한 에셋 조회")
+    public List<Asset> getLikeList(Authentication authentication) {
+        return assetService.getUsersLikeAssets(jwtParser.getUserFromJwt(authentication));
     }
 
-    @GetMapping("/theme/{themeId}")
-    @ApiOperation(value = "에셋 찾기 : sticonId", notes = "Asset ID로 Asset 찾기")
-    public List<Asset> getAssetsByAssetId(
-            @ApiParam(value = "찾을 에셋의 테마 ID", defaultValue = "1", required = true)
-            @PathVariable("themeId") int themeId) {
-        return assetService.findAssetsByThemeId(themeId);
+    @PostMapping("/{assetId}/purchase")
+    @ApiOperation(value = "에셋 구매", notes = "Asset 구매")
+    public ApiMessage purchaseAsset(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.purchaseAsset(jwtParser.getUserFromJwt(authentication), assetId);
+    }
+
+    @GetMapping("/{assetId}/purchase")
+    @ApiOperation(value = "에셋 구매 여부 확인", notes = "Asset 구매 여부 확인")
+    public ApiMessage checkPurchase(@PathVariable("assetId") int assetId, Authentication authentication) {
+        return assetService.checkPurchase(jwtParser.getUserFromJwt(authentication), assetId);
+    }
+
+    @GetMapping("/purchase")
+    @ApiOperation(value = "내가 구매한한 에셋 조회", notes = "내가 구매한 에셋 조회")
+    @ApiImplicitParam(name = "asset", value = "내가 구매한 에셋 조회", required = true, paramType = "body")
+    public List<Asset> getBoughtList(Authentication authentication) {
+        return assetService.getUsersBoughtAssets(jwtParser.getUserFromJwt(authentication));
     }
 }

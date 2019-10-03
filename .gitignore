@@ -101,6 +101,7 @@ local.properties
 *.jks
 *.cer
 *.yaml
+/**/*config/**
 
 ### Java template
 *.class

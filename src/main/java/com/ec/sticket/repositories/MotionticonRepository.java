@@ -2,6 +2,7 @@ package com.ec.sticket.repositories;
 
 import com.ec.sticket.models.Motionticon;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -28,7 +29,10 @@ public interface MotionticonRepository extends JpaRepository<Motionticon, Intege
     */
 
 
-    @Query(value = "SELECT m FROM Motionticon m INNER JOIN m.themes t WHERE t.id = :themeId")
+    @Query(value = "SELECT m FROM Motionticon m WHERE m.theme = :themeId")
     List<Motionticon> findAllByThemeId(@Param("themeId") int themeId);
 
+    @Modifying
+    @Query(value = "INSERT INTO user_like_motionticon VALUES(:userId, :motionticonId)", nativeQuery = true)
+    void like(@Param("userId") int userId, @Param("motionticonId") int motionticonId);
 }

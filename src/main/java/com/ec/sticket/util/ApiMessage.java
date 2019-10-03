@@ -1,12 +1,17 @@
 package com.ec.sticket.util;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter @Setter
+@AllArgsConstructor
 public class ApiMessage {
+    private static final ApiMessage SUCCESS_MESSAGE = new ApiMessage(Status.SUCCESS);
+    private static final ApiMessage FAILURE_MESSAGE = new ApiMessage(Status.FAIL);
+
     private final int code;
-    private final String message;
+    private final Object message;
 
     public ApiMessage(Status status) {
         this.code = status.getCode();
@@ -14,11 +19,18 @@ public class ApiMessage {
     }
 
     public static ApiMessage getSuccessMessage(){
-        return new ApiMessage(Status.SUCCESS);
+        return SUCCESS_MESSAGE;
+    }
+
+    public static ApiMessage getSuccessMessage(Object message){
+        return new ApiMessage(Status.SUCCESS.code, message);
     }
 
     public static ApiMessage getFailMessage(){
-        return new ApiMessage(Status.FAIL);
+        return FAILURE_MESSAGE;
+    }
+    public static ApiMessage getFailMessage(Object message){
+        return new ApiMessage(Status.FAIL.code, message);
     }
 
     public static ApiMessage getUnauthorizationMessage(){
@@ -29,7 +41,7 @@ public class ApiMessage {
     @Getter
     public enum Status{
         SUCCESS(200, "Success"), UNAUTHORIZATION(403, "You don't have authorization")
-        , FAIL(403, "Fail");
+        , FAIL(400, "Fail");
 
         private int code;
         private String message;

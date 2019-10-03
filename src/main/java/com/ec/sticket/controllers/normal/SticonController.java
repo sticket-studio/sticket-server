@@ -1,12 +1,19 @@
 package com.ec.sticket.controllers.normal;
 
+import com.ec.sticket.dto.request.user.SticonLikeRequest;
 import com.ec.sticket.models.Sticon;
+import com.ec.sticket.models.mapping.UserSticonPurchase;
 import com.ec.sticket.services.SticonService;
 import com.ec.sticket.util.ApiMessage;
+import com.ec.sticket.util.JwtParser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/normal/sticons")
@@ -14,12 +21,14 @@ import java.util.List;
 public class SticonController {
 
     private final SticonService sticonService;
+    private final JwtParser jwtParser;
 
-    public SticonController(SticonService sticonService) {
+    public SticonController(SticonService sticonService, JwtParser jwtParser) {
         this.sticonService = sticonService;
+        this.jwtParser = jwtParser;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<Sticon> findAllSticon(){
         return sticonService.findAll();
     }
@@ -34,7 +43,7 @@ public class SticonController {
         return sticonService.save(authorId, sticon);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ApiMessage updateSticon(@RequestBody Sticon sticon){
         return sticonService.update(sticon);
     }
@@ -49,9 +58,10 @@ public class SticonController {
         return sticonService.getSticonsByAuthorId(authorId);
     }
 
-    @GetMapping("/buyer/{buyerId}")
-    public List<Sticon> getSticonsByBuyerId(@PathVariable("buyerId") int buyerId) {
-        return sticonService.getSticonsByBuyerId(buyerId);
+    @GetMapping("/buyer")
+    public List<Sticon> getSticonsByBuyerId(Authentication authentication) {
+        return jwtParser.getUserFromJwt(authentication).getUserSticonPurchases()
+                .stream().map(UserSticonPurchase::getSticon).collect(Collectors.toList());
     }
 
     @GetMapping("/asset/{assetId}")
@@ -67,5 +77,13 @@ public class SticonController {
     @GetMapping("/theme/{themeId}")
     public List<Sticon> getSticonsByThemeId(@PathVariable("themeId") int themeId) {
         return sticonService.getSticonsByThemeId(themeId);
+    }
+
+    @PostMapping("/like")
+    @ApiOperation(value = "스티콘 좋아요", notes = "Sticon 좋아요")
+    @ApiImplicitParam(name = "sticon", value = "스티콘 좋아요", required = true,  paramType= "body")
+    public ApiMessage likeSticon(@RequestBody SticonLikeRequest request, Authentication authentication) {
+        request.setUserId(jwtParser.getUserIdFromJwt(authentication));
+        return sticonService.like(request);
     }
 }

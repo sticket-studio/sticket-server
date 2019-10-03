@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,100 +14,105 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<UserCashItemPurchase> userCashItemPurchases = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserStickPurchase> userStickPurchases = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<UserAssetPurchase> userAssetPurchases = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserPurchaseAsset> userPurchaseAssets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
     @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserSticonPurchase> userSticonPurchases = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
     @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserMotionticonPurchase> userMotionticonPurchases = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_like_asset",
-            joinColumns = @JoinColumn(name = "user_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "asset_id",
-                    referencedColumnName = "id")
-    )
     @JsonIgnore
-    private List<Asset> likeAssets = new ArrayList<>();
+    @OneToMany(mappedBy = "following")
+    private List<UserLikeUser> followers = new ArrayList<>();
 
-    @ManyToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "follower")
+    private List<UserLikeUser> followings = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<UserLikeAsset> userLikeAssets = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_like_sticon",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "sticon_id",
                     referencedColumnName = "id")
     )
-    @JsonIgnore
     private List<Sticon> likeSticons = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_like_montionticon",
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_like_motionticon",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "montionticon_id",
+            inverseJoinColumns = @JoinColumn(name = "motionticon_id",
                     referencedColumnName = "id")
     )
-    @JsonIgnore
     private List<Motionticon> likeMotionticons = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
     @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserQuest> userQuests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author"
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY
             // 판매자가 삭제돼도 구매자들을 위해 남아있어야한다.
             // 하지만 default값이 false이므로 주석처리해도 됨
             // 근데 사실 유저는 삭제되지 않을 예정.
             // 탈퇴했을 시엔 개인정보만 지우고, '탈퇴한유저'라는 값을 넣을 예정임
             /*, orphanRemoval = false*/)
-    @JsonIgnore
     private List<Asset> sellingAssets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author"
-            /*, orphanRemoval = false*/)
     @JsonIgnore
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY
+            /*, orphanRemoval = false*/)
     private List<Sticon> sellingSticons = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author"
-            /*, orphanRemoval = false*/)
     @JsonIgnore
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY
+            /*, orphanRemoval = false*/)
     private List<Motionticon> sellingMotionticons = new ArrayList<>();
 
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_title",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "title_id",
                     referencedColumnName = "id")
     )
-    @JsonIgnore
     List<Title> titles = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private SnsType snsType;
 
+    @Column(unique = true)
     private String email;
     @JsonIgnore
     private String password;
     private String name;
     private LocalDateTime createdTime;
     private String imgUrl;
+    private int followerCnt;
+    private int followingCnt;
     private int stick;
 
     public User() {
@@ -121,6 +127,8 @@ public class User {
         this.name = name;
         this.imgUrl = imgUrl;
         this.createdTime = LocalDateTime.now();
+        this.followerCnt = 0;
+        this.followingCnt = 0;
         this.stick = 0;
     }
 

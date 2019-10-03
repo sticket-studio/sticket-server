@@ -23,7 +23,7 @@ public class QuestController {
         this.userService = userService;
     }
 
-    @GetMapping("")
+    @GetMapping
     @ApiOperation(value = "퀘스트 찾기", notes = "모든 퀘스트 찾기")
     public List<Quest> findAllQuests(){
         return questService.findAll();
@@ -35,13 +35,13 @@ public class QuestController {
         return questService.findById(questId);
     }
 
-    @PostMapping("")
+    @PostMapping
     @ApiOperation(value = "퀘스트 저장", notes = "퀘스트 저장")
     public ApiMessage saveQuest(@RequestBody Quest quest){
         return questService.save(quest);
     }
 
-    @PutMapping("")
+    @PutMapping
     @ApiOperation(value = "퀘스트 수정", notes = "퀘스트 수정")
     public ApiMessage updateQuest(@RequestBody Quest quest){
         return questService.update(quest);

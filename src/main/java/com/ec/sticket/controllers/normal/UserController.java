@@ -1,20 +1,24 @@
 package com.ec.sticket.controllers.normal;
 
-import com.ec.sticket.dto.request.user.*;
+import com.ec.sticket.dto.request.user.UserUpdateRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Quest;
 import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.UserQuest;
-import com.ec.sticket.services.CashItemService;
 import com.ec.sticket.services.QuestService;
+import com.ec.sticket.services.StickService;
 import com.ec.sticket.services.TitleService;
 import com.ec.sticket.services.UserService;
 import com.ec.sticket.services.mapping.UserQuestService;
 import com.ec.sticket.util.ApiMessage;
+import com.ec.sticket.util.JwtParser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,20 +28,23 @@ import java.util.List;
 @Api(value = "UserController", description = "유저 컨트롤러")
 public class UserController {
     private final UserService userService;
-    private final CashItemService cashItemService;
+    private final StickService stickService;
     private final QuestService questService;
     private final UserQuestService userQuestService;
     private final TitleService titleService;
+    private final JwtParser jwtParser;
 
-    public UserController(UserService userService, CashItemService cashItemService, QuestService questService, UserQuestService userQuestService, TitleService titleService) {
+    public UserController(UserService userService, StickService stickService, QuestService questService,
+                          UserQuestService userQuestService, TitleService titleService, JwtParser jwtParser) {
         this.userService = userService;
-        this.cashItemService = cashItemService;
+        this.stickService = stickService;
         this.questService = questService;
         this.userQuestService = userQuestService;
         this.titleService = titleService;
+        this.jwtParser = jwtParser;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<User> findAllUsers(){
         return userService.findAll();
     }
@@ -47,8 +54,15 @@ public class UserController {
         return userService.findById(userId);
     }
 
+    @GetMapping("/me")
+    @ApiOperation(value = "내 정보 조회 1", notes = "내 정보 조회 2")
+    @ApiImplicitParam(name = "user", value = "내 정보 조회 3")
+    public User findUserByToken(Authentication authentication){
+        return jwtParser.getUserFromJwt(authentication);
+    }
+
     //TODO: 미구현
-    @PutMapping("")
+    @PutMapping
     public ApiMessage updateUser(@RequestBody UserUpdateRequest user){
         return null;
 //        return userService.update(user);
@@ -59,38 +73,36 @@ public class UserController {
         return userService.delete(userId);
     }
 
-    //TODO: 미구현
-    @PostMapping("/like/user")
-    @ApiOperation(value = "작가 좋아요", notes = "User 좋아요")
-    @ApiImplicitParam(name = "user", value = "작가 좋아요", required = true,  paramType= "body")
-    public ApiMessage deleteAsset(@RequestBody UserLikeRequest request) {
-//        return userService.like(request);
-        return null;
+    @GetMapping("/like")
+    @ApiOperation(value = "작가 좋아요 조회 1", notes = "작가 좋아요 조회 2")
+    @ApiImplicitParam(name = "user", value = "작가 좋아요 조회 3")
+    public ApiMessage findLikes(@AuthenticationPrincipal UserDetails userDetails) {
+        int followerId = userService.findByEmail(userDetails.getUsername()).getId();
+        return userService.findLike(followerId);
     }
 
-    //TODO: 미구현
-    @PostMapping("/like/asset")
-    @ApiOperation(value = "에셋 좋아요", notes = "Asset 좋아요")
-    @ApiImplicitParam(name = "asset", value = "에셋 좋아요", required = true,  paramType= "body")
-    public ApiMessage likeAsset(@RequestBody AssetLikeRequest request) {
-        return userService.likeAsset(request);
+    @GetMapping("/like/{followingId}")
+    @ApiOperation(value = "작가 좋아요 조회 1", notes = "작가 좋아요 조회 2")
+    @ApiImplicitParam(name = "user", value = "작가 좋아요 조회 3")
+    public ApiMessage findLikes(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int followingId) {
+        int followerId = userService.findByEmail(userDetails.getUsername()).getId();
+        return userService.findLike(followerId, followingId);
     }
 
-    //TODO: 미구현
-    @PostMapping("/like/sticon")
-    @ApiOperation(value = "스티콘 좋아요", notes = "Sticon 좋아요")
-    @ApiImplicitParam(name = "sticon", value = "스티콘 좋아요", required = true,  paramType= "body")
-    public ApiMessage likeSticon(@RequestHeader(value = "Authorization", required = false) String jwtToken,
-                                 @RequestBody SticonLikeRequest request) {
-        return userService.likeSticon(request);
+    @PostMapping("/like/{followingId}")
+    @ApiOperation(value = "작가 좋아요", notes = "작가 좋아요")
+    @ApiImplicitParam(name = "user", value = "작가 좋아요")
+    public ApiMessage like(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int followingId) {
+        int followerId = userService.findByEmail(userDetails.getUsername()).getId();
+        return userService.likeUser(followerId, followingId);
     }
 
-    //TODO: 미구현
-    @PostMapping("/like/motionticon")
-    @ApiOperation(value = "모션티콘 좋아요", notes = "Motionticon 좋아요")
-    @ApiImplicitParam(name = "motionticon", value = "모션티콘 좋아요", required = true,  paramType= "body")
-    public ApiMessage likeMotionticon(@RequestBody MotionticonLikeRequest request) {
-        return userService.likeMotionticon(request);
+    @DeleteMapping("/dislike/{followingId}")
+    @ApiOperation(value = "작가 좋아요 취소", notes = "작가 좋아요 취소")
+    @ApiImplicitParam(name = "user", value = "작가 좋아요 취소")
+    public ApiMessage dislike(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int followingId) {
+        int followerId = userService.findByEmail(userDetails.getUsername()).getId();
+        return userService.dislikeUser(followerId, followingId);
     }
 
     @PostMapping("/{userId}/asset")
