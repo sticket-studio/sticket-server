@@ -38,8 +38,8 @@ public class SticketApplicationTests {
     @Test
     public void contextLoads() {
         // User - 유저
-        User user1 = new User(User.SnsType.NAVER, "yhc94@naver.com", passwordEncoder.encode("test"), "양희찬1", null);
-        User user2 = new User(User.SnsType.GOOGLE, "yhc944@gmail.com2", passwordEncoder.encode("test"), "양희찬2", null);
+        User user1 = new User(User.SnsType.NAVER, "yhc94@naver.com", passwordEncoder.encode("test"), "양희찬1", null, null);
+        User user2 = new User(User.SnsType.GOOGLE, "yhc944@gmail.com2", passwordEncoder.encode("test"), "양희찬2", null, null);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -149,7 +149,7 @@ public class SticketApplicationTests {
         sticonAssets1.add(sticonAsset2);
         sticonAssets1.add(sticonAsset3);
 
-        Sticon sticon1 = new Sticon(user1, sticonAssets1, theme1, "궁예","대표이미지 URL", 6, "안대 두개 한 궁예");
+        Sticon sticon1 = new Sticon(user1, sticonAssets1, theme1, "궁예", "대표이미지 URL", 6, "안대 두개 한 궁예");
 
         sticonRepository.save(sticon1);
 

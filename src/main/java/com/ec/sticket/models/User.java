@@ -1,5 +1,6 @@
 package com.ec.sticket.models;
 
+import com.ec.sticket.dto.request.user.UserUpdateRequest;
 import com.ec.sticket.models.mapping.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -109,6 +110,7 @@ public class User implements Serializable {
     @JsonIgnore
     private String password;
     private String name;
+    private String description;
     private LocalDateTime createdTime;
     private String imgUrl;
     private int followerCnt;
@@ -120,11 +122,12 @@ public class User implements Serializable {
         stick = 0;
     }
 
-    public User(SnsType snsType, String email, String password, String name, String imgUrl) {
+    public User(SnsType snsType, String email, String password, String name, String description, String imgUrl) {
         this.snsType = snsType;
         this.email = email;
         this.password = password;
         this.name = name;
+        this.description = description;
         this.imgUrl = imgUrl;
         this.createdTime = LocalDateTime.now();
         this.followerCnt = 0;
@@ -172,11 +175,13 @@ public class User implements Serializable {
         }
     }
 
-    public void update(User modified) {
-        this.email = modified.getEmail();
-        this.password = modified.getPassword();
-        this.name = modified.getName();
-        this.imgUrl = modified.getImgUrl();
+    public void update(UserUpdateRequest modified) {
+        if (modified.getName() != null)
+            this.name = modified.getName();
+        if (modified.getImgUrl() != null)
+            this.imgUrl = modified.getImgUrl();
+        if (modified.getDescription() != null)
+            this.description = modified.getDescription();
     }
 
     public enum SnsType {

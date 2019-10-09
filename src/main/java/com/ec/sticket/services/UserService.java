@@ -3,6 +3,7 @@ package com.ec.sticket.services;
 import com.ec.sticket.dto.request.auth.FindPasswordRequest;
 import com.ec.sticket.dto.request.auth.UpdatePasswordRequest;
 import com.ec.sticket.dto.request.user.SignupRequest;
+import com.ec.sticket.dto.request.user.UserUpdateRequest;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.User;
@@ -69,7 +70,7 @@ public class UserService implements UserDetailsService {
     public ApiMessage save(SignupRequest request) {
         if (request != null) {
             User user = new User(User.SnsType.NONE, request.getEmail(), passwordEncoder.encode(request.getPassword()),
-                    request.getName(), null);
+                    request.getName(), request.getDescription(), null);
             userRepository.save(user);
             return ApiMessage.getSuccessMessage();
         } else {
@@ -77,8 +78,8 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public ApiMessage update(User modified) {
-        Optional<User> userOptional = userRepository.findById(modified.getId());
+    public ApiMessage update(int userId, UserUpdateRequest modified) {
+        Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
@@ -87,7 +88,7 @@ public class UserService implements UserDetailsService {
             userRepository.save(user);
             return ApiMessage.getSuccessMessage();
         } else {
-            return ApiMessage.getFailMessage();
+            return ApiMessage.getFailMessage(String.format("The user with id [%d] doesn't exist", userId));
         }
     }
 

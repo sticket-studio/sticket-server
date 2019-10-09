@@ -45,31 +45,30 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> findAllUsers(){
+    public List<User> findAllUsers() {
         return userService.findAll();
     }
 
     @GetMapping("/{userId}")
-    public User findUserById(@PathVariable("userId") int userId){
+    public User findUserById(@PathVariable("userId") int userId) {
         return userService.findById(userId);
     }
 
     @GetMapping("/me")
     @ApiOperation(value = "내 정보 조회 1", notes = "내 정보 조회 2")
     @ApiImplicitParam(name = "user", value = "내 정보 조회 3")
-    public User findUserByToken(Authentication authentication){
+    public User findUserByToken(Authentication authentication) {
         return jwtParser.getUserFromJwt(authentication);
     }
 
-    //TODO: 미구현
     @PutMapping
-    public ApiMessage updateUser(@RequestBody UserUpdateRequest user){
-        return null;
-//        return userService.update(user);
+    public ApiMessage updateUser(Authentication authentication, @RequestBody UserUpdateRequest user) {
+        int userId = jwtParser.getUserIdFromJwt(authentication);
+        return userService.update(userId, user);
     }
 
     @DeleteMapping("/{userId}")
-    public ApiMessage deleteUser(@PathVariable("userId") int userId){
+    public ApiMessage deleteUser(@PathVariable("userId") int userId) {
         return userService.delete(userId);
     }
 
@@ -106,12 +105,12 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/asset")
-    public ApiMessage addSellingAsset(@PathVariable("userId") int userId, @RequestBody Asset asset){
-        return userService.addSellingAsset(userId,asset);
+    public ApiMessage addSellingAsset(@PathVariable("userId") int userId, @RequestBody Asset asset) {
+        return userService.addSellingAsset(userId, asset);
     }
 
     @PostMapping("/{userId}/sticon")
-    public ApiMessage addSellingSticon(@PathVariable("userId") int userId, @RequestBody Sticon sticon){
+    public ApiMessage addSellingSticon(@PathVariable("userId") int userId, @RequestBody Sticon sticon) {
         return userService.addSellingSticon(userId, sticon);
     }
 
