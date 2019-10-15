@@ -1,6 +1,7 @@
 package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.dto.request.user.UserUpdateRequest;
+import com.ec.sticket.dto.response.user.UserPageResponse;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Quest;
 import com.ec.sticket.models.Sticon;
@@ -50,15 +51,15 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User findUserById(@PathVariable("userId") int userId) {
-        return userService.findById(userId);
+    public UserPageResponse findUserById(@PathVariable("userId") int userId) {
+        return UserPageResponse.mapping(userService.findById(userId));
     }
 
     @GetMapping("/me")
     @ApiOperation(value = "내 정보 조회 1", notes = "내 정보 조회 2")
     @ApiImplicitParam(name = "user", value = "내 정보 조회 3")
-    public User findUserByToken(Authentication authentication) {
-        return jwtParser.getUserFromJwt(authentication);
+    public UserPageResponse findUserByToken(Authentication authentication) {
+        return UserPageResponse.mapping(jwtParser.getUserFromJwt(authentication));
     }
 
     @PutMapping
