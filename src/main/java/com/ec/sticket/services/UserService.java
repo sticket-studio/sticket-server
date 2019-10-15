@@ -112,10 +112,9 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public ApiMessage findLike(int followerId) {
+    public List<User> findLike(int followerId) {
         List<UserLikeUser> userLikeUsers = userLikeUserRepository.findAllByFollowerId(followerId);
-        List<User> followings = userLikeUsers.stream().map(UserLikeUser::getFollowing).collect(Collectors.toList());
-        return ApiMessage.getSuccessMessage(followings);
+        return userLikeUsers.stream().map(UserLikeUser::getFollowing).collect(Collectors.toList());
     }
 
     public ApiMessage findLike(int followerId, int followingId) {
