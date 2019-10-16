@@ -1,5 +1,6 @@
 package com.ec.sticket.controllers.normal;
 
+import com.ec.sticket.dto.response.asset.SimpleAssetResponse;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.services.AssetService;
 import com.ec.sticket.util.ApiMessage;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -30,7 +32,7 @@ public class AssetController {
 
     @GetMapping
     @ApiOperation(value = "에셋 검색", notes = "authorId, buyerId, landmark, themeId")
-    public List<Asset> getAssets(
+    public List<SimpleAssetResponse> getAssets(
             @ApiParam(value = "찾을 에셋의 저자 ID", defaultValue = "1")
             @RequestParam(value = "authorId", required = false, defaultValue = "0") int authorId,
             @ApiParam(value = "찾을 에셋의 구매자 ID", defaultValue = "1")
@@ -40,25 +42,29 @@ public class AssetController {
             @ApiParam(value = "찾을 에셋의 Theme ID", defaultValue = "1")
             @RequestParam(value = "themeId", required = false, defaultValue = "0") int themeId
     ) {
-        return assetService.findAssetsByQuery(authorId, buyerId, landmark, themeId);
+        return assetService.findAssetsByQuery(authorId, buyerId, landmark, themeId)
+                .stream().map(SimpleAssetResponse::mapping).collect(Collectors.toList());
     }
 
     @GetMapping("/today")
     @ApiOperation(value = "오늘의 에셋 조회", notes = "오늘의 Asset 리스트를 반환")
-    public List<Asset> findTodayAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-        return assetService.findTodayAssets(--page);
+    public List<SimpleAssetResponse> findTodayAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return assetService.findTodayAssets(--page)
+                .stream().map(SimpleAssetResponse::mapping).collect(Collectors.toList());
     }
 
     @GetMapping("/popular")
     @ApiOperation(value = "인기 에셋 조회", notes = "인기 있는 Asset 리스트를 반환")
-    public List<Asset> findPopularAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-        return assetService.findPopularAssets(--page);
+    public List<SimpleAssetResponse> findPopularAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return assetService.findPopularAssets(--page)
+                .stream().map(SimpleAssetResponse::mapping).collect(Collectors.toList());
     }
 
     @GetMapping("/new")
     @ApiOperation(value = "신규 에셋 조회", notes = "신규 Asset 리스트를 반환")
-    public List<Asset> findNewAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-        return assetService.findNewAssets(--page);
+    public List<SimpleAssetResponse> findNewAssets(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return assetService.findNewAssets(--page)
+                .stream().map(SimpleAssetResponse::mapping).collect(Collectors.toList());
     }
 
     @GetMapping("/{assetId}")
@@ -119,8 +125,9 @@ public class AssetController {
 
     @GetMapping("/like")
     @ApiOperation(value = "내가 좋아요한 에셋 조회", notes = "내가 좋아요한 에셋 조회")
-    public List<Asset> getLikeList(Authentication authentication) {
-        return assetService.getUsersLikeAssets(jwtParser.getUserFromJwt(authentication));
+    public List<SimpleAssetResponse> getLikeList(Authentication authentication) {
+        return assetService.getUsersLikeAssets(jwtParser.getUserFromJwt(authentication))
+                .stream().map(SimpleAssetResponse::mapping).collect(Collectors.toList());
     }
 
     @PostMapping("/{assetId}/purchase")
@@ -138,7 +145,8 @@ public class AssetController {
     @GetMapping("/purchase")
     @ApiOperation(value = "내가 구매한한 에셋 조회", notes = "내가 구매한 에셋 조회")
     @ApiImplicitParam(name = "asset", value = "내가 구매한 에셋 조회", required = true, paramType = "body")
-    public List<Asset> getBoughtList(Authentication authentication) {
-        return assetService.getUsersBoughtAssets(jwtParser.getUserFromJwt(authentication));
+    public List<SimpleAssetResponse> getBoughtList(Authentication authentication) {
+        return assetService.getUsersBoughtAssets(jwtParser.getUserFromJwt(authentication))
+                .stream().map(SimpleAssetResponse::mapping).collect(Collectors.toList());
     }
 }

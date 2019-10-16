@@ -1,8 +1,8 @@
 package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.dto.request.user.UserUpdateRequest;
+import com.ec.sticket.dto.response.user.SimpleUserResponse;
 import com.ec.sticket.dto.response.user.UserPageResponse;
-import com.ec.sticket.dto.response.user.UserSimple;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Quest;
 import com.ec.sticket.models.Sticon;
@@ -78,9 +78,9 @@ public class UserController {
     @GetMapping("/like")
     @ApiOperation(value = "작가 좋아요 조회 1", notes = "작가 좋아요 조회 2")
     @ApiImplicitParam(name = "user", value = "작가 좋아요 조회 3")
-    public List<UserSimple> findLikes(@AuthenticationPrincipal UserDetails userDetails) {
+    public List<SimpleUserResponse> findLikes(@AuthenticationPrincipal UserDetails userDetails) {
         int followerId = userService.findByEmail(userDetails.getUsername()).getId();
-        return userService.findLike(followerId).stream().map(UserSimple::mapping).collect(Collectors.toList());
+        return userService.findLike(followerId).stream().map(SimpleUserResponse::mapping).collect(Collectors.toList());
     }
 
     @GetMapping("/like/{followingId}")

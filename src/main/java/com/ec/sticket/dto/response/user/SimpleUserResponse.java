@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter @Setter
 @Builder
-public class UserSimple {
+public class SimpleUserResponse {
     private int id;
     private String name;
     private String email;
@@ -15,15 +15,17 @@ public class UserSimple {
     private String description;
     private int worksCnt;
     private int followerCnt;
+    private int followingCnt;
 
-    public static UserSimple mapping(User user){
-        return UserSimple.builder()
+    public static SimpleUserResponse mapping(User user){
+        return SimpleUserResponse.builder()
                 .id(user.getId())
                 .imgUrl(user.getImgUrl())
                 .description(user.getDescription())
                 .name(user.getName())
                 .email(user.getEmail())
                 .followerCnt(user.getFollowerCnt())
+                .followingCnt(user.getFollowingCnt())
                 .worksCnt(user.getSellingAssets().size())
                 .build();
     }
