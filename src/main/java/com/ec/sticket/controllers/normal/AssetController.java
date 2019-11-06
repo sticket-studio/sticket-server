@@ -1,5 +1,6 @@
 package com.ec.sticket.controllers.normal;
 
+import com.ec.sticket.dto.request.asset.InsertAssetRequest;
 import com.ec.sticket.dto.response.asset.SimpleAssetResponse;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.services.AssetService;
@@ -75,14 +76,11 @@ public class AssetController {
         return assetService.findById(assetId);
     }
 
-    @PostMapping("/{authorId}")
-    @ApiOperation(value = "에셋 저장하기", notes = "Asset 저장")
+    @PostMapping
+    @ApiOperation(value = "에셋 등록하기", notes = "Asset 등록")
     @ApiImplicitParam(name = "asset", value = "생성하는 에셋 내용", required = true, paramType = "body")
-    public ApiMessage saveAsset(
-            @ApiParam(value = "저자 ID", defaultValue = "1", required = true)
-            @PathVariable("authorId") int authorId,
-            @RequestBody Asset asset) {
-        return assetService.save(authorId, asset);
+    public ApiMessage saveAsset(@ModelAttribute InsertAssetRequest model, Authentication authentication) {
+        return assetService.save(jwtParser.getUserIdFromJwt(authentication), model);
     }
 
     @PutMapping("/{assetId}")

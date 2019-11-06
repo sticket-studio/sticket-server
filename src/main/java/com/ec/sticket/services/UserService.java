@@ -4,6 +4,7 @@ import com.ec.sticket.dto.request.auth.FindPasswordRequest;
 import com.ec.sticket.dto.request.auth.UpdatePasswordRequest;
 import com.ec.sticket.dto.request.user.SignupRequest;
 import com.ec.sticket.dto.request.user.UserUpdateRequest;
+import com.ec.sticket.dto.response.user.UserLikeUserResponse;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Sticon;
 import com.ec.sticket.models.User;
@@ -78,17 +79,13 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public ApiMessage update(int userId, UserUpdateRequest modified) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
+    public ApiMessage update(User user, UserUpdateRequest modified) {
+        if (user != null) {
             user.update(modified);
-
             userRepository.save(user);
             return ApiMessage.getSuccessMessage();
         } else {
-            return ApiMessage.getFailMessage(String.format("The user with id [%d] doesn't exist", userId));
+            return ApiMessage.getFailMessage("The user doesn't exist");
         }
     }
 
@@ -117,8 +114,9 @@ public class UserService implements UserDetailsService {
         return userLikeUsers.stream().map(UserLikeUser::getFollowing).collect(Collectors.toList());
     }
 
-    public ApiMessage findLike(int followerId, int followingId) {
-        return ApiMessage.getSuccessMessage(userLikeUserRepository.getOne(new UserLikeUserKey(followerId, followingId)));
+    public UserLikeUserResponse findLike(int followerId, int followingId) {
+        UserLikeUser userLikeUser = userLikeUserRepository.getOne(new UserLikeUserKey(followerId, followingId));
+        return new UserLikeUserResponse(followerId, followingId, userLikeUser != null);
     }
 
     @Transactional
@@ -212,7 +210,7 @@ public class UserService implements UserDetailsService {
             user.setPassword(passwordEncoder.encode(randomPassword));
             userRepository.save(user);
             return randomPassword;
-        }else{
+        } else {
             return null;
         }
     }
@@ -222,7 +220,7 @@ public class UserService implements UserDetailsService {
             user.setPassword(passwordEncoder.encode(request.getNewPassword()));
             userRepository.save(user);
             return request.getNewPassword();
-        }else{
+        } else {
             return null;
         }
     }

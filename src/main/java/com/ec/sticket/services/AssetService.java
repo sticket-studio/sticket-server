@@ -1,15 +1,19 @@
 package com.ec.sticket.services;
 
+import com.ec.sticket.dto.request.asset.InsertAssetRequest;
 import com.ec.sticket.models.Asset;
+import com.ec.sticket.models.Theme;
 import com.ec.sticket.models.User;
 import com.ec.sticket.models.mapping.UserLikeAsset;
 import com.ec.sticket.models.mapping.UserPurchaseAsset;
 import com.ec.sticket.models.mapping.compositekey.UserLikeAssetKey;
 import com.ec.sticket.models.mapping.compositekey.UserPurchaseAssetKey;
 import com.ec.sticket.repositories.AssetRepository;
+import com.ec.sticket.repositories.ThemeRepository;
 import com.ec.sticket.repositories.UserRepository;
 import com.ec.sticket.repositories.mapping.like.UserLikeAssetRepository;
 import com.ec.sticket.repositories.mapping.purchase.UserPurchaseAssetRepository;
+import com.ec.sticket.util.AWSS3Util;
 import com.ec.sticket.util.ApiMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -37,16 +41,20 @@ public class AssetService {
 
     private final UserRepository userRepository;
     private final AssetRepository assetRepository;
+    private final ThemeRepository themeRepository;
     private final UserLikeAssetRepository userLikeAssetRepository;
     private final UserPurchaseAssetRepository userPurchaseAssetRepository;
+    private final AWSS3Util awss3Util;
 
     public AssetService(UserRepository userRepository, AssetRepository assetRepository,
-                        UserLikeAssetRepository userLikeAssetRepository,
-                        UserPurchaseAssetRepository userPurchaseAssetRepository) {
+                        ThemeRepository themeRepository, UserLikeAssetRepository userLikeAssetRepository,
+                        UserPurchaseAssetRepository userPurchaseAssetRepository, AWSS3Util awss3Util) {
         this.userRepository = userRepository;
         this.assetRepository = assetRepository;
+        this.themeRepository = themeRepository;
         this.userLikeAssetRepository = userLikeAssetRepository;
         this.userPurchaseAssetRepository = userPurchaseAssetRepository;
+        this.awss3Util = awss3Util;
         this.todayAssets = new ArrayList<>();
         this.popularAssets = new ArrayList<>();
         this.newAssets = new ArrayList<>();
@@ -65,17 +73,28 @@ public class AssetService {
         return asset.orElseGet(Asset::new);
     }
 
-    public ApiMessage save(int authorId, Asset asset) {
+    public ApiMessage save(int authorId, InsertAssetRequest model) {
         Optional<User> authorOptional = userRepository.findById(authorId);
 
-        if (asset != null && authorOptional.isPresent()) {
-            asset.setAuthor(authorOptional.get());
+        if (model != null && authorOptional.isPresent()) {
+            Optional<Theme> themeOptional = themeRepository.findById(model.getThemeId());
 
-            assetRepository.save(asset);
+            if (themeOptional.isPresent()) {
+                Asset asset = model.toAsset();
+                asset.setAuthor(authorOptional.get());
+                asset.setTheme(themeOptional.get());
+                asset = assetRepository.save(asset);
+                asset.setImgUrl(AWSS3Util.getAssetImgUrl(asset.getId()));
+                asset = assetRepository.save(asset);
 
-            return ApiMessage.getSuccessMessage();
+                awss3Util.uploadAsset(model.getImg(), asset.getId());
+
+                return ApiMessage.getSuccessMessage();
+            } else {
+                return ApiMessage.getFailMessage("model is null or user is not exist");
+            }
         } else {
-            return ApiMessage.getFailMessage();
+            return ApiMessage.getFailMessage("model is null or user is not exist");
         }
     }
 
@@ -168,10 +187,10 @@ public class AssetService {
 
         if (!asset.isPresent()) {
             return ApiMessage.getFailMessage("The asset with id [" + assetId + "] doesn't exist");
-        } else if(!userLikeAssetRepository.findById(userLikeAssetKey).isPresent()){
+        } else if (!userLikeAssetRepository.findById(userLikeAssetKey).isPresent()) {
             return ApiMessage.getFailMessage(String.format("User with id [%d] don't like Asset with id [%d]",
                     user.getId(), assetId));
-        } else{
+        } else {
             userLikeAssetRepository.deleteById(userLikeAssetKey);
             assetRepository.save(asset.get());
             asset.get().setLikeCnt(asset.get().getLikeCnt() - 1);

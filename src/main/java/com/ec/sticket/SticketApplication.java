@@ -11,7 +11,9 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+@EnableSwagger2
 @SpringBootApplication
 public class SticketApplication extends SpringBootServletInitializer {
 
@@ -77,9 +79,11 @@ public class SticketApplication extends SpringBootServletInitializer {
 //        // Stick - 캐시 아이템
 //
 //        Stick stick1 = new Stick(10, 1000, null);
-//        Stick stick2 = new Stick(25, 2000, null);
-//        Stick stick3 = new Stick(50, 3000, null);
-//        Stick stick4 = new Stick(80, 5000, null);
+//        Stick stick2 = new Stick(30, 2500, null);
+//        Stick stick3 = new Stick(50, 4000, null);
+//        Stick stick4 = new Stick(100, 7000, null);
+//        Stick stick4 = new Stick(150, 10000, null);
+//        Stick stick4 = new Stick(200, 13000, null);
 //
 //        stickRepository.save(stick1);
 //        stickRepository.save(stick2);

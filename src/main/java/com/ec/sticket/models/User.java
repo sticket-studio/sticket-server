@@ -176,6 +176,8 @@ public class User implements Serializable {
     }
 
     public void update(UserUpdateRequest modified) {
+        if (modified.getEmail() != null)
+            this.email = modified.getEmail();
         if (modified.getName() != null)
             this.name = modified.getName();
         if (modified.getImgUrl() != null)

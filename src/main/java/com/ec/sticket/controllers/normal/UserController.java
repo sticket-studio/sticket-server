@@ -2,6 +2,7 @@ package com.ec.sticket.controllers.normal;
 
 import com.ec.sticket.dto.request.user.UserUpdateRequest;
 import com.ec.sticket.dto.response.user.SimpleUserResponse;
+import com.ec.sticket.dto.response.user.UserLikeUserResponse;
 import com.ec.sticket.dto.response.user.UserPageResponse;
 import com.ec.sticket.models.Asset;
 import com.ec.sticket.models.Quest;
@@ -66,8 +67,8 @@ public class UserController {
 
     @PutMapping
     public ApiMessage updateUser(Authentication authentication, @RequestBody UserUpdateRequest user) {
-        int userId = jwtParser.getUserIdFromJwt(authentication);
-        return userService.update(userId, user);
+        User targetUser = jwtParser.getUserFromJwt(authentication);
+        return userService.update(targetUser, user);
     }
 
     @DeleteMapping("/{userId}")
@@ -86,7 +87,7 @@ public class UserController {
     @GetMapping("/like/{followingId}")
     @ApiOperation(value = "작가 좋아요 조회 1", notes = "작가 좋아요 조회 2")
     @ApiImplicitParam(name = "user", value = "작가 좋아요 조회 3")
-    public ApiMessage findLikes(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int followingId) {
+    public UserLikeUserResponse findLikes(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int followingId) {
         int followerId = userService.findByEmail(userDetails.getUsername()).getId();
         return userService.findLike(followerId, followingId);
     }

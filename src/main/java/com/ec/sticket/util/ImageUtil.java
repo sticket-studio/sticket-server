@@ -1,12 +1,11 @@
 package com.ec.sticket.util;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class ImageUtil {
     public static File dataUriToFile(String dataUri){
@@ -24,5 +23,18 @@ public class ImageUtil {
     public static InputStream dataUriToInputStream(String dataUri){
         byte[] imageData = DatatypeConverter.parseBase64Binary(dataUri.substring(dataUri.indexOf(',') + 1));
         return new ByteArrayInputStream(imageData);
+    }
+
+    public static File convertMultiPartToFile(MultipartFile multipartFile){
+
+        File convFile = new File(multipartFile.getOriginalFilename());
+        try{
+            FileOutputStream fos= new FileOutputStream(convFile);
+            fos.write(multipartFile.getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return convFile;
     }
 }

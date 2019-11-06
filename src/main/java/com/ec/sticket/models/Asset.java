@@ -7,8 +7,7 @@ import com.ec.sticket.models.mapping.UserPurchaseAsset;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,8 +18,13 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(description = "asset")
 public class Asset implements Serializable {
+
+    public static final int DEFAULT_PRICE = 3;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "AssetGenerator")
@@ -54,19 +58,12 @@ public class Asset implements Serializable {
     @ApiModelProperty(notes = "price for Asset", example = "30")
     private int price;
     private String description;
-    private int likeCnt;
-    private int purchaseCnt;
+    private int likeCnt=0;
+    private int purchaseCnt=0;
     @Enumerated(value = EnumType.STRING)
     private Landmark landmark;
 
-    public Asset() {
-        createdTime = LocalDateTime.now();
-        likeCnt = 0;
-        purchaseCnt = 0;
-    }
-
-    public Asset(User author, Landmark landmark, Theme theme, String name, String imgUrl, int price
-            , String description) {
+    public Asset(User author, Landmark landmark, Theme theme, String name, String imgUrl, int price, String description) {
         this.author = author;
         this.landmark = landmark;
         this.theme = theme;
